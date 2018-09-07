@@ -47,10 +47,6 @@ dependencies {
     implementation 'id.zelory:compressor:2.1.0'
     implementation 'com.vanniktech:emoji-one:0.5.1'
     implementation 'net.danlew:android.joda:2.9.9.3'
-
-
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

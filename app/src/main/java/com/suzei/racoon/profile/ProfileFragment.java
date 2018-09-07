@@ -49,7 +49,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     private StorageReference mUserStorage;
     private Unbinder unbinder;
     private TakePick takePick;
-    private ContextThemeWrapper themeWrapper;
 
     private String currentUserId;
 
@@ -66,6 +65,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @BindView(R.id.profile_image) RoundedImageView picView;
     @BindView(R.id.profile_name) TextView nameView;
     @BindView(R.id.profile_action_buttons_layout) LinearLayout actionButtonsLayout;
+    @BindView(R.id.profile_shadow) View shadowView;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -77,6 +77,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         View view = inflater.inflate(R.layout.profile, container, false);
         initObjects(view);
         setUpPresenter();
+        hideViews();
         setUpTakePick();
         return view;
     }
@@ -87,16 +88,17 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         mUserStorage = FirebaseStorage.getInstance().getReference().child("users").child("pictures")
                 .child(currentUserId);
         unbinder = ButterKnife.bind(this, view);
-        themeWrapper = new ContextThemeWrapper(getContext(), R.style.AlertDialogTheme);
-
-
-        backView.setVisibility(View.GONE);
-        actionButtonsLayout.setVisibility(View.GONE);
     }
 
     private void setUpPresenter() {
         profilePresenter = new ProfilePresenter(this);
         profilePresenter.showUserDetails(currentUserId);
+    }
+
+    private void hideViews() {
+        shadowView.setVisibility(View.GONE);
+        backView.setVisibility(View.GONE);
+        actionButtonsLayout.setVisibility(View.GONE);
     }
 
     private void setUpTakePick() {
@@ -114,6 +116,12 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                         mUserRef.child("image").setValue(image_url));
             }
         });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        profilePresenter.destroy(currentUserId);
     }
 
     @Override
@@ -166,6 +174,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                         null, null);
                 break;
         }
+
     }
 
     @Override
@@ -173,12 +182,45 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         //Show toast message
     }
 
-    private void showGenderPicker(int gender) {
+    @OnClick({R.id.profile_name, R.id.profile_description})
+    public void onTextFieldClick(View view) {
+        int id = view.getId();
+        switch (id) {
+            case R.id.profile_name:
+                String name = nameView.getText().toString();
+                showInputDialog("Change name", name, CHANGE_INPUT_NAME);
+                break;
+            case R.id.profile_description:
+                String bio = descView.getText().toString();
+                showInputDialog("Change bio", bio, CHANGE_INPUT_BIO);
+                break;
+        }
+    }
+
+    @OnClick(R.id.profile_gender)
+    public void onGenderClick() {
+        String gender = genderView.getText().toString();
+        int genderNum;
+
+        switch (gender) {
+            case "Male":
+                genderNum = 0;
+                break;
+            case "Female":
+                genderNum = 1;
+                break;
+            case "Unknown":
+                genderNum = 2;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid gender=" + gender);
+        }
+
         CharSequence[] genderSeq = {"Male", "Female", "Unknown"};
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(themeWrapper);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Choose gender:");
-        builder.setSingleChoiceItems(genderSeq, gender, null);
+        builder.setSingleChoiceItems(genderSeq, genderNum, null);
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
 
         builder.setPositiveButton("Ok", (dialog, which) -> {
@@ -193,7 +235,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         dialog.show();
     }
 
-    private void showNumberPicker() {
+    @OnClick(R.id.profile_age)
+    public void onAgeClick() {
         int age = Integer.parseInt(ageView.getText().toString());
         NumberPicker numberPicker = new NumberPicker(getContext());
         NumberPickerUtil.setNumberPickerTextColor(numberPicker, colorBlack);
@@ -201,7 +244,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         numberPicker.setMinValue(13);
         numberPicker.setValue(age);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(themeWrapper);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("Choose an age:");
         builder.setView(numberPicker);
         builder.setPositiveButton("Ok", (dialog, which) -> {
@@ -218,7 +261,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     }
 
     private void showInputDialog(String title, String defaultText, int type) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(themeWrapper);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setTitle(title);
 

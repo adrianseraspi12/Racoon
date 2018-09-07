@@ -17,6 +17,10 @@ public class ProfilePresenter implements ProfileContract.onProfileListener {
         profileInteractor.loadDetails(uid);
     }
 
+    public void destroy(String uid) {
+        profileInteractor.destroy(uid);
+    }
+
     @Override
     public void onSuccess(Users users) {
         profileView.hideProgress();
@@ -28,4 +32,5 @@ public class ProfilePresenter implements ProfileContract.onProfileListener {
         profileView.hideProgress();
         profileView.onLoadingFailure();
     }
+
 }

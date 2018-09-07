@@ -132,6 +132,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/profile_shadow"
             android:layout_width="match_parent"
             android:layout_height="4dp"
             android:background="@drawable/shadow_above_view"
