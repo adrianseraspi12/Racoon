@@ -13,11 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
@@ -33,11 +30,10 @@ import com.suzei.racoon.callback.ButtonListener;
 import com.suzei.racoon.fragment.ChatFragment;
 import com.suzei.racoon.fragment.FriendsFragment;
 import com.suzei.racoon.fragment.NotificationFragment;
-import com.suzei.racoon.fragment.ProfileFragment;
+import com.suzei.racoon.profile.ProfileFragment;
 import com.suzei.racoon.fragment.WorldFragment;
 import com.suzei.racoon.activity.AddActivity.Add;
 
-import butterknife.BindAnim;
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;

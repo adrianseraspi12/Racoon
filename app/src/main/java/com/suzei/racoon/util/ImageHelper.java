@@ -96,7 +96,6 @@ public class ImageHelper {
 
         });
 
-
     }
 
     public interface FirebaseCallback {

@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:fillViewport="true"
-    tools:context=".fragment.ProfileFragment">
+    android:fillViewport="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
