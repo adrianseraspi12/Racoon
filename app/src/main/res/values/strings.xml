@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">Racoon</string>
+    <string name="racoon_logo">racoon_logo</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Password</string>
+    <string name="display_name">Display Name</string>
+    <string name="showhidepass">ShowHidePass</string>
+    <string name="chat_now">Chat Now</string>
+    <string name="already_have_an_account">Already have an account</string>
+    <string name="create_an_account">Create an account</string>
+
+    <string name="world_chats">World</string>
+    <string name="friends">Friends</string>
+    <string name="chats">Chats</string>
+    <string name="my_profile">Profile</string>
+
+    <string name="message">Message</string>
+    <string name="search_user">Search User</string>
+    <string name="add">ADD</string>
+    <string name="disconnected">No connection, Please try again</string>
+    <string name="network_error">A network error occurred, Please try again</string>
+    <string name="weak_password">Your password is weak, Please make sure the password is consist of 6 characters</string>
+    <string name="invalid_email">Email is invalid</string>
+    <string name="email_exist">The email is currently used, Please use other email</string>
+
+    <string name="add_bio">Tap to add bio</string>
+
+    <string name="default_user_image">https://firebasestorage.googleapis.com/v0/b/racoon-89ee8.appspot.com/o/emoji%2Fhappy_512px.png?alt=media&amp;token=11c342c5-1896-4e04-a822-c76536cf5d1c</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="emoji">Emoji</string>
+
+    <string name="back">back</string>
+    <string name="search">search</string>
+    <string name="person_is_private">This person is private</string>
+    <string name="no_search_results">No search results</string>
+    <string name="enter_message">Enter Message…</string>
+    <string name="visit_profile">Visit Profile</string>
+    <string name="delete_conversation">Delete Conversation</string>
+    <string name="change_name">Change Name</string>
+    <string name="change_image">Change Image</string>
+    <string name="change_description">Change Description</string>
+    <string name="view_members">View Members</string>
+    <string name="group_information">Group Information</string>
+    <string name="manage_group">Manage Group</string>
+    <string name="add_people">Add People</string>
+    <string name="new_conversation">New Coversation</string>
+    <string name="accept_friend">Accept Friend</string>
+    <string name="cancel_request">Cancel Request</string>
+    <string name="unfriend">Unfriend</string>
+    <string name="add_friend">Add Friend</string>
+    <string name="add_members">Add members</string>
+    <string name="admins">Admins</string>
+    <string name="members">Members</string>
+    <string name="send_message">Send Message</string>
+    <string name="remove_as_admin">Remove as Admin</string>
+    <string name="remove_friend">Remove Friend</string>
+    <string name="remove_from_group">Remove from Group</string>
+    <string name="set_as_admin">Set as Admin</string>
+    <string name="racoon">Racoon</string>
+    <string name="alerts">Alerts</string>
+    <string name="sent_friend_request">You sent a friend request</string>
+    <string name="receive_friend_request">You receive a friend request</string>
+    <string name="accepted_friend_request">You accepted the friend request</string>
+    <string name="friend_request_accepted">Your friend request has been accepted</string>
+    <string name="friend_request">Friend Request</string>
+    <string name="friend_accepted">Friend Accepted</string>
+</resources>

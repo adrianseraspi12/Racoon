@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "447753108614",
+    "firebase_url": "https://racoon-89ee8.firebaseio.com",
+    "project_id": "racoon-89ee8",
+    "storage_bucket": "racoon-89ee8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:447753108614:android:4feab6cc8320393c",
+        "android_client_info": {
+          "package_name": "com.suzei.racoon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "447753108614-h3g04ds0ikfp2ou4onn7lnsbvc5t0mc6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.suzei.racoon",
+            "certificate_hash": "c93c90cdbf588faf023e7f482ddeccd1e21d6cf0"
+          }
+        },
+        {
+          "client_id": "447753108614-a81nukach924f53ma1uf6enkrd4vcg7e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsRPfIgA_deHwxVA7id8Jr6cFUK0cax6I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "447753108614-a81nukach924f53ma1uf6enkrd4vcg7e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

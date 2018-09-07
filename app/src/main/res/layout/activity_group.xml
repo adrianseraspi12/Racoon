@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activity.GroupActivity"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/group_header"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/background_gradient_brown" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/group_image"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="140dp"
+            android:background="@color/colorPrimary"
+            android:scaleType="centerCrop"
+            app:riv_border_color="@android:color/white"
+            app:riv_border_width="8dp"
+            app:riv_corner_radius="30dp"
+            app:riv_mutate_background="true"
+            app:riv_oval="true"
+            tools:src="@drawable/racoon_200" />
+
+        <LinearLayout
+            android:id="@+id/group_details_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/group_image"
+            android:orientation="vertical"
+            android:layout_above="@id/group_action_buttons_layout">
+
+            <TextView
+                android:id="@+id/group_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center_horizontal"
+                android:maxWidth="225dp"
+                android:padding="4dp"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                tools:text="John Doe" />
+
+            <TextView
+                android:id="@+id/group_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center_horizontal"
+                android:maxWidth="250dp"
+                android:padding="4dp"
+                android:paddingBottom="4dp"
+                android:paddingTop="8dp"
+                android:textColor="@android:color/secondary_text_light"
+                android:textSize="16sp"
+                tools:text="Hi I am John Doe" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/group_action_buttons_layout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/group_add_members"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:padding="12dp"
+                android:text="@string/add_members"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/group_view_members"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorNavigationIcon"
+                android:padding="12dp"
+                android:text="@string/view_members"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/group_toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize">
+
+            <ImageButton
+                android:id="@+id/group_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:background="?android:selectableItemBackground"
+                android:padding="16dp"
+                android:src="@drawable/back" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>

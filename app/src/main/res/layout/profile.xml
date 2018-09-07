@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:fillViewport="true"
+    tools:context=".fragment.ProfileFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/profile_header"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_building" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/profile_image"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="140dp"
+            android:background="@color/colorPrimary"
+            android:scaleType="centerCrop"
+            app:riv_border_color="@android:color/white"
+            app:riv_border_width="8dp"
+            app:riv_corner_radius="30dp"
+            app:riv_mutate_background="true"
+            app:riv_oval="true"
+            tools:src="@drawable/racoon_200" />
+
+        <LinearLayout
+            android:id="@+id/profile_name_bio_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profile_image"
+            android:orientation="vertical"
+            android:layout_marginBottom="8dp"
+            android:layout_above="@id/profile_action_buttons_layout">
+
+            <TextView
+                android:id="@+id/profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center_horizontal"
+                android:maxWidth="225dp"
+                android:padding="4dp"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                tools:text="John Doe" />
+
+            <TextView
+                android:id="@+id/profile_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center_horizontal"
+                android:maxWidth="250dp"
+                android:padding="4dp"
+                android:paddingBottom="4dp"
+                android:paddingTop="8dp"
+                android:textColor="@android:color/secondary_text_light"
+                android:textSize="16sp"
+                tools:text="Hi I am John Doe" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="4dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        android:id="@+id/profile_age"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@id/profile_age_gender_divider"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:drawablePadding="8dp"
+                        android:drawableStart="@drawable/date"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:textColor="@android:color/secondary_text_light"
+                        android:textSize="16sp"
+                        tools:text="24" />
+
+                    <View
+                        android:id="@+id/profile_age_gender_divider"
+                        android:layout_width="1.5dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@android:color/darker_gray" />
+
+                    <TextView
+                        android:id="@+id/profile_gender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_toEndOf="@id/profile_age_gender_divider"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:drawablePadding="8dp"
+                        android:drawableStart="@drawable/gender_unknown"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:textColor="@android:color/secondary_text_light"
+                        android:textSize="16sp"
+                        tools:text="Unknown" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@drawable/shadow_above_view"
+            android:layout_above="@id/profile_action_buttons_layout"/>
+
+        <LinearLayout
+            android:id="@+id/profile_action_buttons_layout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/profile_add_friend"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:padding="12dp"
+                android:text="@string/add_friend"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/profile_message"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorNavigationIcon"
+                android:padding="12dp"
+                android:text="@string/message"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/profile_toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize">
+
+            <ImageButton
+                android:id="@+id/profile_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:background="?android:selectableItemBackground"
+                android:padding="16dp"
+                android:src="@drawable/back" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>

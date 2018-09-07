@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/popup_remove_admin"
+        android:title="@string/remove_as_admin" />
+
+    <item
+        android:id="@+id/popup_remove_group"
+        android:title="@string/remove_from_group" />
+
+    <item
+        android:id="@+id/popup_send_message"
+        android:title="@string/send_message" />
+
+    <item
+        android:id="@+id/popup_set_as_admin"
+        android:title="@string/set_as_admin" />
+
+    <item
+        android:id="@+id/popup_visit_profile"
+        android:title="@string/visit_profile" />
+
+
+
+</menu>
