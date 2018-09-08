@@ -1,4 +1,4 @@
-package com.suzei.racoon.profile;
+package com.suzei.racoon.profile.ui;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +26,8 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
 import com.suzei.racoon.model.Users;
+import com.suzei.racoon.profile.data.ProfileContract;
+import com.suzei.racoon.profile.data.ProfilePresenter;
 import com.suzei.racoon.util.NumberPickerUtil;
 import com.suzei.racoon.util.TakePick;
 
@@ -92,7 +93,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
     private void setUpPresenter() {
         profilePresenter = new ProfilePresenter(this);
-        profilePresenter.showUserDetails(currentUserId);
     }
 
     private void hideViews() {
@@ -116,6 +116,12 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                         mUserRef.child("image").setValue(image_url));
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        profilePresenter.showUserDetails(currentUserId);
     }
 
     @Override

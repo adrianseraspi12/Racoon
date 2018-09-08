@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.suzei.racoon.R;
 import com.suzei.racoon.activity.ChatRoomActivity;
 import com.suzei.racoon.activity.MembersActivity;
-import com.suzei.racoon.activity.ProfileActivity;
+import com.suzei.racoon.friend.ui.FriendActivity;
 import com.suzei.racoon.adapter.UsersAdapter;
 import com.suzei.racoon.model.Groups;
 import com.suzei.racoon.model.Users;
@@ -189,8 +189,8 @@ public class ViewMembersFragment extends Fragment {
                     return true;
 
                 case R.id.popup_visit_profile:
-                    Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
-                    profileIntent.putExtra(ProfileActivity.EXTRA_PROFILE_DETAILS, users);
+                    Intent profileIntent = new Intent(getContext(), FriendActivity.class);
+                    profileIntent.putExtra(FriendActivity.EXTRA_PROFILE_DETAILS, users);
                     startActivity(profileIntent);
                     return true;
 

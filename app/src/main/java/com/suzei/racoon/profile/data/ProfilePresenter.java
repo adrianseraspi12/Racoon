@@ -1,6 +1,8 @@
-package com.suzei.racoon.profile;
+package com.suzei.racoon.profile.data;
 
 import com.suzei.racoon.model.Users;
+import com.suzei.racoon.profile.data.ProfileContract;
+import com.suzei.racoon.profile.data.ProfileInteractor;
 
 public class ProfilePresenter implements ProfileContract.onProfileListener {
 

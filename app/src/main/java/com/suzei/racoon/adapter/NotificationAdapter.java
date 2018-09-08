@@ -22,7 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
-import com.suzei.racoon.activity.ProfileActivity;
+import com.suzei.racoon.friend.ui.FriendActivity;
 import com.suzei.racoon.model.Notifications;
 import com.suzei.racoon.model.Users;
 import com.suzei.racoon.util.FirebaseExceptionUtil;
@@ -161,8 +161,8 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notifications, 
         }
 
         private void showProfile(Users users) {
-            Intent profileIntent = new Intent(context, ProfileActivity.class);
-            profileIntent.putExtra(ProfileActivity.EXTRA_PROFILE_DETAILS, users);
+            Intent profileIntent = new Intent(context, FriendActivity.class);
+            profileIntent.putExtra(FriendActivity.EXTRA_PROFILE_DETAILS, users);
             context.startActivity(profileIntent);
         }
 

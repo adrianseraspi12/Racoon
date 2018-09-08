@@ -30,7 +30,7 @@ import com.suzei.racoon.callback.ButtonListener;
 import com.suzei.racoon.fragment.ChatFragment;
 import com.suzei.racoon.fragment.FriendsFragment;
 import com.suzei.racoon.fragment.NotificationFragment;
-import com.suzei.racoon.profile.ProfileFragment;
+import com.suzei.racoon.profile.ui.ProfileFragment;
 import com.suzei.racoon.fragment.WorldFragment;
 import com.suzei.racoon.activity.AddActivity.Add;
 

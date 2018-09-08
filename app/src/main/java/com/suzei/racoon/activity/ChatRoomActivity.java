@@ -14,8 +14,6 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -35,13 +33,12 @@ import com.suzei.racoon.R;
 import com.suzei.racoon.callback.ChatListener;
 import com.suzei.racoon.fragment.GroupChatRoomFragment;
 import com.suzei.racoon.fragment.SingleChatRoomFragment;
+import com.suzei.racoon.friend.ui.FriendActivity;
 import com.suzei.racoon.model.Groups;
 import com.suzei.racoon.model.Users;
 import com.suzei.racoon.util.FirebaseExceptionUtil;
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
-import com.vanniktech.emoji.listeners.OnEmojiPopupDismissListener;
-import com.vanniktech.emoji.listeners.OnEmojiPopupShownListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -217,6 +214,11 @@ public class ChatRoomActivity extends AppCompatActivity {
         mUserChatRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (!dataSnapshot.hasChildren()) {
+                    return;
+                }
+
                 boolean isSeen = dataSnapshot.child("seen").getValue(Boolean.class);
                 if (isSeen) {
                     return;
@@ -344,8 +346,8 @@ public class ChatRoomActivity extends AppCompatActivity {
 
     private void visitProfile() {
         Timber.i("ID = %s", users.getUid());
-        Intent intent = new Intent(this, ProfileActivity.class);
-        intent.putExtra(ProfileActivity.EXTRA_PROFILE_DETAILS, users);
+        Intent intent = new Intent(this, FriendActivity.class);
+        intent.putExtra(FriendActivity.EXTRA_PROFILE_DETAILS, users);
         startActivity(intent);
     }
 
