@@ -8,26 +8,20 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -37,9 +31,8 @@ import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
 import com.suzei.racoon.activity.ChatRoomActivity;
 import com.suzei.racoon.adapter.MessagesAdapter;
-import com.suzei.racoon.callback.ChatListener;
+import com.suzei.racoon.callback.SendChatListener;
 import com.suzei.racoon.model.Messages;
-import com.suzei.racoon.model.Users;
 import com.suzei.racoon.util.EmptyRecyclerView;
 import com.suzei.racoon.util.FirebaseExceptionUtil;
 import com.suzei.racoon.util.ImageHelper;
@@ -47,7 +40,6 @@ import com.vanniktech.emoji.EmojiEditText;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -60,7 +52,7 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SingleChatRoomFragment extends Fragment implements ChatListener {
+public class SingleChatRoomFragment extends Fragment implements SendChatListener {
 
     public static final String EXTRA_ID = "single_chat_id";
     public static final String EXTRA_IMAGE = "single_chat_image";

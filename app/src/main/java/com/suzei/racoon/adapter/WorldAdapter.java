@@ -27,6 +27,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
 import com.suzei.racoon.activity.ChatRoomActivity;
+import com.suzei.racoon.chat.ui.GroupChatActivity;
 import com.suzei.racoon.model.Groups;
 import com.suzei.racoon.util.FirebaseExceptionUtil;
 
@@ -89,8 +90,7 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder>{
                     nameView.setText(groups.getName());
                     descView.setText(groups.getDescription());
                     Picasso.get().load(groups.getImage()).into(imageView);
-                    groups.setUid(key);
-                    setClickListener(groups);
+                    setClickListener(key);
                 }
 
                 @Override
@@ -101,18 +101,16 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder>{
 
         }
 
-        private void setClickListener(Groups groups) {
+        private void setClickListener(String id) {
             Context context = itemView.getContext();
 
             itemView.setOnClickListener(v ->
-                    mGroupRef.child(groups.getUid()).child("members").child(currentUserId)
+                    mGroupRef.child(id).child("members").child(currentUserId)
                             .setValue(true).addOnCompleteListener(task -> {
 
                         if (task.isSuccessful()) {
-                            Intent chatActivity = new Intent(context, ChatRoomActivity.class);
-                            chatActivity.putExtra(ChatRoomActivity.EXTRA_CHAT_TYPE,
-                                    ChatRoomActivity.ChatType.GROUP_CHAT);
-                            chatActivity.putExtra(ChatRoomActivity.EXTRA_DETAILS, groups);
+                            Intent chatActivity = new Intent(context, GroupChatActivity.class);
+                            chatActivity.putExtra(GroupChatActivity.EXTRA_GROUP_ID, id);
                             context.startActivity(chatActivity);
                         } else {
                             FirebaseExceptionUtil.databaseError(context, task.getException());

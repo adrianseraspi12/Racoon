@@ -25,6 +25,8 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
 import com.suzei.racoon.activity.ChatRoomActivity;
+import com.suzei.racoon.chat.ui.GroupChatActivity;
+import com.suzei.racoon.chat.ui.SingleChatActivity;
 import com.suzei.racoon.model.Chats;
 import com.suzei.racoon.model.Groups;
 import com.suzei.racoon.model.Users;
@@ -46,7 +48,6 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chats, ChatAdapter.View
 
     public ChatAdapter(@NonNull FirebaseRecyclerOptions<Chats> options) {
         super(options);
-        String currentUserId = FirebaseAuth.getInstance().getUid();
         mUserRef = FirebaseDatabase.getInstance().getReference().child("users");
         mGroupRef = FirebaseDatabase.getInstance().getReference().child("groups");
     }
@@ -92,10 +93,12 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chats, ChatAdapter.View
             switch (type) {
                 case "single":
                     showUserData(chats, uid);
+                    setUserClickListener(uid);
                     break;
 
                 case "group":
                     showGroupData(chats, uid);
+                    setGroupClickListener(uid);
                     break;
 
                 default:
@@ -138,9 +141,6 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chats, ChatAdapter.View
                     } else {
                         statusView.setImageDrawable(drawableOffline);
                     }
-
-                    users.setUid(uid);
-                    setUserClickListener(users, chats.isSeen());
                 }
 
                 @Override
@@ -155,18 +155,19 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chats, ChatAdapter.View
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Groups groups = dataSnapshot.getValue(Groups.class);
-                    nameView.setText(groups.getName());
-                    Picasso.get().load(groups.getImage()).into(imageView);
 
-                    if (chats.getLast_message() == null) {
-                        descView.setText(stringNewConv);
-                    } else {
-                        descView.setText(chats.getLast_message());
+                    if (dataSnapshot.hasChildren()) {
+                        Groups groups = dataSnapshot.getValue(Groups.class);
+                        nameView.setText(groups.getName());
+                        Picasso.get().load(groups.getImage()).into(imageView);
+
+                        if (chats.getLast_message() == null) {
+                            descView.setText(stringNewConv);
+                        } else {
+                            descView.setText(chats.getLast_message());
+                        }
                     }
 
-                    groups.setUid(uid);
-                    setGroupClickListener(groups, chats.isSeen());
                 }
 
                 @Override
@@ -176,21 +177,18 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chats, ChatAdapter.View
             });
         }
 
-        private void setGroupClickListener(Groups groups, boolean isSeen) {
+        private void setGroupClickListener(String id) {
             itemView.setOnClickListener(v -> {
-                Intent chatActivity = new Intent(context, ChatRoomActivity.class);
-                chatActivity.putExtra(ChatRoomActivity.EXTRA_CHAT_TYPE, ChatRoomActivity.ChatType.GROUP_CHAT);
-                chatActivity.putExtra(ChatRoomActivity.EXTRA_DETAILS, groups);
+                Intent chatActivity = new Intent(context, GroupChatActivity.class);
+                chatActivity.putExtra(GroupChatActivity.EXTRA_GROUP_ID, id);
                 context.startActivity(chatActivity);
             });
-
         }
 
-        private void setUserClickListener(Users users, boolean isSeen) {
+        private void setUserClickListener(String id) {
             itemView.setOnClickListener(v -> {
-                Intent chatIntent = new Intent(context, ChatRoomActivity.class);
-                chatIntent.putExtra(ChatRoomActivity.EXTRA_CHAT_TYPE, ChatRoomActivity.ChatType.SINGLE_CHAT);
-                chatIntent.putExtra(ChatRoomActivity.EXTRA_DETAILS, users);
+                Intent chatIntent = new Intent(context, SingleChatActivity.class);
+                chatIntent.putExtra(SingleChatActivity.EXTRA_GROUP_ID, id);
                 context.startActivity(chatIntent);
             });
         }

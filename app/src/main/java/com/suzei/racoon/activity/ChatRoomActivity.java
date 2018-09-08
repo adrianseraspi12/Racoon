@@ -30,7 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
-import com.suzei.racoon.callback.ChatListener;
+import com.suzei.racoon.callback.SendChatListener;
 import com.suzei.racoon.fragment.GroupChatRoomFragment;
 import com.suzei.racoon.fragment.SingleChatRoomFragment;
 import com.suzei.racoon.friend.ui.FriendActivity;
@@ -64,7 +64,8 @@ public class ChatRoomActivity extends AppCompatActivity {
     private DatabaseReference mMessageRef;
     private DatabaseReference mNotifCountRef;
 
-    private ChatListener mListener;
+    private SendChatListener mListener;
+    private GroupDetailsListener groupDetailsListener;
 
     private EmojiPopup emojiPopup;
 
@@ -116,12 +117,15 @@ public class ChatRoomActivity extends AppCompatActivity {
 
                 case ChatType.SINGLE_CHAT:
                     users = getIntent().getParcelableExtra(EXTRA_DETAILS);
+                    mImage = users.getImage();
                     mId = users.getUid();
                     break;
 
                 case ChatType.GROUP_CHAT:
-                    groups = getIntent().getParcelableExtra(EXTRA_DETAILS);;
+                    groups = getIntent().getParcelableExtra(EXTRA_DETAILS);
                     mId = groups.getUid();
+                    mImage = groups.getImage();
+                    mMembers = new ArrayList<>(groups.getMembers().keySet());
                     break;
 
                 default:
@@ -264,7 +268,7 @@ public class ChatRoomActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show());
     }
 
-    public void setChatListener(ChatListener listener) {
+    public void setChatListener(SendChatListener listener) {
         this.mListener = listener;
     }
 
@@ -426,14 +430,15 @@ public class ChatRoomActivity extends AppCompatActivity {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                groups = dataSnapshot.getValue(Groups.class);
-                mName = groups.getName();
-                mImage = groups.getImage();
-                mMembers = new ArrayList<>(groups.getMembers().keySet());
-                mAdmins = new ArrayList<>(groups.getAdmin().keySet());
 
-                nameView.setText(mName);
-                Picasso.get().load(mImage).into(imageView);
+                if (dataSnapshot.hasChildren()) {
+                    groups = dataSnapshot.getValue(Groups.class);
+                    groupDetailsListener.onLoadDetails(groups);
+
+                    nameView.setText(mName);
+                    Picasso.get().load(mImage).into(imageView);
+                }
+
             }
 
             @Override
@@ -466,5 +471,11 @@ public class ChatRoomActivity extends AppCompatActivity {
         }
 
         super.onStop();
+    }
+
+    public interface GroupDetailsListener {
+
+        void onLoadDetails( Groups groups);
+
     }
 }

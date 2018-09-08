@@ -193,7 +193,7 @@ public class TakePick {
         return new File(result);
     }
 
-    public Bitmap compressedImage(File thumbnail) {
+    private Bitmap compressedImage(File thumbnail) {
         try {
             return new Compressor(activity)
                     .setMaxWidth(150)
@@ -205,7 +205,7 @@ public class TakePick {
         }
     }
 
-    public byte[] thumbToByteArray(Bitmap thumb_bitmap) {
+    private byte[] thumbToByteArray(Bitmap thumb_bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         return baos.toByteArray();

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.suzei.racoon">
 
-    <!-- TODO remove unbind in all fragment-->
+    <!-- TODO remove unbind in all fragment -->
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -28,7 +28,9 @@
         <activity android:name=".activity.ChatRoomActivity" />
         <activity android:name=".friend.ui.FriendActivity" />
         <activity android:name=".activity.GroupActivity" />
-        <activity android:name=".activity.MembersActivity"></activity>
+        <activity android:name=".activity.MembersActivity" />
+        <activity android:name=".chat.ui.GroupChatActivity" />
+        <activity android:name=".chat.ui.SingleChatActivity"></activity>
     </application>
 
 </manifest>

@@ -28,7 +28,7 @@ public class MembersActivity extends AppCompatActivity {
     private String mId;
     private int type;
 
-    class MembersType {
+    public class MembersType {
         public static final int ADD_MEMBERS = 0;
         public static final int VIEW_MEMBERS = 1;
     }

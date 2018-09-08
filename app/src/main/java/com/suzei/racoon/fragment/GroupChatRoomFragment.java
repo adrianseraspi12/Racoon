@@ -22,27 +22,25 @@ import com.dinuscxj.refresh.RecyclerRefreshLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
 import com.suzei.racoon.activity.ChatRoomActivity;
 import com.suzei.racoon.adapter.MessagesAdapter;
-import com.suzei.racoon.callback.ChatListener;
+import com.suzei.racoon.callback.SendChatListener;
+import com.suzei.racoon.chat.ChatContract;
+import com.suzei.racoon.chat.group.GroupChatPresenter;
 import com.suzei.racoon.model.Groups;
 import com.suzei.racoon.model.Messages;
 import com.suzei.racoon.util.EmptyRecyclerView;
-import com.suzei.racoon.util.FirebaseExceptionUtil;
 import com.suzei.racoon.util.ImageHelper;
 import com.vanniktech.emoji.EmojiEditText;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,7 +53,8 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GroupChatRoomFragment extends Fragment implements ChatListener {
+public class GroupChatRoomFragment extends Fragment implements SendChatListener,
+        ChatContract.ChatView, ChatRoomActivity.GroupDetailsListener {
 
     public static final String EXTRA_ID = "group_chat_id";
     public static final String EXTRA_IMAGE = "group_chat_image";
@@ -63,10 +62,10 @@ public class GroupChatRoomFragment extends Fragment implements ChatListener {
     private static final int PICK_CAMERA = 0;
     private static final int PICK_GALLERY = 1;
 
+    private GroupChatPresenter presenter;
     private DatabaseReference mRootRef;
     private DatabaseReference mMessageRef;
     private StorageReference mMessageStorage;
-    private DatabaseReference mUserChatRef;
 
     private MessagesAdapter mAdapter;
     private ImageHelper imageHelper;
@@ -79,6 +78,9 @@ public class GroupChatRoomFragment extends Fragment implements ChatListener {
     private String mImage;
 
     private ArrayList<String> mMembers;
+
+    private EmojiEditText editText;
+    private ImageButton button;
 
     @BindView(R.id.chat_room_recycler_refresh_layout) RecyclerRefreshLayout refreshLayout;
     @BindView(R.id.chat_room_messages_list) EmptyRecyclerView listMessagesView;
@@ -118,10 +120,10 @@ public class GroupChatRoomFragment extends Fragment implements ChatListener {
 
     private void initObjects(View view) {
         unbinder = ButterKnife.bind(this, view);
+        presenter = new GroupChatPresenter(this);
         imageHelper = new ImageHelper(getContext());
         currentUserId = FirebaseAuth.getInstance().getUid();
         mRootRef = FirebaseDatabase.getInstance().getReference();
-        mUserChatRef = mRootRef.child("user_chats");
         mMessageRef = mRootRef.child("messages").child(currentUserId).child(mId);
         mMessageStorage = FirebaseStorage.getInstance().getReference().child("messages")
                 .child(mId).child("pictures").child(String.valueOf(System.currentTimeMillis()));
@@ -188,28 +190,28 @@ public class GroupChatRoomFragment extends Fragment implements ChatListener {
     }
 
     private void saveImageToStorageAndDB(byte[] imageByte) {
-        String messageId = mRootRef.push().getKey();
-        UploadTask uploadTask = mMessageStorage.putBytes(imageByte);
-        imageHelper.uploadThumbnailToStorage(mMessageStorage, uploadTask, image_url -> {
-            HashMap<String, Object> messageDetailsMap = getMessageDetailsMap(image_url,
-                    "image");
-
-            HashMap<String, Object> saveMessageMap = new HashMap<>();
-            for (int i = 0; i < mMembers.size(); i++) {
-                String member = mMembers.get(i);
-                saveMessageMap.put("messages/" + member + "/" + mId + "/" + messageId, messageDetailsMap);
-            }
-
-            mRootRef.updateChildren(saveMessageMap, (databaseError, databaseReference) -> {
-                if (databaseError == null) {
-                    Toast.makeText(getContext(), "Send", Toast.LENGTH_SHORT).show();
-                    updateChatDB("Image");
-                } else {
-                    FirebaseExceptionUtil.databaseError(getContext(),
-                            databaseError.toException());
-                }
-            });
-        });
+//        String messageId = mRootRef.push().getKey();
+//        UploadTask uploadTask = mMessageStorage.putBytes(imageByte);
+//        imageHelper.uploadThumbnailToStorage(mMessageStorage, uploadTask, image_url -> {
+//            HashMap<String, Object> messageDetailsMap = getMessageDetailsMap(image_url,
+//                    "image");
+//
+//            HashMap<String, Object> saveMessageMap = new HashMap<>();
+//            for (int i = 0; i < mMembers.size(); i++) {
+//                String member = mMembers.get(i);
+//                saveMessageMap.put("messages/" + member + "/" + mId + "/" + messageId, messageDetailsMap);
+//            }
+//
+//            mRootRef.updateChildren(saveMessageMap, (databaseError, databaseReference) -> {
+//                if (databaseError == null) {
+//                    Toast.makeText(getContext(), "Send", Toast.LENGTH_SHORT).show();
+//                    updateChatDB("Image");
+//                } else {
+//                    FirebaseExceptionUtil.databaseError(getContext(),
+//                            databaseError.toException());
+//                }
+//            });
+//        });
     }
 
     @Override
@@ -260,79 +262,37 @@ public class GroupChatRoomFragment extends Fragment implements ChatListener {
     }
 
     @Override
-    public void onSendClick(EmojiEditText editText, ImageButton button, String message) {
-        String messageId = mRootRef.push().getKey();
-        HashMap<String, Object> messageDetailsMap = getMessageDetailsMap(message, "text");
-
-        HashMap<String, Object> saveMessageMap = new HashMap<>();
-        for (int i = 0; i < mMembers.size(); i++) {
-            String member = mMembers.get(i);
-            saveMessageMap.put("messages" + "/" + member + "/" + mId + "/" + messageId,
-                    messageDetailsMap);
-        }
-
-        mRootRef.updateChildren(saveMessageMap, (databaseError, databaseReference) -> {
-
-            if (databaseError == null) {
-                updateChatDB(message);
-                editText.setText("");
-                Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
-            } else {
-                FirebaseExceptionUtil.databaseError(getContext(), databaseError.toException());
-            }
-            button.setEnabled(true);
-
-        });
-    }
-
-    private void updateChatDB(String message) {
-        HashMap<String, Object> chatDetailMap = new HashMap<>();
-        chatDetailMap.put("timestamp", ServerValue.TIMESTAMP);
-        chatDetailMap.put("last_message", message);
-        chatDetailMap.put("type", "group");
-
-        HashMap<String, Object> chatMap = new HashMap<>();
-        for (int i = 0; i < mMembers.size(); i++) {
-            String member = mMembers.get(i);
-
-            if (member.equals(currentUserId)) {
-                chatDetailMap.put("seen", true);
-            } else {
-                chatDetailMap.put("seen", false);
-            }
-
-            chatMap.put(member + "/" + mId, chatDetailMap);
-        }
-
-        mUserChatRef.updateChildren(chatMap);
-    }
-
-    private HashMap<String, Object> getMessageDetailsMap(String message, String type) {
-        HashMap<String, Object> seenMap = new HashMap<>();
-        for (int i = 0; i < mMembers.size(); i++) {
-            String member = mMembers.get(i);
-
-            if (member.equals(currentUserId)) {
-                seenMap.put(member, true);
-            } else {
-                seenMap.put(member, false);
-            }
-
-        }
-
-        HashMap<String, Object> messageDetailsMap = new HashMap<>();
-        messageDetailsMap.put("message", message);
-        messageDetailsMap.put("type", type);
-        messageDetailsMap.put("from", currentUserId);
-        messageDetailsMap.put("timestamp", ServerValue.TIMESTAMP);
-        messageDetailsMap.put("seen", seenMap);
-
-        return messageDetailsMap;
+    public void onSendClick(EmojiEditText _editText, ImageButton _button, String message) {
+        _button.setEnabled(false);
+        button = _button;
+        editText = _editText;
+        Timber.i("Group Id=%s", mId);
+        Timber.i("Current User Id=%s", currentUserId);
+        Timber.i("Members=%s", mMembers);
+        Timber.i("Message + %s", message);
+        presenter.sendGroupMessage(mId, currentUserId, "text", mMembers, message);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void sendSuccess() {
+        button.setEnabled(true);
+        editText.setText("");
+    }
+
+    @Override
+    public void sendFailed() {
+
+    }
+
+    @Override
+    public void onLoadDetails(Groups groups) {
+        mMembers = new ArrayList<>(groups.getMembers().keySet());
+        mImage = groups.getImage();
     }
 }
