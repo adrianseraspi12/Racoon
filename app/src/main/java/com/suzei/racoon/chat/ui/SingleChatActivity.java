@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,22 +27,19 @@ import com.google.firebase.storage.UploadTask;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
-import com.suzei.racoon.activity.GroupActivity;
-import com.suzei.racoon.activity.MembersActivity;
 import com.suzei.racoon.adapter.MessagesAdapter;
 import com.suzei.racoon.message.MessagePresenter;
 import com.suzei.racoon.chat.ChatContract;
 import com.suzei.racoon.message.MessageContract;
-import com.suzei.racoon.chat.group.GroupChatPresenter;
-import com.suzei.racoon.group.GroupDetailsContract;
-import com.suzei.racoon.group.GroupDetailsPresenter;
-import com.suzei.racoon.model.Groups;
+import com.suzei.racoon.chat.single.SingleChatPresenter;
+import com.suzei.racoon.friend.ui.FriendActivity;
+import com.suzei.racoon.model.Users;
+import com.suzei.racoon.profile.data.ProfileContract;
+import com.suzei.racoon.profile.data.ProfilePresenter;
 import com.suzei.racoon.util.EmptyRecyclerView;
 import com.suzei.racoon.util.TakePick;
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
-
-import java.util.ArrayList;
 
 import butterknife.BindDrawable;
 import butterknife.BindView;
@@ -49,33 +47,31 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
 
-public class GroupChatActivity extends AppCompatActivity implements
-        GroupDetailsContract.GroupDetailsView,
+public class SingleChatActivity extends AppCompatActivity implements
+        ProfileContract.ProfileView,
         ChatContract.ChatView,
         MessageContract.MessageView {
 
-    //TODO change behavior of add group
-
-    public static final String EXTRA_GROUP_ID = "group_id";
-
-    private GroupDetailsPresenter groupDetailsPresenter;
-    private GroupChatPresenter groupChatPresenter;
-    private MessagePresenter messagePresenter;
+    public static final String EXTRA_GROUP_ID = "_id";
 
     private EmojiPopup emojiPopup;
     private TakePick takePick;
+
+    private ProfilePresenter profilePresenter;
+    private SingleChatPresenter singleChatPresenter;
+    private MessagePresenter messagePresenter;
 
     private DatabaseReference mUserChatRef;
     private DatabaseReference mMessageRef;
     private StorageReference mMessageStorage;
 
-    private Groups groups;
-    private String groupId;
+    private Users users;
+    private String chatId;
     private String currentUserId;
-    private ArrayList<String> members;
-    private ArrayList<String> admins;
 
     @BindDrawable(R.drawable.back) Drawable drawableBack;
+    @BindDrawable(R.drawable.online) Drawable drawableOnline;
+    @BindDrawable(R.drawable.offline) Drawable drawableOffline;
     @BindView(R.id.group_chat_room_root_view) View rootView;
     @BindView(R.id.chat_room_toolbar) Toolbar toolbar;
     @BindView(R.id.chat_room_toolbar_image) RoundedImageView toolbarImageView;
@@ -88,6 +84,7 @@ public class GroupChatActivity extends AppCompatActivity implements
     @BindView(R.id.chat_room_empty) LinearLayout emptyLayout;
     @BindView(R.id.chat_room_image) RoundedImageView imageView;
     @BindView(R.id.chat_room_message_input) EmojiEditText mesageView;
+    @BindView(R.id.chat_room_status) ImageView statusView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,22 +100,22 @@ public class GroupChatActivity extends AppCompatActivity implements
     }
 
     private void initBundle() {
-        groupId = getIntent().getStringExtra(EXTRA_GROUP_ID);
+        chatId = getIntent().getStringExtra(EXTRA_GROUP_ID);
     }
 
     private void initObjects() {
         ButterKnife.bind(this);
-        groupDetailsPresenter = new GroupDetailsPresenter(this);
+        profilePresenter = new ProfilePresenter(this);
+        singleChatPresenter = new SingleChatPresenter(this);
         messagePresenter = new MessagePresenter(this);
 
         currentUserId = FirebaseAuth.getInstance().getUid();
-        groupChatPresenter = new GroupChatPresenter(this);
         mUserChatRef = FirebaseDatabase.getInstance().getReference()
-                .child("user_chats").child(currentUserId).child(groupId);
+                .child("user_chats").child(currentUserId).child(chatId);
         mMessageRef = FirebaseDatabase.getInstance().getReference()
-                .child("messages").child(currentUserId).child(groupId);
+                .child("messages").child(currentUserId).child(chatId);
         mMessageStorage = FirebaseStorage.getInstance().getReference().child("messages")
-                .child(groupId).child("pictures").child(String.valueOf(System.currentTimeMillis()));
+                .child(chatId).child("pictures").child(String.valueOf(System.currentTimeMillis()));
     }
 
     private void setUpToolbar() {
@@ -143,25 +140,24 @@ public class GroupChatActivity extends AppCompatActivity implements
 
             @Override
             public void onEmojiPick(String image) {
-                groupChatPresenter.sendGroupMessage(
-                        groupId,
+                singleChatPresenter.sendMessage(
+                        chatId,
                         currentUserId,
                         "image",
-                        members,
-                        image);
+                        image
+                );
             }
 
             @Override
             public void onCameraGalleryPick(byte[] imageByte) {
                 UploadTask uploadTask = mMessageStorage.putBytes(imageByte);
                 takePick.uploadThumbnailToStorage(mMessageStorage, uploadTask, image_url ->
-                        groupChatPresenter.sendGroupMessage(
-                                groupId,
-                                currentUserId,
-                                "image",
-                                members,
-                                image_url));
-
+                        singleChatPresenter.sendMessage(
+                        chatId,
+                        currentUserId,
+                        "image",
+                        image_url
+                ));
             }
 
         });
@@ -175,11 +171,29 @@ public class GroupChatActivity extends AppCompatActivity implements
     }
 
     private void setUpListeners() {
-        messagePresenter.start(currentUserId, groupId);
+        messagePresenter.start(currentUserId, chatId);
         refreshLayout.setOnRefreshListener(() -> {
             messagePresenter.loadMore();
             refreshLayout.setRefreshing(false);
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        profilePresenter.showUserDetails(chatId);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        profilePresenter.destroy(chatId);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        messagePresenter.destroy();
     }
 
     @Override
@@ -201,39 +215,17 @@ public class GroupChatActivity extends AppCompatActivity implements
     @OnClick(R.id.chat_room_send)
     public void onSendClick() {
         String message = mesageView.getText().toString().trim();
-        ArrayList<String> members =  new ArrayList<>(groups.getMembers().keySet());
-
         if (TextUtils.isEmpty(message)) {
             return;
         }
-
         sendView.setEnabled(false);
 
-        groupChatPresenter.sendGroupMessage(
-                groupId,
+        singleChatPresenter.sendMessage(
+                chatId,
                 currentUserId,
                 "text",
-                members,
-                message);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        groupDetailsPresenter.showGroupDetails(groupId);
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        groupDetailsPresenter.destroy(groupId);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        messagePresenter.destroy();
+                message
+        );
     }
 
     @Override
@@ -247,18 +239,25 @@ public class GroupChatActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLoadSuccess(Groups groups) {
-        this.groups = groups;
-        members = new ArrayList<>(groups.getMembers().keySet());
-        admins = new ArrayList<>(groups.getAdmin().keySet());
-        nameView.setText(groups.getName());
-        Picasso.get().load(groups.getImage()).into(imageView);
-        Picasso.get().load(groups.getImage()).into(toolbarImageView);
+    public void onLoadSuccess(Users users) {
+        this.users = users;
+        users.setUid(chatId);
+
+        nameView.setText(users.getName());
+        Picasso.get().load(users.getImage()).into(imageView);
+        Picasso.get().load(users.getImage()).into(toolbarImageView);
+
+        if (users.isOnline()) {
+            statusView.setImageDrawable(drawableOnline);
+        } else {
+            statusView.setImageDrawable(drawableOffline);
+        }
+
     }
 
     @Override
-    public void onLoadFailed() {
-
+    public void onLoadingFailure() {
+        Timber.i("Adapter is null");
     }
 
     @Override
@@ -274,13 +273,11 @@ public class GroupChatActivity extends AppCompatActivity implements
 
     @Override
     public void setAdapter(MessagesAdapter adapter) {
-
         if (adapter != null) {
             listMessagesView.setAdapter(adapter);
         } else {
             Timber.i("Adapter is null");
         }
-
     }
 
     @Override
@@ -290,13 +287,15 @@ public class GroupChatActivity extends AppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.group_chat_options, menu);
+        getMenuInflater().inflate(R.menu.single_chat_options, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+        int id = item.getItemId();
+
+        switch (id) {
 
             case android.R.id.home:
                 finish();
@@ -306,22 +305,14 @@ public class GroupChatActivity extends AppCompatActivity implements
                 deleteConversation();
                 return true;
 
-            case R.id.menu_view_members:
-                viewMembers();
-                return true;
-
-            case R.id.menu_add_members:
-                addMembers();
-                return true;
-
-            case R.id.menu_manage_group:
-                // Only admin can access this
-                manageGroup();
+            case R.id.menu_visit_profile:
+                visitProfile();
                 return true;
 
             default:
-                throw new IllegalArgumentException("Invalid menu id = " + item.getItemId());
+                throw new IllegalArgumentException("Invalid menu Id= " + id);
         }
+
     }
 
     private void deleteConversation() {
@@ -331,36 +322,10 @@ public class GroupChatActivity extends AppCompatActivity implements
         Toast.makeText(this, "Conversation Deleted" , Toast.LENGTH_SHORT).show();
     }
 
-    private void viewMembers() {
-        Bundle args = new Bundle();
-        args.putString(MembersActivity.EXTRA_ID, groupId);
-        args.putInt(MembersActivity.EXTRA_MEMBERS_TYPE, MembersActivity.MembersType.VIEW_MEMBERS);
-
-        Intent membersIntent = new Intent(this, MembersActivity.class);
-        membersIntent.putExtras(args);
-        startActivity(membersIntent);
+    private void visitProfile() {
+        Intent profileIntent = new Intent(this, FriendActivity.class);
+        profileIntent.putExtra(FriendActivity.EXTRA_PROFILE_DETAILS, users);
+        startActivity(profileIntent);
     }
 
-    private void addMembers() {
-        Bundle args = new Bundle();
-        args.putString(MembersActivity.EXTRA_ID, groupId);
-        args.putInt(MembersActivity.EXTRA_MEMBERS_TYPE, MembersActivity.MembersType.ADD_MEMBERS);
-        args.putStringArrayList(MembersActivity.EXTRA_MEMBERS, members);
-
-        Intent membersIntent = new Intent(this, MembersActivity.class);
-        membersIntent.putExtras(args);
-        startActivity(membersIntent);
-    }
-
-    private void manageGroup() {
-        if (!admins.contains(currentUserId)) {
-            Toast.makeText(this, "Only admin users can manage the group",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        Intent groupIntent = new Intent(this, GroupActivity.class);
-        groupIntent.putExtra(GroupActivity.EXTRA_ID, groupId);
-        startActivity(groupIntent);
-    }
 }
