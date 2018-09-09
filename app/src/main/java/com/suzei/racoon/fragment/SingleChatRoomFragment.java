@@ -30,7 +30,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
 import com.suzei.racoon.activity.ChatRoomActivity;
-import com.suzei.racoon.adapter.MessagesAdapter;
+import com.suzei.racoon.ui.messagelist.adapter.MessagesAdapter;
 import com.suzei.racoon.callback.SendChatListener;
 import com.suzei.racoon.model.Messages;
 import com.suzei.racoon.util.EmptyRecyclerView;

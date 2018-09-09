@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".fragment.WorldFragment">
+    tools:context=".ui.worldlist.WorldFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

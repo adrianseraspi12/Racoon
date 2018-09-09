@@ -16,8 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".auth.ui.StartActivity" />
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".auth.StartActivity" />
+        <activity android:name=".ui.base.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,11 +26,11 @@
         </activity>
         <activity android:name=".activity.AddActivity" />
         <activity android:name=".activity.ChatRoomActivity" />
-        <activity android:name=".friend.ui.FriendActivity" />
-        <activity android:name=".activity.GroupActivity" />
+        <activity android:name=".ui.friend.FriendActivity" />
+        <activity android:name=".ui.group.GroupActivity" />
         <activity android:name=".activity.MembersActivity" />
-        <activity android:name=".chat.ui.GroupChatActivity" />
-        <activity android:name=".chat.ui.SingleChatActivity"></activity>
+        <activity android:name=".ui.chat.group.GroupChatActivity" />
+        <activity android:name=".ui.chat.single.SingleChatActivity"></activity>
     </application>
 
 </manifest>
