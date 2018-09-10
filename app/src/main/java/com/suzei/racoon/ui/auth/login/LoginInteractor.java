@@ -1,4 +1,4 @@
-package com.suzei.racoon.auth.login;
+package com.suzei.racoon.ui.auth.login;
 
 import android.app.Activity;
 import android.os.Handler;
@@ -8,7 +8,7 @@ import android.util.Patterns;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.suzei.racoon.auth.AuthContract;
+import com.suzei.racoon.ui.auth.AuthContract;
 
 public class LoginInteractor {
 

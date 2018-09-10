@@ -1,4 +1,4 @@
-package com.suzei.racoon.auth.register;
+package com.suzei.racoon.ui.auth.register;
 
 import android.content.Context;
 import android.os.Handler;
@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.suzei.racoon.R;
-import com.suzei.racoon.auth.AuthContract;
+import com.suzei.racoon.ui.auth.AuthContract;
 
 import java.util.HashMap;
 

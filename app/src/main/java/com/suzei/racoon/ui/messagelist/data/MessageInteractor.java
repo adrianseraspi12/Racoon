@@ -39,6 +39,8 @@ public class MessageInteractor {
 
         if (adapter != null) {
             adapter.cleanup();
+        } else {
+            messageListener.onLoadFailed(null);
         }
 
     }

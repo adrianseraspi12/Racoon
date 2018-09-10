@@ -49,6 +49,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         return userList.size();
     }
 
+    public void removeAt(int position) {
+        if (userList.size() != 0) {
+            userList.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, userList.size());
+        }
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindString(R.string.person_is_private) String personIsPrivate;
@@ -75,17 +83,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             }
 
             itemView.setOnClickListener(v -> {
-                removeAt(getAdapterPosition());
+//                removeAt(getAdapterPosition());
                 mListener.onItemClick(users, itemView);
             });
         }
 
-        private void removeAt(int position) {
-            if (userList.size() != 0) {
-                userList.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, userList.size());
-            }
-        }
     }
 }

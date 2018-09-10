@@ -1,9 +1,7 @@
-package com.suzei.racoon.auth.login;
+package com.suzei.racoon.ui.auth.login;
 
 import android.app.Activity;
-import android.content.Context;
-
-import com.suzei.racoon.auth.AuthContract;
+import com.suzei.racoon.ui.auth.AuthContract;
 
 public class LoginPresenter implements AuthContract.onLoginListener {
 

@@ -1,5 +1,7 @@
 package com.suzei.racoon.ui.base;
 
+import android.support.v7.widget.RecyclerView;
+
 import com.google.firebase.database.DatabaseError;
 
 public interface Contract {
@@ -20,7 +22,7 @@ public interface Contract {
 
     }
 
-    interface AdapterView<V> extends ProgressView {
+    interface AdapterView<V extends RecyclerView.Adapter> extends ProgressView {
 
         void setAdapter(V adapter);
 

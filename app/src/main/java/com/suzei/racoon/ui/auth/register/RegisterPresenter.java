@@ -1,15 +1,15 @@
-package com.suzei.racoon.auth.register;
+package com.suzei.racoon.ui.auth.register;
 
 import android.content.Context;
 
-import com.suzei.racoon.auth.AuthContract;
+import com.suzei.racoon.ui.auth.AuthContract;
 
 public class RegisterPresenter implements AuthContract.onRegisterListener {
 
     private AuthContract.RegisterView mRegisterView;
     private RegisterInteractor mRegisterInteractor;
 
-    public RegisterPresenter(Context context, AuthContract.RegisterView mRegisterView) {
+    RegisterPresenter(Context context, AuthContract.RegisterView mRegisterView) {
         this.mRegisterView = mRegisterView;
         mRegisterInteractor = new RegisterInteractor(context, this);
     }

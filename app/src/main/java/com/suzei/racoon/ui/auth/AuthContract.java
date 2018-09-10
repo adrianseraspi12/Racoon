@@ -1,12 +1,10 @@
-package com.suzei.racoon.auth;
+package com.suzei.racoon.ui.auth;
+
+import com.suzei.racoon.ui.base.Contract;
 
 public interface AuthContract {
 
-    interface LoginView {
-
-        void showProgress();
-
-        void hideProgress();
+    interface LoginView extends Contract.ProgressView {
 
         void setUsernameError(String message);
 
@@ -18,21 +16,9 @@ public interface AuthContract {
 
     }
 
-    interface RegisterView {
-
-        void showProgress();
-
-        void hideProgress();
-
-        void setUsernameError(String message);
-
-        void setPasswordError(String message);
+    interface RegisterView extends LoginView {
 
         void setDisplayNameError(String message);
-
-        void onLoginSuccess();
-
-        void onLoginFailure(Exception e);
 
     }
 

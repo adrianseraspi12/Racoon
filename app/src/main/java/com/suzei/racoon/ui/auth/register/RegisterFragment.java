@@ -14,11 +14,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.suzei.racoon.R;
-import com.suzei.racoon.auth.register.RegisterPresenter;
+import com.suzei.racoon.ui.auth.AuthContract;
 import com.suzei.racoon.ui.auth.StartActivity;
 import com.suzei.racoon.ui.base.Callback;
 import com.suzei.racoon.ui.base.MainActivity;
-import com.suzei.racoon.auth.AuthContract;
 import com.suzei.racoon.util.DelayedProgressDialog;
 import com.suzei.racoon.util.FirebaseExceptionUtil;
 
