@@ -27,7 +27,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.suzei.racoon.R;
 import com.suzei.racoon.activity.AddActivity;
-import com.suzei.racoon.callback.ButtonListener;
 import com.suzei.racoon.ui.chatlist.ChatFragment;
 import com.suzei.racoon.ui.friendlist.FriendsFragment;
 import com.suzei.racoon.ui.notificationlist.NotificationFragment;
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
 
     private AHNotification.Builder notification;
 
-    private ButtonListener mListener;
+    private Callback.ButtonView mListener;
 
     @BindView(R.id.main_toolbar_layout) RelativeLayout toolbarLayout;
     @BindView(R.id.main_toolbar_shadow) View shadowView;
@@ -124,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
         };
     }
 
-    public void setOnButtonClickListener(ButtonListener listener) {
+    public void setOnButtonClickListener(Callback.ButtonView listener) {
         this.mListener = listener;
     }
 

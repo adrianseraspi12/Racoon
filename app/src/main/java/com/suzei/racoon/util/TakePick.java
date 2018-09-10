@@ -24,6 +24,7 @@ import com.google.firebase.storage.UploadTask;
 import com.suzei.racoon.R;
 import com.suzei.racoon.adapter.DialogEmojiAdapter;
 import com.suzei.racoon.model.Emoji;
+import com.suzei.racoon.ui.base.Callback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -123,8 +124,8 @@ public class TakePick {
                     .setQuery(mEmojiRef.orderByChild("name"), Emoji.class).setLifecycleOwner(owner)
                     .build();
 
-            DialogEmojiAdapter emojiAdapter = new DialogEmojiAdapter(options, image -> {
-                imageListener.onEmojiPick(image);
+            DialogEmojiAdapter emojiAdapter = new DialogEmojiAdapter(options, (data, view) -> {
+                imageListener.onEmojiPick(data);
                 emojiDialog.dismiss();
             });
 

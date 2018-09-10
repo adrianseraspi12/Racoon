@@ -1,4 +1,4 @@
-package com.suzei.racoon.auth.login;
+package com.suzei.racoon.ui.auth.login;
 
 import android.app.Activity;
 
@@ -16,9 +16,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.suzei.racoon.R;
+import com.suzei.racoon.auth.login.LoginPresenter;
+import com.suzei.racoon.ui.auth.StartActivity;
+import com.suzei.racoon.ui.base.Callback;
 import com.suzei.racoon.ui.base.MainActivity;
-import com.suzei.racoon.auth.StartActivity;
-import com.suzei.racoon.callback.ButtonListener;
 import com.suzei.racoon.auth.AuthContract;
 import com.suzei.racoon.util.DelayedProgressDialog;
 import com.suzei.racoon.util.FirebaseExceptionUtil;
@@ -29,7 +30,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class LoginFragment extends Fragment implements ButtonListener, AuthContract.LoginView {
+public class LoginFragment extends Fragment implements
+        Callback.ButtonView,
+        AuthContract.LoginView {
 
     private DelayedProgressDialog progressDialog;
 

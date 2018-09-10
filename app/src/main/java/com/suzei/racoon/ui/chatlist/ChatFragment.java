@@ -13,18 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.suzei.racoon.R;
 import com.suzei.racoon.activity.AddActivity;
 import com.suzei.racoon.activity.AddActivity.Add;
+import com.suzei.racoon.ui.base.Callback;
 import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.ui.base.MainActivity;
 import com.suzei.racoon.ui.chatlist.adapter.ChatAdapter;
-import com.suzei.racoon.callback.ButtonListener;
-import com.suzei.racoon.model.Chats;
 import com.suzei.racoon.ui.chatlist.data.ChatPresenter;
 
 import butterknife.BindView;
@@ -38,7 +33,7 @@ import static com.suzei.racoon.activity.AddActivity.EXTRA_FRAGMENT_TYPE;
  * A simple {@link Fragment} subclass.
  */
 public class ChatFragment extends Fragment implements
-        ButtonListener,
+        Callback.ButtonView,
         Contract.AdapterView<ChatAdapter> {
 
     private Unbinder unbinder;

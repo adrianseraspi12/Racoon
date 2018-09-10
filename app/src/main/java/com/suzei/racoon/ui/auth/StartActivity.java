@@ -1,4 +1,4 @@
-package com.suzei.racoon.auth;
+package com.suzei.racoon.ui.auth;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,9 +12,9 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.suzei.racoon.R;
-import com.suzei.racoon.auth.login.LoginFragment;
-import com.suzei.racoon.auth.register.RegisterFragment;
-import com.suzei.racoon.callback.ButtonListener;
+import com.suzei.racoon.ui.auth.login.LoginFragment;
+import com.suzei.racoon.ui.auth.register.RegisterFragment;
+import com.suzei.racoon.ui.base.Callback;
 
 import butterknife.BindAnim;
 import butterknife.BindString;
@@ -27,7 +27,7 @@ public class StartActivity extends AppCompatActivity {
 
     //TODO: Add forgot password
 
-    private ButtonListener mCallback;
+    private Callback.ButtonView mCallback;
 
     private Unbinder unbinder;
 
@@ -112,7 +112,7 @@ public class StartActivity extends AppCompatActivity {
         fadeOutAnim.start();
     }
 
-    public void setOnChatClick(ButtonListener listener) {
+    public void setOnChatClick(Callback.ButtonView listener) {
         this.mCallback = listener;
     }
 

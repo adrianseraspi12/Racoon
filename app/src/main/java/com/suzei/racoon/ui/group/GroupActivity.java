@@ -35,6 +35,7 @@ import com.suzei.racoon.R;
 import com.suzei.racoon.activity.MembersActivity;
 import com.suzei.racoon.adapter.DialogEmojiAdapter;
 import com.suzei.racoon.model.Emoji;
+import com.suzei.racoon.ui.base.Callback;
 import com.suzei.racoon.util.ImageHelper;
 
 import java.io.File;
@@ -273,8 +274,8 @@ public class GroupActivity extends AppCompatActivity {
                     .setQuery(mEmojiRef.orderByChild("name"), Emoji.class).setLifecycleOwner(this)
                     .build();
 
-            DialogEmojiAdapter emojiAdapter = new DialogEmojiAdapter(options, image -> {
-                mGroupsRef.child("image").setValue(image);
+            DialogEmojiAdapter emojiAdapter = new DialogEmojiAdapter(options, (data, view) -> {
+                mGroupsRef.child("image").setValue(data);
                 emojiDialog.dismiss();
             });
 

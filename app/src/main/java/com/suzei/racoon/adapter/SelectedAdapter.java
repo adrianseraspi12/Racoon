@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
-import com.suzei.racoon.callback.UsersListener;
 import com.suzei.racoon.model.Users;
+import com.suzei.racoon.ui.base.Callback;
 
 import java.util.List;
 
@@ -19,10 +19,10 @@ import butterknife.ButterKnife;
 
 public class SelectedAdapter extends RecyclerView.Adapter<SelectedAdapter.ViewHolder> {
 
-    private UsersListener mListener;
+    private Callback.RecyclerviewListener<Users> mListener;
     private List<Users> selectedList;
 
-    public SelectedAdapter(List<Users> selectedList, UsersListener listener) {
+    public SelectedAdapter(List<Users> selectedList, Callback.RecyclerviewListener<Users> listener) {
         this.selectedList = selectedList;
         this.mListener = listener;
     }
@@ -58,7 +58,7 @@ public class SelectedAdapter extends RecyclerView.Adapter<SelectedAdapter.ViewHo
         void bind(Users users) {
             String image = users.getImage();
             Picasso.get().load(image).into(imageView);
-            itemView.setOnClickListener(v -> mListener.onItemClickListener(users, itemView));
+            itemView.setOnClickListener(v -> mListener.onItemClick(users, itemView));
         }
     }
 }

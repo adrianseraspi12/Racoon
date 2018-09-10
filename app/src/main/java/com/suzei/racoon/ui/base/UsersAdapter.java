@@ -15,7 +15,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
-import com.suzei.racoon.callback.UsersListener;
 import com.suzei.racoon.model.Users;
 import com.vanniktech.emoji.EmojiTextView;
 
@@ -27,11 +26,12 @@ import butterknife.ButterKnife;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
 
-    private UsersListener mListener;
+    private Callback.RecyclerviewListener<Users> mListener;
     private DatabaseReference mUserRef;
     private ArrayList<String> userKeys;
 
-    public UsersAdapter(ArrayList<String> friendKeys, UsersListener listener) {
+    public UsersAdapter(ArrayList<String> friendKeys,
+                        Callback.RecyclerviewListener<Users> listener) {
         this.userKeys = friendKeys;
         this.mListener = listener;
         mUserRef = FirebaseDatabase.getInstance().getReference().child("users");
@@ -85,7 +85,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                     }
 
                     if (mListener != null) {
-                        itemView.setOnClickListener(v -> mListener.onItemClickListener(users,
+                        itemView.setOnClickListener(v -> mListener.onItemClick(users,
                                 itemView));
                     }
                 }

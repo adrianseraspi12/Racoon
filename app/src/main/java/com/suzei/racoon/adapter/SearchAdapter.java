@@ -10,9 +10,8 @@ import android.widget.TextView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
-import com.suzei.racoon.callback.UsersListener;
 import com.suzei.racoon.model.Users;
-import com.vanniktech.emoji.EmojiEditText;
+import com.suzei.racoon.ui.base.Callback;
 import com.vanniktech.emoji.EmojiTextView;
 
 import java.util.List;
@@ -23,10 +22,10 @@ import butterknife.ButterKnife;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>{
 
-    private UsersListener mListener;
+    private Callback.RecyclerviewListener<Users> mListener;
     private List<Users> userList;
 
-    public SearchAdapter(List<Users> userList, UsersListener listener) {
+    public SearchAdapter(List<Users> userList, Callback.RecyclerviewListener<Users> listener) {
         this.userList = userList;
         this.mListener = listener;
     }
@@ -77,7 +76,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
             itemView.setOnClickListener(v -> {
                 removeAt(getAdapterPosition());
-                mListener.onItemClickListener(users, itemView);
+                mListener.onItemClick(users, itemView);
             });
         }
 

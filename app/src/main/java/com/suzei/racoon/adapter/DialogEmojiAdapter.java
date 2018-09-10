@@ -13,15 +13,18 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
 import com.suzei.racoon.model.Emoji;
+import com.suzei.racoon.model.Users;
+import com.suzei.racoon.ui.base.Callback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DialogEmojiAdapter extends FirebaseRecyclerAdapter<Emoji, DialogEmojiAdapter.ViewHolder> {
 
-    private EmojiAdapterListener mListener;
+    private Callback.RecyclerviewListener<String> mListener;
 
-    public DialogEmojiAdapter(@NonNull FirebaseRecyclerOptions<Emoji> options, EmojiAdapterListener listener) {
+    public DialogEmojiAdapter(@NonNull FirebaseRecyclerOptions<Emoji> options,
+                              Callback.RecyclerviewListener<String> listener) {
         super(options);
         this.mListener = listener;
     }
@@ -59,7 +62,7 @@ public class DialogEmojiAdapter extends FirebaseRecyclerAdapter<Emoji, DialogEmo
             nameView.setText(name);
             Picasso.get().load(image).noFade().fit().into(imageView);
 
-            itemView.setOnClickListener(v -> mListener.onPickEmoji(image));
+            itemView.setOnClickListener(v -> mListener.onItemClick(image, itemView));
         }
     }
 

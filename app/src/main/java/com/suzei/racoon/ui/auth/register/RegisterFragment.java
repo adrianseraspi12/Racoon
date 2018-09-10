@@ -1,4 +1,4 @@
-package com.suzei.racoon.auth.register;
+package com.suzei.racoon.ui.auth.register;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,10 +14,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.suzei.racoon.R;
+import com.suzei.racoon.auth.register.RegisterPresenter;
+import com.suzei.racoon.ui.auth.StartActivity;
+import com.suzei.racoon.ui.base.Callback;
 import com.suzei.racoon.ui.base.MainActivity;
 import com.suzei.racoon.auth.AuthContract;
-import com.suzei.racoon.auth.StartActivity;
-import com.suzei.racoon.callback.ButtonListener;
 import com.suzei.racoon.util.DelayedProgressDialog;
 import com.suzei.racoon.util.FirebaseExceptionUtil;
 
@@ -27,7 +28,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class RegisterFragment extends Fragment implements ButtonListener, AuthContract.RegisterView{
+public class RegisterFragment extends Fragment implements
+        Callback.ButtonView,
+        AuthContract.RegisterView{
 
     private DelayedProgressDialog progressDialog;
 

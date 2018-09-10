@@ -16,10 +16,10 @@ import com.suzei.racoon.R;
 
 import com.suzei.racoon.activity.AddActivity;
 import com.suzei.racoon.activity.AddActivity.Add;
+import com.suzei.racoon.ui.base.Callback;
 import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.ui.base.MainActivity;
 import com.suzei.racoon.ui.worldlist.adapter.WorldAdapter;
-import com.suzei.racoon.callback.ButtonListener;
 import com.suzei.racoon.ui.worldlist.data.WorldPresenter;
 
 import butterknife.BindView;
@@ -34,7 +34,7 @@ import static com.suzei.racoon.activity.AddActivity.EXTRA_FRAGMENT_TYPE;
  * A simple {@link Fragment} subclass.
  */
 public class WorldFragment extends Fragment implements
-        ButtonListener,
+        Callback.ButtonView,
         Contract.AdapterView<WorldAdapter>{
 
     private Unbinder unbinder;
