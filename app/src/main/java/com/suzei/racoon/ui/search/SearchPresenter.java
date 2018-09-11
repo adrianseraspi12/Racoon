@@ -1,6 +1,5 @@
 package com.suzei.racoon.ui.search;
 
-import com.suzei.racoon.adapter.SearchAdapter;
 import com.suzei.racoon.model.Users;
 
 import java.util.ArrayList;
@@ -37,6 +36,11 @@ public class SearchPresenter implements SearchContract.SearchListener {
     @Override
     public void onSearchUserItemClick(Users users) {
         searchView.setSearchUserItemClick(users);
+    }
+
+    @Override
+    public void onSearchSuccess() {
+        searchView.searchSuccess();
     }
 
     @Override

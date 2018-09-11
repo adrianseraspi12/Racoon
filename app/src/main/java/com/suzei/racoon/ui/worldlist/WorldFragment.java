@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 
 import com.suzei.racoon.R;
 
-import com.suzei.racoon.activity.AddActivity;
-import com.suzei.racoon.activity.AddActivity.Add;
+import com.suzei.racoon.ui.add.AddActivity;
+import com.suzei.racoon.ui.add.AddActivity.Add;
 import com.suzei.racoon.ui.base.Callback;
 import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.ui.base.MainActivity;
@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import timber.log.Timber;
 
-import static com.suzei.racoon.activity.AddActivity.EXTRA_FRAGMENT_TYPE;
+import static com.suzei.racoon.ui.add.AddActivity.EXTRA_FRAGMENT_TYPE;
 
 
 /**

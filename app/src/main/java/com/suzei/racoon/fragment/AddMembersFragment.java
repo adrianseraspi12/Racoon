@@ -17,8 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,17 +24,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.suzei.racoon.R;
-import com.suzei.racoon.activity.ChatRoomActivity;
 import com.suzei.racoon.activity.MembersActivity;
-import com.suzei.racoon.adapter.SearchAdapter;
-import com.suzei.racoon.adapter.SelectedAdapter;
+import com.suzei.racoon.ui.search.SearchAdapter;
+import com.suzei.racoon.ui.search.SelectedAdapter;
 import com.suzei.racoon.model.Users;
 import com.suzei.racoon.util.EmptyRecyclerView;
 import com.suzei.racoon.util.FirebaseExceptionUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindString;
 import butterknife.BindView;

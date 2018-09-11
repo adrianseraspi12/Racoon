@@ -1,6 +1,5 @@
 package com.suzei.racoon.ui.search;
 
-import com.suzei.racoon.adapter.SelectedAdapter;
 import com.suzei.racoon.model.Users;
 
 import java.util.ArrayList;

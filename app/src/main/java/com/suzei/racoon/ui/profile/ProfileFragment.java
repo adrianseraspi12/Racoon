@@ -164,7 +164,7 @@ public class ProfileFragment extends Fragment implements Contract.DetailsView<Us
     public void onLoadSuccess(Users users) {
         nameView.setText(users.getName());
         ageView.setText(String.valueOf(users.getAge()));
-        Picasso.get().load(users.getImage()).into(picView);
+        Picasso.get().load(users.getImage()).fit().into(picView);
         genderView.setText(users.getGender());
 
         switch (users.getGender()) {

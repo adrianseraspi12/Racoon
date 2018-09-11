@@ -35,8 +35,11 @@ import com.suzei.racoon.R;
 import com.suzei.racoon.activity.MembersActivity;
 import com.suzei.racoon.adapter.DialogEmojiAdapter;
 import com.suzei.racoon.model.Emoji;
+import com.suzei.racoon.model.Groups;
 import com.suzei.racoon.ui.base.Callback;
+import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.util.ImageHelper;
+import com.suzei.racoon.util.TakePick;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,25 +52,20 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
 
-public class GroupActivity extends AppCompatActivity {
+public class GroupActivity extends AppCompatActivity implements Contract.DetailsView<Groups> {
 
     public static final String EXTRA_ID = "group_id";
     private static final int CHANGE_INPUT_NAME = 0;
     private static final int CHANGE_INPUT_DESC = 1;
-    private static final int PICK_CAMERA = 2;
-    private static final int PICK_GALLERY = 3;
 
-    private DatabaseReference mEmojiRef;
     private DatabaseReference mGroupsRef;
     private StorageReference mGroupStorage;
-    private ValueEventListener eventListener;
 
-    private ImageHelper imageHelper;
+    private TakePick takePick;
+    private GroupDetailsPresenter groupDetailsPresenter;
     private ContextThemeWrapper themeWrapper;
 
     private Bundle args;
-
-    private Uri mImageFromCameraUri;
 
     private String mId;
 
@@ -85,7 +83,7 @@ public class GroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group);
         initGroupBundle();
         initObjects();
-        showDetails();
+        setUpTakePick();
     }
 
     private void initGroupBundle() {
@@ -101,44 +99,33 @@ public class GroupActivity extends AppCompatActivity {
     private void initObjects() {
         ButterKnife.bind(this);
         args = new Bundle();
-        imageHelper = new ImageHelper(this);
+        groupDetailsPresenter = new GroupDetailsPresenter(this);
         themeWrapper = new ContextThemeWrapper(this, R.style.AlertDialogTheme);
-        mEmojiRef = FirebaseDatabase.getInstance().getReference().child("emoji");
         mGroupsRef = FirebaseDatabase.getInstance().getReference().child("groups").child(mId);
         mGroupStorage = FirebaseStorage.getInstance().getReference().child("groups").child(mId);
     }
 
-    private void showDetails() {
-        eventListener = new ValueEventListener() {
+    private void setUpTakePick() {
+        takePick = new TakePick(
+                GroupActivity.this,
+                this,
+                new TakePick.ImageListener() {
 
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String name = dataSnapshot.child("name").getValue(String.class);
-                String desc = dataSnapshot.child("description").getValue(String.class);
-                String image = dataSnapshot.child("image").getValue(String.class);
+                    @Override
+                    public void onEmojiPick(String image) {
+                        mGroupsRef.child("image").setValue(image);
+                    }
 
-                HashMap<String, Object> membersMap =
-                        (HashMap<String, Object>) dataSnapshot.child("members").getValue();
-                HashMap<String, Object> adminsMap =
-                        (HashMap<String, Object>) dataSnapshot.child("admin").getValue();
-
-                ArrayList<String> members = new ArrayList<>(membersMap.keySet());
-                ArrayList<String> admins = new ArrayList<>(adminsMap.keySet());
-
-                args.putStringArrayList(MembersActivity.EXTRA_MEMBERS, members);
-                args.putStringArrayList(MembersActivity.EXTRA_ADMIN, admins);
-
-                nameView.setText(name);
-                descView.setText(desc);
-                Picasso.get().load(image).into(groupImageView);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-
+                    @Override
+                    public void onCameraGalleryPick(byte[] imageByte) {
+                        UploadTask uploadTask = mGroupStorage.putBytes(imageByte);
+                        takePick.uploadThumbnailToStorage(
+                                mGroupStorage,
+                                uploadTask,
+                                image_url -> mGroupsRef.child("image").setValue(image_url)
+                        );
+                    }
+                });
     }
 
     @OnClick(R.id.group_back)
@@ -171,30 +158,12 @@ public class GroupActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        byte[] imageByte = new byte[0];
-        switch (requestCode) {
-            case PICK_CAMERA:
-                if (resultCode == RESULT_OK) {
-                    File thumbCameraFilePath = new File(mImageFromCameraUri.getPath());
-                    Bitmap compressedCameraBitmap = imageHelper.compressedImage(thumbCameraFilePath);
-                    imageByte = imageHelper.thumbToByteArray(compressedCameraBitmap);
+        takePick.onActivityResult(requestCode, resultCode, data);
+    }
 
-                }
-                break;
-
-            case PICK_GALLERY:
-                if (resultCode == RESULT_OK) {
-                    Uri galleryUri = data.getData();
-                    File galleryFile = imageHelper.getRealPathFromUri(galleryUri);
-                    Bitmap compressedGalleryBitmap = imageHelper.compressedImage(galleryFile);
-                    imageByte = imageHelper.thumbToByteArray(compressedGalleryBitmap);
-                }
-                break;
-        }
-
-        if (imageByte.length != 0) {
-            saveImageToStorageAndDB(imageByte);
-        }
+    @OnClick(R.id.group_image)
+    public void onImageClick() {
+        takePick.showPicker();
     }
 
     @OnClick(R.id.group_add_members)
@@ -214,93 +183,16 @@ public class GroupActivity extends AppCompatActivity {
         startActivity(membersIntent);
     }
 
-    @OnClick(R.id.group_image)
-    public void onImageClick() {
-        BottomSheetDialog bottomDialog = new BottomSheetDialog(this);
-        View bottomView = getLayoutInflater().inflate(R.layout.dialog_image_picker, null);
-        LinearLayout pickCamera = bottomView.findViewById(R.id.dialog_image_picker_camera);
-        LinearLayout pickGallery = bottomView.findViewById(R.id.dialog_image_picker_gallery);
-        LinearLayout pickEmoji = bottomView.findViewById(R.id.dialog_image_picker_emoji);
-
-        bottomDialog.setContentView(bottomView);
-        bottomDialog.show();
-
-        pickCamera.setOnClickListener(v -> {
-            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            File photo = null;
-
-            try {
-                photo = imageHelper.createImageFile();
-                photo.delete();
-            } catch (IOException e) {
-                Timber.e(e);
-                e.printStackTrace();
-                Toast.makeText(this, "Please check your SD card",
-                        Toast.LENGTH_SHORT).show();
-            }
-
-            mImageFromCameraUri = Uri.fromFile(photo);
-            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageFromCameraUri);
-            bottomDialog.dismiss();
-            startActivityForResult(cameraIntent, PICK_CAMERA);
-        });
-
-        pickGallery.setOnClickListener(v -> {
-            Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
-            getIntent.setType("image/*");
-
-            Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            pickIntent.setType("image/*");
-
-            Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
-            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
-            startActivityForResult(chooserIntent, PICK_GALLERY);
-            bottomDialog.dismiss();
-        });
-
-        pickEmoji.setOnClickListener(v -> {
-            bottomDialog.dismiss();
-
-            View emojiView = View.inflate(this, R.layout.dialog_emoji_picker, null);
-            RecyclerView listEmojiView = emojiView.findViewById(R.id.dialog_emoji_list);
-            listEmojiView.setLayoutManager(new LinearLayoutManager(this));
-
-            AlertDialog emojiDialog = new AlertDialog.Builder(themeWrapper).create();
-            emojiDialog.setTitle("Select Emoji");
-            emojiDialog.setView(emojiView);
-            emojiDialog.setCancelable(true);
-
-            FirebaseRecyclerOptions<Emoji> options = new FirebaseRecyclerOptions.Builder<Emoji>()
-                    .setQuery(mEmojiRef.orderByChild("name"), Emoji.class).setLifecycleOwner(this)
-                    .build();
-
-            DialogEmojiAdapter emojiAdapter = new DialogEmojiAdapter(options, (data, view) -> {
-                mGroupsRef.child("image").setValue(data);
-                emojiDialog.dismiss();
-            });
-
-            listEmojiView.setAdapter(emojiAdapter);
-
-            emojiDialog.show();
-        });
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
-        mGroupsRef.addValueEventListener(eventListener);
+        groupDetailsPresenter.showGroupDetails(mId);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mGroupsRef.removeEventListener(eventListener);
-    }
-
-    private void saveImageToStorageAndDB(byte[] imageByte) {
-        UploadTask uploadTask = mGroupStorage.putBytes(imageByte);
-        imageHelper.uploadThumbnailToStorage(mGroupStorage, uploadTask, image_url ->
-                mGroupsRef.child("image").setValue(image_url));
+        groupDetailsPresenter.destroy(mId);
     }
 
     private void showInputDialog(String title, String defaultText, int type) {
@@ -334,5 +226,33 @@ public class GroupActivity extends AppCompatActivity {
         });
 
         builder.show();
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void onLoadSuccess(Groups data) {
+        ArrayList<String> members = new ArrayList<>(data.getMembers().keySet());
+        ArrayList<String> admins = new ArrayList<>(data.getAdmin().keySet());
+
+        args.putStringArrayList(MembersActivity.EXTRA_MEMBERS, members);
+        args.putStringArrayList(MembersActivity.EXTRA_ADMIN, admins);
+
+        nameView.setText(data.getName());
+        descView.setText(data.getDescription());
+        Picasso.get().load(data.getImage()).fit().into(groupImageView);
+    }
+
+    @Override
+    public void onLoadFailed(DatabaseError error) {
+
     }
 }

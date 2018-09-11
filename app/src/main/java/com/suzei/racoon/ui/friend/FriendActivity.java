@@ -15,6 +15,7 @@ import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
 import com.suzei.racoon.activity.ChatRoomActivity;
 import com.suzei.racoon.ui.base.Contract;
+import com.suzei.racoon.ui.chat.single.SingleChatActivity;
 import com.suzei.racoon.ui.friend.data.FriendPresenter;
 import com.suzei.racoon.model.Users;
 
@@ -79,7 +80,7 @@ public class FriendActivity extends AppCompatActivity implements Contract.Detail
         bioView.setText(users.getBio());
         genderView.setText(users.getGender());
         ageView.setText(String.valueOf(users.getAge()));
-        Picasso.get().load(users.getImage()).into(imageView);
+        Picasso.get().load(users.getImage()).fit().into(imageView);
 
         switch (users.getGender()) {
             case "Male":
@@ -124,12 +125,8 @@ public class FriendActivity extends AppCompatActivity implements Contract.Detail
 
     @OnClick(R.id.profile_message)
     public void onMessageClick() {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(ChatRoomActivity.EXTRA_DETAILS, users);
-        bundle.putInt(ChatRoomActivity.EXTRA_CHAT_TYPE, ChatRoomActivity.ChatType.SINGLE_CHAT);
-
-        Intent chatIntent = new Intent(FriendActivity.this, ChatRoomActivity.class);
-        chatIntent.putExtras(bundle);
+        Intent chatIntent = new Intent(FriendActivity.this, SingleChatActivity.class);
+        chatIntent.putExtra(SingleChatActivity.EXTRA_ID, mId);
         startActivity(chatIntent);
     }
 

@@ -9,7 +9,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.suzei.racoon.adapter.SearchAdapter;
 import com.suzei.racoon.model.Users;
 
 import java.util.ArrayList;
@@ -61,6 +60,7 @@ public class SearchInteractor {
                     }
                 }
 
+                searchListener.onSearchSuccess();
                 mSearchAdapter.notifyDataSetChanged();
 
             }

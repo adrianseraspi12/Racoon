@@ -26,20 +26,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.suzei.racoon.R;
-import com.suzei.racoon.activity.AddActivity;
+import com.suzei.racoon.ui.add.AddActivity;
 import com.suzei.racoon.ui.chatlist.ChatFragment;
 import com.suzei.racoon.ui.friendlist.FriendsFragment;
 import com.suzei.racoon.ui.notificationlist.NotificationFragment;
 import com.suzei.racoon.ui.profile.ProfileFragment;
 import com.suzei.racoon.ui.worldlist.WorldFragment;
-import com.suzei.racoon.activity.AddActivity.Add;
+import com.suzei.racoon.ui.add.AddActivity.Add;
 
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.suzei.racoon.activity.AddActivity.EXTRA_FRAGMENT_TYPE;
+import static com.suzei.racoon.ui.add.AddActivity.EXTRA_FRAGMENT_TYPE;
 
 public class MainActivity extends AppCompatActivity implements AHBottomNavigation.OnTabSelectedListener {
 

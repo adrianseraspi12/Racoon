@@ -1,10 +1,7 @@
 package com.suzei.racoon.ui.search;
 
-import com.suzei.racoon.adapter.SearchAdapter;
 import com.suzei.racoon.model.Users;
 import com.suzei.racoon.ui.base.Contract;
-
-import java.util.ArrayList;
 
 public interface SearchContract {
 
@@ -13,6 +10,8 @@ public interface SearchContract {
         void setSearchAdapter(SearchAdapter searchAdapter);
 
         void setSearchUserItemClick(Users users);
+
+        void searchSuccess();
 
         void searchFailed();
 
@@ -23,6 +22,8 @@ public interface SearchContract {
         void onInitSearchAdapter(SearchAdapter searchAdapter);
 
         void onSearchUserItemClick(Users users);
+
+        void onSearchSuccess();
 
         void onSearchFailed();
 

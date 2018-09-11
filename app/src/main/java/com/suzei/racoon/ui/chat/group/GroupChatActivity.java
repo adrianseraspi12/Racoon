@@ -251,8 +251,8 @@ public class GroupChatActivity extends AppCompatActivity implements
         members = new ArrayList<>(groups.getMembers().keySet());
         admins = new ArrayList<>(groups.getAdmin().keySet());
         nameView.setText(groups.getName());
-        Picasso.get().load(groups.getImage()).into(imageView);
-        Picasso.get().load(groups.getImage()).into(toolbarImageView);
+        Picasso.get().load(groups.getImage()).fit().into(imageView);
+        Picasso.get().load(groups.getImage()).fit().into(toolbarImageView);
     }
 
     @Override

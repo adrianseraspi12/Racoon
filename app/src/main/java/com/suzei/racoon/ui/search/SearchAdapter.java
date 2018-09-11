@@ -1,54 +1,60 @@
-package com.suzei.racoon.adapter;
+package com.suzei.racoon.ui.search;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
 import com.suzei.racoon.model.Users;
 import com.suzei.racoon.ui.base.Callback;
+import com.vanniktech.emoji.EmojiTextView;
 
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SelectedAdapter extends RecyclerView.Adapter<SelectedAdapter.ViewHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>{
 
     private Callback.RecyclerviewListener<Users> mListener;
-    private List<Users> selectedList;
+    private List<Users> userList;
 
-    public SelectedAdapter(List<Users> selectedList, Callback.RecyclerviewListener<Users> listener) {
-        this.selectedList = selectedList;
+    public SearchAdapter(List<Users> userList, Callback.RecyclerviewListener<Users> listener) {
+        this.userList = userList;
         this.mListener = listener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item_user_image,
-                parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item_user, parent,
+                false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Users users = selectedList.get(position);
+        Users users = userList.get(position);
         holder.bind(users);
     }
 
     @Override
     public int getItemCount() {
-        return selectedList.size();
+        return userList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        @BindString(R.string.person_is_private) String personIsPrivate;
         @BindView(R.id.item_user_image) RoundedImageView imageView;
+        @BindView(R.id.item_user_name) TextView nameView;
+        @BindView(R.id.item_user_desc) EmojiTextView descView;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -56,9 +62,22 @@ public class SelectedAdapter extends RecyclerView.Adapter<SelectedAdapter.ViewHo
         }
 
         void bind(Users users) {
+            String name = users.getName();
+            String desc = users.getBio();
             String image = users.getImage();
-            Picasso.get().load(image).into(imageView);
-            itemView.setOnClickListener(v -> mListener.onItemClick(users, itemView));
+
+            nameView.setText(name);
+            Picasso.get().load(image).fit().into(imageView);
+            if (desc.equals("")) {
+                descView.setText(personIsPrivate);
+            } else {
+                descView.setText(desc);
+            }
+
+            itemView.setOnClickListener(v -> {
+                mListener.onItemClick(users, itemView);
+            });
         }
+
     }
 }

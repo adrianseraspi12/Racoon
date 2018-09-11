@@ -51,7 +51,7 @@ public class SingleChatActivity extends AppCompatActivity implements
         ChatContract.ChatView,
         Contract.AdapterView<MessagesAdapter> {
 
-    public static final String EXTRA_GROUP_ID = "_id";
+    public static final String EXTRA_ID = "_id";
 
     private EmojiPopup emojiPopup;
     private TakePick takePick;
@@ -99,7 +99,7 @@ public class SingleChatActivity extends AppCompatActivity implements
     }
 
     private void initBundle() {
-        chatId = getIntent().getStringExtra(EXTRA_GROUP_ID);
+        chatId = getIntent().getStringExtra(EXTRA_ID);
     }
 
     private void initObjects() {
@@ -243,8 +243,8 @@ public class SingleChatActivity extends AppCompatActivity implements
         users.setUid(chatId);
 
         nameView.setText(users.getName());
-        Picasso.get().load(users.getImage()).into(imageView);
-        Picasso.get().load(users.getImage()).into(toolbarImageView);
+        Picasso.get().load(users.getImage()).fit().into(imageView);
+        Picasso.get().load(users.getImage()).fit().into(toolbarImageView);
 
         if (users.isOnline()) {
             statusView.setImageDrawable(drawableOnline);

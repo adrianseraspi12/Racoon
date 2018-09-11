@@ -82,7 +82,7 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder>{
 
                     nameView.setText(groups.getName());
                     descView.setText(groups.getDescription());
-                    Picasso.get().load(groups.getImage()).into(imageView);
+                    Picasso.get().load(groups.getImage()).fit().into(imageView);
                     setClickListener(key);
                 }
 

@@ -128,7 +128,7 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notifications, 
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Users users = dataSnapshot.getValue(Users.class);
                         users.setUid(notif.getUid());
-                        Picasso.get().load(users.getImage()).into(imageView);
+                        Picasso.get().load(users.getImage()).fit().into(imageView);
                         setClickListener(notifId, notif, users);
                     }
 

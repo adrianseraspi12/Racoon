@@ -1,4 +1,4 @@
-package com.suzei.racoon.activity;
+package com.suzei.racoon.ui.add;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,10 +8,6 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.suzei.racoon.R;
-import com.suzei.racoon.fragment.AddGroupChatFragment;
-import com.suzei.racoon.fragment.AddSingleChatFragment;
-import com.suzei.racoon.fragment.AddFriendFragment;
-import com.suzei.racoon.fragment.AddWorldFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
