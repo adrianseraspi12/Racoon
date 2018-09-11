@@ -123,7 +123,7 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chats, ChatAdapter.View
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Users users = dataSnapshot.getValue(Users.class);
                     nameView.setText(users.getName());
-                    Picasso.get().load(users.getImage()).fit().into(imageView);
+                    Picasso.get().load(users.getImage()).fit().centerCrop().into(imageView);
 
                     if (chats.getLast_message() == null) {
                         descView.setText(stringNewConv);
@@ -154,7 +154,7 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chats, ChatAdapter.View
                     if (dataSnapshot.hasChildren()) {
                         Groups groups = dataSnapshot.getValue(Groups.class);
                         nameView.setText(groups.getName());
-                        Picasso.get().load(groups.getImage()).fit().into(imageView);
+                        Picasso.get().load(groups.getImage()).fit().centerCrop().into(imageView);
 
                         if (chats.getLast_message() == null) {
                             descView.setText(stringNewConv);

@@ -57,7 +57,7 @@ public class SelectedAdapter extends RecyclerView.Adapter<SelectedAdapter.ViewHo
 
         void bind(Users users) {
             String image = users.getImage();
-            Picasso.get().load(image).fit().into(imageView);
+            Picasso.get().load(image).fit().centerCrop().into(imageView);
             itemView.setOnClickListener(v -> mListener.onItemClick(users, itemView));
         }
     }

@@ -243,8 +243,8 @@ public class SingleChatActivity extends AppCompatActivity implements
         users.setUid(chatId);
 
         nameView.setText(users.getName());
-        Picasso.get().load(users.getImage()).fit().into(imageView);
-        Picasso.get().load(users.getImage()).fit().into(toolbarImageView);
+        Picasso.get().load(users.getImage()).fit().centerCrop().into(imageView);
+        Picasso.get().load(users.getImage()).fit().centerCrop().into(toolbarImageView);
 
         if (users.isOnline()) {
             statusView.setImageDrawable(drawableOnline);

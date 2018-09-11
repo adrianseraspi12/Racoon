@@ -17,7 +17,13 @@ public class SearchPresenter implements SearchContract.SearchListener {
 
     public void startSearch(String query, ArrayList<Users> selectedUsers) {
         searchView.showProgress();
-        searchInteractor.performFirebaseDatabaseSearch(query, selectedUsers);
+        searchInteractor.performFirebaseDatabaseSearch(query, selectedUsers, null);
+    }
+
+    public void startSearchExcludeOldList(String query,
+                                          ArrayList<Users> selectedUsers,
+                                          ArrayList<String> oldList) {
+        searchInteractor.performFirebaseDatabaseSearch(query, selectedUsers, oldList);
     }
 
     public void addFromSearch(Users users) {

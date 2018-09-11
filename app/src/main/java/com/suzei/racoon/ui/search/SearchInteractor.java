@@ -32,7 +32,10 @@ public class SearchInteractor {
         searchListener.onInitSearchAdapter(mSearchAdapter);
     }
 
-    public void performFirebaseDatabaseSearch(String query, ArrayList<Users> selectedUsers) {
+    public void performFirebaseDatabaseSearch(String query,
+                                              ArrayList<Users> selectedUsers,
+                                              ArrayList<String> oldList) {
+
         String currentUserId = FirebaseAuth.getInstance().getUid();
 
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users");
@@ -46,7 +49,10 @@ public class SearchInteractor {
                     String uid = snap.getKey();
                     Timber.i("Key= %s", uid);
 
-                    if (!uid.equals(currentUserId) && !hasSelectedKey(uid, selectedUsers)) {
+                    if (
+                            !uid.equals(currentUserId) &&
+                            !hasSelectedKey(uid, selectedUsers) &&
+                            !isInOldList(uid, oldList)) {
 
                         Users users = snap.getValue(Users.class);
                         users.setUid(uid);
@@ -93,6 +99,22 @@ public class SearchInteractor {
             if (uid.equals(users.getUid())) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    private boolean isInOldList(String uid, ArrayList<String> oldList) {
+        if (oldList == null) {
+            return false;
+        }
+
+        for (int i = 0; i < oldList.size(); i++) {
+            String oldUser = oldList.get(i);
+
+            if (uid.equals(oldUser)) {
+                return true;
+            }
+
         }
         return false;
     }

@@ -1,4 +1,4 @@
-package com.suzei.racoon.fragment;
+package com.suzei.racoon.ui.group;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,64 +14,86 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.suzei.racoon.R;
-import com.suzei.racoon.adapter.SearchAdapter;
-import com.suzei.racoon.adapter.SelectedAdapter;
-import com.suzei.racoon.model.Users;
+import com.suzei.racoon.ui.search.SearchAdapter;
 import com.suzei.racoon.ui.search.SearchContract;
 import com.suzei.racoon.ui.search.SearchPresenter;
 import com.suzei.racoon.ui.search.SelectPresenter;
 import com.suzei.racoon.ui.search.SelectUserContract;
+import com.suzei.racoon.ui.search.SelectedAdapter;
+import com.suzei.racoon.model.Users;
 import com.suzei.racoon.util.EmptyRecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import timber.log.Timber;
 
-public class AddWorldFragment extends Fragment implements
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class AddMembersFragment extends Fragment implements
         SearchContract.SearchView,
         SelectUserContract.SelectUserView {
 
+    private Unbinder unbinder;
+
+    private DatabaseReference mGroupRef;
     private SearchPresenter searchPresenter;
     private SelectPresenter selectPresenter;
 
+    private String mId;
     private ArrayList<Users> selectedUserList = new ArrayList<>();
+    private ArrayList<String> oldMembersList = new ArrayList<>();
 
-    @BindString(R.string.default_user_image) String defaultImage;
     @BindView(R.id.pick_user_no_result) TextView noResultView;
     @BindView(R.id.pick_user_loading) ProgressBar progressBarView;
-    @BindView(R.id.pick_user_back) ImageButton backView;
     @BindView(R.id.pick_user_search_text) EditText searchUserView;
     @BindView(R.id.pick_user_search) ImageButton searchView;
     @BindView(R.id.pick_user_selected_list_layout) RelativeLayout userSelectedLayout;
     @BindView(R.id.pick_user_selected_list) RecyclerView listSelectedUserView;
-    @BindView(R.id.pick_user_add) Button addView;
     @BindView(R.id.pick_user_search_list) EmptyRecyclerView listSearchUserView;
 
-    public AddWorldFragment() {
+    public AddMembersFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.pick_user, container, false);
+        initGroupArgs();
         initObjects(view);
         setUpRecyclerViews();
-        setUpPresenters();
         return view;
     }
 
+    private void initGroupArgs() {
+        Bundle bundle = getArguments();
+
+        if (bundle != null) {
+            mId = bundle.getString(MembersActivity.EXTRA_ID);
+            oldMembersList = bundle.getStringArrayList(MembersActivity.EXTRA_MEMBERS);
+        }
+
+        Timber.i("Id = %s", mId);
+        Timber.i(String.valueOf(oldMembersList));
+    }
+
     private void initObjects(View view) {
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
+        searchPresenter = new SearchPresenter(this);
+        selectPresenter = new SelectPresenter(this);
+        mGroupRef = FirebaseDatabase.getInstance().getReference().child("groups").child(mId);
     }
 
     private void setUpRecyclerViews() {
@@ -81,11 +103,6 @@ public class AddWorldFragment extends Fragment implements
         listSearchUserView.setEmptyView(noResultView);
     }
 
-    private void setUpPresenters() {
-        searchPresenter = new SearchPresenter(this);
-        selectPresenter = new SelectPresenter(this);
-    }
-
     @OnClick(R.id.pick_user_back)
     public void onBackClick() {
         getActivity().finish();
@@ -93,18 +110,36 @@ public class AddWorldFragment extends Fragment implements
 
     @OnClick(R.id.pick_user_search)
     public void onSearchClick() {
-        String query = searchUserView.getText().toString();
-        searchPresenter.startSearch(query, selectedUserList);
+        searchView.setEnabled(false);
+        progressBarView.setVisibility(View.VISIBLE);
+
+        String query = searchUserView.getText().toString().trim();
+        searchPresenter.startSearchExcludeOldList(query, selectedUserList, oldMembersList);
+    }
+
+    @OnClick(R.id.pick_user_add)
+    public void onAddClick() {
+        HashMap<String, Object> memberMap = new HashMap<>();
+        for (int i = 0; i < selectedUserList.size(); i++) {
+            Users users = selectedUserList.get(i);
+            String uid = users.getUid();
+            memberMap.put(uid, true);
+        }
+
+        mGroupRef.child("members").updateChildren(memberMap).addOnCompleteListener(task -> {
+
+            if (task.isSuccessful()) {
+                Toast.makeText(getContext(), "Members Added", Toast.LENGTH_SHORT).show();
+                getActivity().finish();
+            }
+
+        });
     }
 
     @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void hideProgress() {
-
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
@@ -123,8 +158,25 @@ public class AddWorldFragment extends Fragment implements
     }
 
     @Override
+    public void searchSuccess() {
+        searchView.setEnabled(true);
+        progressBarView.setVisibility(View.GONE);
+    }
+
+    @Override
     public void searchFailed() {
-        Timber.i("Failed");
+        searchView.setEnabled(true);
+        progressBarView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
     }
 
     @Override
@@ -141,11 +193,10 @@ public class AddWorldFragment extends Fragment implements
         if (selectedUserList.size() == 0) {
             userSelectedLayout.setVisibility(View.GONE);
         }
-
     }
 
     @Override
     public void selectUserFailed() {
-        Timber.i("Failed");
+
     }
 }

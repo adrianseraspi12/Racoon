@@ -37,6 +37,7 @@ import com.suzei.racoon.ui.friend.FriendActivity;
 import com.suzei.racoon.model.Groups;
 import com.suzei.racoon.model.Users;
 import com.suzei.racoon.ui.group.GroupActivity;
+import com.suzei.racoon.ui.group.MembersActivity;
 import com.suzei.racoon.util.FirebaseExceptionUtil;
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;

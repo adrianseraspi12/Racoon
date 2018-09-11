@@ -29,7 +29,7 @@ import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
 import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.ui.group.GroupActivity;
-import com.suzei.racoon.activity.MembersActivity;
+import com.suzei.racoon.ui.group.MembersActivity;
 import com.suzei.racoon.ui.messagelist.adapter.MessagesAdapter;
 import com.suzei.racoon.ui.messagelist.data.MessagePresenter;
 import com.suzei.racoon.ui.chat.ChatContract;
@@ -251,8 +251,8 @@ public class GroupChatActivity extends AppCompatActivity implements
         members = new ArrayList<>(groups.getMembers().keySet());
         admins = new ArrayList<>(groups.getAdmin().keySet());
         nameView.setText(groups.getName());
-        Picasso.get().load(groups.getImage()).fit().into(imageView);
-        Picasso.get().load(groups.getImage()).fit().into(toolbarImageView);
+        Picasso.get().load(groups.getImage()).fit().centerCrop().into(imageView);
+        Picasso.get().load(groups.getImage()).fit().centerCrop().into(toolbarImageView);
     }
 
     @Override
@@ -338,6 +338,7 @@ public class GroupChatActivity extends AppCompatActivity implements
         Intent membersIntent = new Intent(this, MembersActivity.class);
         membersIntent.putExtras(args);
         startActivity(membersIntent);
+        Timber.i("Group Id= %s", groupId);
     }
 
     private void addMembers() {
@@ -349,6 +350,7 @@ public class GroupChatActivity extends AppCompatActivity implements
         Intent membersIntent = new Intent(this, MembersActivity.class);
         membersIntent.putExtras(args);
         startActivity(membersIntent);
+        Timber.i("Group Id= %s", groupId);
     }
 
     private void manageGroup() {
@@ -361,5 +363,6 @@ public class GroupChatActivity extends AppCompatActivity implements
         Intent groupIntent = new Intent(this, GroupActivity.class);
         groupIntent.putExtra(GroupActivity.EXTRA_ID, groupId);
         startActivity(groupIntent);
+        Timber.i("Group Id= %s", groupId);
     }
 }

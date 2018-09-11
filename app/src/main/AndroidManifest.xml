@@ -28,7 +28,7 @@
         <activity android:name=".activity.ChatRoomActivity" />
         <activity android:name=".ui.friend.FriendActivity" />
         <activity android:name=".ui.group.GroupActivity" />
-        <activity android:name=".activity.MembersActivity" />
+        <activity android:name=".ui.group.MembersActivity" />
         <activity android:name=".ui.chat.group.GroupChatActivity" />
         <activity android:name=".ui.chat.single.SingleChatActivity"></activity>
     </application>

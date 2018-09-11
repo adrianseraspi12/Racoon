@@ -1,4 +1,4 @@
-package com.suzei.racoon.fragment;
+package com.suzei.racoon.ui.group;
 
 
 import android.content.Intent;
@@ -23,7 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.suzei.racoon.R;
 import com.suzei.racoon.activity.ChatRoomActivity;
-import com.suzei.racoon.activity.MembersActivity;
+import com.suzei.racoon.ui.base.Contract;
+import com.suzei.racoon.ui.group.MembersActivity;
 import com.suzei.racoon.ui.friend.FriendActivity;
 import com.suzei.racoon.ui.base.UsersAdapter;
 import com.suzei.racoon.model.Groups;
@@ -41,7 +42,7 @@ import timber.log.Timber;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ViewMembersFragment extends Fragment {
+public class ViewMembersFragment extends Fragment implements Contract.DetailsView<Groups> {
 
     private Unbinder unbinder;
 
@@ -49,8 +50,8 @@ public class ViewMembersFragment extends Fragment {
     private UsersAdapter membersAdapter;
 
 
+    private GroupDetailsPresenter groupDetailsPresenter;
     private DatabaseReference mGroupsRef;
-    private ValueEventListener eventListener;
 
     private String currentUserId;
     private String mId;
@@ -58,7 +59,6 @@ public class ViewMembersFragment extends Fragment {
     private ArrayList<String> adminsList = new ArrayList<>();
     private ArrayList<String> membersList = new ArrayList<>();
 
-    @BindView(R.id.view_member_back) ImageButton backView;
     @BindView(R.id.view_member_admin_list) RecyclerView listAdminView;
     @BindView(R.id.view_members_list) RecyclerView listMembersView;
 
@@ -74,7 +74,6 @@ public class ViewMembersFragment extends Fragment {
         initMembersArgs();
         initObjects(view);
         setUpRecyclerViews();
-        setListeners();
         setUpAdapter();
         return view;
     }
@@ -91,6 +90,7 @@ public class ViewMembersFragment extends Fragment {
 
     private void initObjects(View view) {
         unbinder = ButterKnife.bind(this, view);
+        groupDetailsPresenter = new GroupDetailsPresenter(this);
         currentUserId = FirebaseAuth.getInstance().getUid();
         mGroupsRef = FirebaseDatabase.getInstance().getReference().child("groups")
                 .child(mId);
@@ -101,31 +101,6 @@ public class ViewMembersFragment extends Fragment {
         listMembersView.setNestedScrollingEnabled(false);
         listAdminView.setLayoutManager(new LinearLayoutManager(getContext()));
         listMembersView.setLayoutManager(new LinearLayoutManager(getContext()));
-    }
-
-    private void setListeners() {
-        eventListener = new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Groups groups = dataSnapshot.getValue(Groups.class);
-
-                adminsList.clear();
-                membersList.clear();
-
-                adminsList.addAll(groups.getAdmin().keySet());
-                membersList.addAll(groups.getMembers().keySet());
-
-                adminAdapter.notifyDataSetChanged();
-                membersAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                FirebaseExceptionUtil.databaseError(getContext(), databaseError.toException());
-            }
-
-        };
     }
 
     private void setUpAdapter() {
@@ -173,6 +148,56 @@ public class ViewMembersFragment extends Fragment {
         listMembersView.setAdapter(membersAdapter);
     }
 
+    @OnClick(R.id.view_member_back)
+    public void backClick() {
+        getActivity().finish();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        groupDetailsPresenter.showGroupDetails(mId);
+    }
+
+    @Override
+    public void onStop() {
+        groupDetailsPresenter.destroy(mId);
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void onLoadSuccess(Groups data) {
+        adminsList.clear();
+        membersList.clear();
+
+        adminsList.addAll(data.getAdmin().keySet());
+        membersList.addAll(data.getMembers().keySet());
+
+        adminAdapter.notifyDataSetChanged();
+        membersAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoadFailed(DatabaseError error) {
+
+    }
+
     private PopupMenu getPopupMenu(Users users, View itemView) {
         PopupMenu popupMenu = new PopupMenu(getContext(), itemView, Gravity.BOTTOM|Gravity.END);
         popupMenu.inflate(R.menu.popup_members);
@@ -196,8 +221,8 @@ public class ViewMembersFragment extends Fragment {
 
                 case R.id.popup_remove_admin:
                     mGroupsRef.child("admin").child(users.getUid()).removeValue();
-                    Toast.makeText(getContext(), users.getName() + " has been removed as admin",
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), users.getName() +
+                                    " has been removed as admin", Toast.LENGTH_SHORT).show();
                     return true;
 
                 case R.id.popup_set_as_admin:
@@ -216,29 +241,9 @@ public class ViewMembersFragment extends Fragment {
                     throw new IllegalArgumentException("Invalid Id= " + id);
             }
         });
+
         return popupMenu;
+
     }
 
-    @OnClick(R.id.view_member_back)
-    public void backClick() {
-        getActivity().finish();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mGroupsRef.addValueEventListener(eventListener);
-    }
-
-    @Override
-    public void onStop() {
-        mGroupsRef.removeEventListener(eventListener);
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }

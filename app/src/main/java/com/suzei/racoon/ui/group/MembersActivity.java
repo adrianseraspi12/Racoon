@@ -1,4 +1,4 @@
-package com.suzei.racoon.activity;
+package com.suzei.racoon.ui.group;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,8 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.suzei.racoon.R;
-import com.suzei.racoon.fragment.AddMembersFragment;
-import com.suzei.racoon.fragment.ViewMembersFragment;
 
 import java.util.ArrayList;
 
@@ -18,11 +16,9 @@ import timber.log.Timber;
 public class MembersActivity extends AppCompatActivity {
 
     public static final String EXTRA_MEMBERS_TYPE = "members_action";
-    public static final String EXTRA_ADMIN = "group_admins";
     public static final String EXTRA_MEMBERS = "group_members";
     public static final String EXTRA_ID = "group_id";
 
-    private ArrayList<String> adminsList = new ArrayList<>();
     private ArrayList<String> membersList = new ArrayList<>();
 
     private String mId;
@@ -48,10 +44,12 @@ public class MembersActivity extends AppCompatActivity {
         if (bundle != null) {
             mId = bundle.getString(EXTRA_ID);
             type = bundle.getInt(EXTRA_MEMBERS_TYPE);
+            membersList = bundle.getStringArrayList(EXTRA_MEMBERS);
         }
 
         Timber.i("Id= %s", mId);
         Timber.i("Type= %s", type);
+        Timber.i("Members= %s", membersList);
     }
 
     private void initObjects() {
@@ -72,8 +70,6 @@ public class MembersActivity extends AppCompatActivity {
 
             case MembersType.VIEW_MEMBERS:
                 bundle.putString(EXTRA_ID, mId);
-                bundle.putStringArrayList(EXTRA_ADMIN, adminsList);
-                bundle.putStringArrayList(EXTRA_MEMBERS, membersList);
                 fragment = new ViewMembersFragment();
                 fragment.setArguments(bundle);
                 break;

@@ -60,7 +60,7 @@ public class DialogEmojiAdapter extends FirebaseRecyclerAdapter<Emoji, DialogEmo
             String image = emoji.getImage();
 
             nameView.setText(name);
-            Picasso.get().load(image).noFade().fit().into(imageView);
+            Picasso.get().load(image).noFade().fit().centerCrop().into(imageView);
 
             itemView.setOnClickListener(v -> mListener.onItemClick(image, itemView));
         }

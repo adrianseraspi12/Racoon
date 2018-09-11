@@ -1,50 +1,30 @@
 package com.suzei.racoon.ui.group;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.ContextThemeWrapper;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
-import com.suzei.racoon.activity.MembersActivity;
-import com.suzei.racoon.adapter.DialogEmojiAdapter;
-import com.suzei.racoon.model.Emoji;
 import com.suzei.racoon.model.Groups;
-import com.suzei.racoon.ui.base.Callback;
 import com.suzei.racoon.ui.base.Contract;
-import com.suzei.racoon.util.ImageHelper;
 import com.suzei.racoon.util.TakePick;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.BindColor;
 import butterknife.BindView;
@@ -241,14 +221,12 @@ public class GroupActivity extends AppCompatActivity implements Contract.Details
     @Override
     public void onLoadSuccess(Groups data) {
         ArrayList<String> members = new ArrayList<>(data.getMembers().keySet());
-        ArrayList<String> admins = new ArrayList<>(data.getAdmin().keySet());
 
         args.putStringArrayList(MembersActivity.EXTRA_MEMBERS, members);
-        args.putStringArrayList(MembersActivity.EXTRA_ADMIN, admins);
 
         nameView.setText(data.getName());
         descView.setText(data.getDescription());
-        Picasso.get().load(data.getImage()).fit().into(groupImageView);
+        Picasso.get().load(data.getImage()).fit().centerCrop().into(groupImageView);
     }
 
     @Override

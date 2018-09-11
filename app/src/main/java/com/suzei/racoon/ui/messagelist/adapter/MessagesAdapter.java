@@ -113,7 +113,7 @@ public class MessagesAdapter extends InfiniteFirebaseRecyclerAdapter<Messages, R
                     break;
 
                 case "image":
-                    Picasso.get().load(message.getMessage()).into(imageView);
+                    Picasso.get().load(message.getMessage()).fit().centerCrop().into(imageView);
                     messageView.setVisibility(View.GONE);
                     Timber.i(message.getMessage());
                     break;
@@ -149,7 +149,7 @@ public class MessagesAdapter extends InfiniteFirebaseRecyclerAdapter<Messages, R
                     break;
 
                 case "image":
-                    Picasso.get().load(message.getMessage()).fit().into(messageImageView);
+                    Picasso.get().load(message.getMessage()).fit().centerCrop().into(messageImageView);
                     messageView.setVisibility(View.GONE);
                     break;
 

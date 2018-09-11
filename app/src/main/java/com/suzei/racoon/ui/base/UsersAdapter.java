@@ -75,7 +75,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Users users = dataSnapshot.getValue(Users.class);
                     nameView.setText(users.getName());
-                    Picasso.get().load(users.getImage()).into(imageView);
+                    Picasso.get().load(users.getImage()).fit().centerCrop().into(imageView);
                     users.setUid(key);
 
                     if (users.getBio().equals("")) {

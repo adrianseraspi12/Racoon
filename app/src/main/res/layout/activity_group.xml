@@ -11,11 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <View
+        <ImageView
             android:id="@+id/group_header"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/background_gradient_brown" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_building" />
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/group_image"

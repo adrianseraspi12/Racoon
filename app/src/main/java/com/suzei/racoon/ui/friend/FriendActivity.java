@@ -80,7 +80,7 @@ public class FriendActivity extends AppCompatActivity implements Contract.Detail
         bioView.setText(users.getBio());
         genderView.setText(users.getGender());
         ageView.setText(String.valueOf(users.getAge()));
-        Picasso.get().load(users.getImage()).fit().into(imageView);
+        Picasso.get().load(users.getImage()).fit().centerCrop().into(imageView);
 
         switch (users.getGender()) {
             case "Male":
