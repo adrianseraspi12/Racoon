@@ -67,7 +67,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             String image = users.getImage();
 
             nameView.setText(name);
-            Picasso.get().load(image).fit().into(imageView);
+            Picasso.get().load(image).fit().centerCrop().into(imageView);
             if (desc.equals("")) {
                 descView.setText(personIsPrivate);
             } else {
