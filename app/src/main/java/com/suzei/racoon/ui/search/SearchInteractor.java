@@ -23,14 +23,13 @@ public class SearchInteractor {
     private SearchAdapter mSearchAdapter;
     private ArrayList<Users> searchUserList = new ArrayList<>();
 
-
     SearchInteractor(SearchContract.SearchListener searchListener) {
         this.searchListener = searchListener;
     }
 
     public void initSearchAdapter() {
         mSearchAdapter = new SearchAdapter(searchUserList, (users, itemView) ->
-                searchListener.onSearchUserItemClick());
+                searchListener.onSearchUserItemClick(users));
         searchListener.onInitSearchAdapter(mSearchAdapter);
     }
 
@@ -60,10 +59,9 @@ public class SearchInteractor {
                         }
 
                     }
-
-                    updateSearchAdapter();
-                    searchListener.onSearchUser(searchUserList);
                 }
+
+                mSearchAdapter.notifyDataSetChanged();
 
             }
 
@@ -75,7 +73,13 @@ public class SearchInteractor {
         });
     }
 
-    public void updateSearchAdapter() {
+    public void removeUser(Users users) {
+        searchUserList.remove(users);
+        mSearchAdapter.notifyDataSetChanged();
+    }
+
+    public void addUser(Users users) {
+        searchUserList.add(users);
         mSearchAdapter.notifyDataSetChanged();
     }
 

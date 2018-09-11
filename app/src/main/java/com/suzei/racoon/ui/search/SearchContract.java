@@ -12,9 +12,7 @@ public interface SearchContract {
 
         void setSearchAdapter(SearchAdapter searchAdapter);
 
-        void setSearchUserItemClick();
-
-        void getSearchList(ArrayList<Users> searchList);
+        void setSearchUserItemClick(Users users);
 
         void searchFailed();
 
@@ -24,9 +22,7 @@ public interface SearchContract {
 
         void onInitSearchAdapter(SearchAdapter searchAdapter);
 
-        void onSearchUser(ArrayList<Users> searchUserList);
-
-        void onSearchUserItemClick();
+        void onSearchUserItemClick(Users users);
 
         void onSearchFailed();
 

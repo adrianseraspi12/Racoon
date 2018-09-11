@@ -21,8 +21,12 @@ public class SearchPresenter implements SearchContract.SearchListener {
         searchInteractor.performFirebaseDatabaseSearch(query, selectedUsers);
     }
 
-    public void updateList() {
-        searchInteractor.updateSearchAdapter();
+    public void addFromSearch(Users users) {
+        searchInteractor.addUser(users);
+    }
+
+    public void removeFromSearch(Users users) {
+        searchInteractor.removeUser(users);
     }
 
     @Override
@@ -31,13 +35,8 @@ public class SearchPresenter implements SearchContract.SearchListener {
     }
 
     @Override
-    public void onSearchUser(ArrayList<Users> searchUserList) {
-        searchView.getSearchList(searchUserList);
-    }
-
-    @Override
-    public void onSearchUserItemClick() {
-        searchView.setSearchUserItemClick();
+    public void onSearchUserItemClick(Users users) {
+        searchView.setSearchUserItemClick(users);
     }
 
     @Override

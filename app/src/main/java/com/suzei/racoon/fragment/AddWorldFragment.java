@@ -14,16 +14,18 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.suzei.racoon.R;
 import com.suzei.racoon.adapter.SearchAdapter;
+import com.suzei.racoon.adapter.SelectedAdapter;
 import com.suzei.racoon.model.Users;
 import com.suzei.racoon.ui.search.SearchContract;
 import com.suzei.racoon.ui.search.SearchPresenter;
+import com.suzei.racoon.ui.search.SelectPresenter;
+import com.suzei.racoon.ui.search.SelectUserContract;
 import com.suzei.racoon.util.EmptyRecyclerView;
 
 import java.util.ArrayList;
@@ -34,15 +36,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
 
-public class AddWorldFragment extends Fragment implements SearchContract.SearchView {
-
-    private DatabaseReference mRootRef;
+public class AddWorldFragment extends Fragment implements
+        SearchContract.SearchView,
+        SelectUserContract.SelectUserView {
 
     private SearchPresenter searchPresenter;
+    private SelectPresenter selectPresenter;
 
-    private String currentUserId;
-
-    private ArrayList<Users> searchUserList = new ArrayList<>();
+    private ArrayList<Users> selectedUserList = new ArrayList<>();
 
     @BindString(R.string.default_user_image) String defaultImage;
     @BindView(R.id.pick_user_no_result) TextView noResultView;
@@ -71,8 +72,6 @@ public class AddWorldFragment extends Fragment implements SearchContract.SearchV
 
     private void initObjects(View view) {
         ButterKnife.bind(this, view);
-        currentUserId = FirebaseAuth.getInstance().getUid();
-        mRootRef = FirebaseDatabase.getInstance().getReference();
     }
 
     private void setUpRecyclerViews() {
@@ -84,6 +83,7 @@ public class AddWorldFragment extends Fragment implements SearchContract.SearchV
 
     private void setUpPresenters() {
         searchPresenter = new SearchPresenter(this);
+        selectPresenter = new SelectPresenter(this);
     }
 
     @OnClick(R.id.pick_user_back)
@@ -93,7 +93,6 @@ public class AddWorldFragment extends Fragment implements SearchContract.SearchV
 
     @OnClick(R.id.pick_user_search)
     public void onSearchClick() {
-        ArrayList<Users> selectedUserList = new ArrayList<>();
         String query = searchUserView.getText().toString();
         searchPresenter.startSearch(query, selectedUserList);
     }
@@ -114,19 +113,39 @@ public class AddWorldFragment extends Fragment implements SearchContract.SearchV
     }
 
     @Override
-    public void setSearchUserItemClick() {
-        Toast.makeText(getContext(), "Clicked", Toast.LENGTH_SHORT).show();
-    }
+    public void setSearchUserItemClick(Users users) {
+        selectedUserList.add(users);
+        selectPresenter.addSelectedUser(users);
+        searchPresenter.removeFromSearch(users);
 
-    @Override
-    public void getSearchList(ArrayList<Users> searchList) {
-        searchUserList.clear();
-        searchUserList.addAll(searchList);
-        Timber.i(String.valueOf(searchList));
+        listSelectedUserView.scrollToPosition(selectPresenter.getItemCount() - 1);
+        userSelectedLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void searchFailed() {
+        Timber.i("Failed");
+    }
+
+    @Override
+    public void setSelectUserAdapter(SelectedAdapter selectUserAdapter) {
+        listSelectedUserView.setAdapter(selectUserAdapter);
+    }
+
+    @Override
+    public void setSelectUserItemClick(Users users) {
+        selectedUserList.remove(users);
+        selectPresenter.removeSelectedUser(users);
+        searchPresenter.addFromSearch(users);
+
+        if (selectedUserList.size() == 0) {
+            userSelectedLayout.setVisibility(View.GONE);
+        }
+
+    }
+
+    @Override
+    public void selectUserFailed() {
         Timber.i("Failed");
     }
 }
