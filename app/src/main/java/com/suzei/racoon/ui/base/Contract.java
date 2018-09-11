@@ -14,27 +14,35 @@ public interface Contract {
 
     }
 
-    interface DetailsView<V> extends ProgressView {
+    interface DetailsView<M> extends ProgressView {
 
-        void onLoadSuccess(V data);
+        void onLoadSuccess(M data);
 
         void onLoadFailed(DatabaseError error);
 
     }
 
-    interface AdapterView<V extends RecyclerView.Adapter> extends ProgressView {
+    interface AdapterView<A extends RecyclerView.Adapter> extends ProgressView {
 
-        void setAdapter(V adapter);
+        void setAdapter(A adapter);
 
         void loadFailed();
 
     }
 
-    interface Listener<V> {
+    interface Listener<M> {
 
-        void onLoadSuccess(V data);
+        void onLoadSuccess(M data);
 
         void onLoadFailed(DatabaseError error);
+
+    }
+
+    interface AdapterListener<A extends RecyclerView.Adapter> {
+
+        void onLoadSuccess(A data);
+
+        void onLoadFailed();
 
     }
 

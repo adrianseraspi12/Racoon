@@ -14,6 +14,7 @@ import com.suzei.racoon.model.Users;
 import com.suzei.racoon.ui.base.Callback;
 import com.vanniktech.emoji.EmojiTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindString;
