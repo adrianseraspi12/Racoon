@@ -146,6 +146,8 @@ public class AddGroupChatFragment extends Fragment implements
 
     @Override
     public void searchFailed() {
+        searchView.setEnabled(true);
+        progressBarView.setVisibility(View.GONE);
         Timber.i("Failed");
     }
 
