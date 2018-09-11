@@ -1,3 +1,3 @@
 # Racoon
-A Firebase Chat Example.
-Soon to be publish in Google Play Store
+An MVP architecture example of Firebase Chat.
+Soon to be published in Google Play Store
