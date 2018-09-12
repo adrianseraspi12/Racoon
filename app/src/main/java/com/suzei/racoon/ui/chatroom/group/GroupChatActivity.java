@@ -144,7 +144,6 @@ public class GroupChatActivity extends AppCompatActivity implements
             public void onEmojiPick(String image) {
                 groupChatPresenter.sendGroupMessage(
                         groupId,
-                        currentUserId,
                         "image",
                         members,
                         image);
@@ -156,7 +155,6 @@ public class GroupChatActivity extends AppCompatActivity implements
                 takePicture.uploadThumbnailToStorage(mMessageStorage, uploadTask, image_url ->
                         groupChatPresenter.sendGroupMessage(
                                 groupId,
-                                currentUserId,
                                 "image",
                                 members,
                                 image_url));
@@ -175,6 +173,7 @@ public class GroupChatActivity extends AppCompatActivity implements
 
     private void setUpListeners() {
         messagePresenter.start(currentUserId, groupId);
+        groupChatPresenter.seenMessage(groupId);
         refreshLayout.setOnRefreshListener(() -> {
             messagePresenter.loadMore();
             refreshLayout.setRefreshing(false);
@@ -210,7 +209,6 @@ public class GroupChatActivity extends AppCompatActivity implements
 
         groupChatPresenter.sendGroupMessage(
                 groupId,
-                currentUserId,
                 "text",
                 members,
                 message);

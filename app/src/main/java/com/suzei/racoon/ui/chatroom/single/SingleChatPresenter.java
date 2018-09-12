@@ -13,13 +13,11 @@ public class SingleChatPresenter implements ChatContract.ChatListener {
     }
 
     public void sendMessage(String chatId,
-                            String currentUserId,
                             String messageType,
                             String message) {
 
         singleChatInteractor.performFirebaseDatabaseSendSingleMesage(
                 chatId,
-                currentUserId,
                 messageType,
                 message);
 

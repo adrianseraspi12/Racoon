@@ -1,5 +1,6 @@
 package com.suzei.racoon.ui.chatroom.single;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
@@ -13,21 +14,27 @@ public class SingleChatInteractor {
 
     private DatabaseReference mRootRef;
     private DatabaseReference mUsersChatRef;
+    private String currentUserId;
 
     SingleChatInteractor(ChatContract.ChatListener chatListener) {
         this.chatListener = chatListener;
         mRootRef = FirebaseDatabase.getInstance().getReference();
         mUsersChatRef = mRootRef.child("user_chats");
+        currentUserId = FirebaseAuth.getInstance().getUid();
+    }
+
+    public void updateCurrentUserChat(String groupId) {
+        mUsersChatRef.child(currentUserId).child(groupId).child("seen").setValue(true);
+        mUsersChatRef.child(currentUserId).child(groupId).child("type").setValue("group");
     }
 
     public void performFirebaseDatabaseSendSingleMesage(String chatId,
-                                                        String currentUserId,
                                                         String messageType,
                                                         String message) {
         String messageId = mRootRef.child("messages").child(currentUserId).push().getKey();
 
         HashMap<String, Object> messageMap =
-                getMessageDetails(chatId, currentUserId, messageType, message);
+                getMessageDetails(chatId, messageType, message);
 
 
         HashMap<String, Object> saveMessageMap = new HashMap<>();
@@ -37,7 +44,7 @@ public class SingleChatInteractor {
         mRootRef.updateChildren(saveMessageMap, (databaseError, databaseReference) -> {
 
             if (databaseError == null) {
-                updateChatDB(chatId, currentUserId, messageType, message);
+                updateChatDB(chatId, messageType, message);
                 chatListener.onSuccess();
             } else {
                 chatListener.onSendFailed();
@@ -47,7 +54,6 @@ public class SingleChatInteractor {
     }
 
     private void updateChatDB(String chatId,
-                              String currentUserId,
                               String messageType,
                               String message) {
 
@@ -81,7 +87,6 @@ public class SingleChatInteractor {
     }
 
     private HashMap<String, Object> getMessageDetails(String chatId,
-                                                      String currentUserId,
                                                       String messageType,
                                                       String message) {
         HashMap<String, Object> seenMap = new HashMap<>();

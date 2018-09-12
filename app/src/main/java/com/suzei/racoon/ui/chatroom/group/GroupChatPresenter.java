@@ -9,19 +9,21 @@ public class GroupChatPresenter implements ChatContract.ChatListener {
     private ChatContract.ChatView chatView;
     private GroupChatInteractor chatInteractor;
 
-    public GroupChatPresenter(ChatContract.ChatView chatView) {
+    GroupChatPresenter(ChatContract.ChatView chatView) {
         this.chatView = chatView;
         chatInteractor = new GroupChatInteractor(this);
     }
 
+    public void seenMessage(String groupId) {
+        chatInteractor.updateCurrentUserChat(groupId);
+    }
+
     public void sendGroupMessage(String groupId,
-                                 String currentUserId,
                                  String messageType,
                                  ArrayList<String> members,
                                  String message) {
         chatInteractor.performFirebaseDatabaseSendGroupMessage(
                 groupId,
-                currentUserId,
                 messageType,
                 members,
                 message);

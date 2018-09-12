@@ -141,7 +141,6 @@ public class SingleChatActivity extends AppCompatActivity implements
             public void onEmojiPick(String image) {
                 singleChatPresenter.sendMessage(
                         chatId,
-                        currentUserId,
                         "image",
                         image
                 );
@@ -153,7 +152,6 @@ public class SingleChatActivity extends AppCompatActivity implements
                 takePicture.uploadThumbnailToStorage(mMessageStorage, uploadTask, image_url ->
                         singleChatPresenter.sendMessage(
                         chatId,
-                        currentUserId,
                         "image",
                         image_url
                 ));
@@ -221,7 +219,6 @@ public class SingleChatActivity extends AppCompatActivity implements
 
         singleChatPresenter.sendMessage(
                 chatId,
-                currentUserId,
                 "text",
                 message
         );
