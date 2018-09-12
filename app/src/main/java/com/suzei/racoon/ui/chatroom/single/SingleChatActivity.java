@@ -179,6 +179,7 @@ public class SingleChatActivity extends AppCompatActivity implements
     protected void onStart() {
         super.onStart();
         profilePresenter.showUserDetails(chatId);
+        singleChatPresenter.seenChat(chatId);
     }
 
     @Override

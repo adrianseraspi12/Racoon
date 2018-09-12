@@ -160,6 +160,7 @@ public class FriendInteractor {
         notifSendReq.put("type", type);
         notifSendReq.put("role", role);
         notifSendReq.put("uid", uid);
+        notifSendReq.put("uid_type", "single");
         notifSendReq.put("seen", false);
         return notifSendReq;
     }

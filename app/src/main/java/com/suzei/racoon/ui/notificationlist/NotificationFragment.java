@@ -10,13 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.suzei.racoon.R;
-import com.suzei.racoon.model.Notifications;
+import com.suzei.racoon.ui.base.Contract;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,11 +20,11 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NotificationFragment extends Fragment {
+public class NotificationFragment extends Fragment implements
+        Contract.AdapterView<NotificationAdapter> {
 
     private Unbinder unbinder;
-
-    private DatabaseReference mNotifsRef;
+    private NotificationPresenter notificationPresenter;
 
     @BindView(R.id.recyclerview_list) RecyclerView listNotifsView;
 
@@ -43,15 +38,12 @@ public class NotificationFragment extends Fragment {
         View view = inflater.inflate(R.layout.recyclerview_list, container, false);
         initObjects(view);
         setUpRecyclerView();
-        setUpAdapter();
         return view;
     }
 
     private void initObjects(View view) {
         unbinder = ButterKnife.bind(this, view);
-        String currentUserId = FirebaseAuth.getInstance().getUid();
-        mNotifsRef = FirebaseDatabase.getInstance().getReference().child("notifications")
-                .child(currentUserId);
+        notificationPresenter = new NotificationPresenter(this);
     }
 
     private void setUpRecyclerView() {
@@ -63,19 +55,41 @@ public class NotificationFragment extends Fragment {
         listNotifsView.addItemDecoration(itemDecoration);
     }
 
-    private void setUpAdapter() {
-        Query query = mNotifsRef.orderByChild("timestamp");
-        FirebaseRecyclerOptions<Notifications> options = new FirebaseRecyclerOptions
-                .Builder<Notifications>().setQuery(query, Notifications.class)
-                .setLifecycleOwner(this).build();
+    @Override
+    public void onStart() {
+        super.onStart();
+        notificationPresenter.start();
+    }
 
-        NotificationAdapter adapter = new NotificationAdapter(options);
-        listNotifsView.setAdapter(adapter);
+    @Override
+    public void onStop() {
+        super.onStop();
+        notificationPresenter.destroy();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void setAdapter(NotificationAdapter adapter) {
+        listNotifsView.setAdapter(adapter);
+    }
+
+    @Override
+    public void loadFailed() {
+
     }
 }

@@ -173,7 +173,6 @@ public class GroupChatActivity extends AppCompatActivity implements
 
     private void setUpListeners() {
         messagePresenter.start(currentUserId, groupId);
-        groupChatPresenter.seenMessage(groupId);
         refreshLayout.setOnRefreshListener(() -> {
             messagePresenter.loadMore();
             refreshLayout.setRefreshing(false);
@@ -218,7 +217,7 @@ public class GroupChatActivity extends AppCompatActivity implements
     protected void onStart() {
         super.onStart();
         groupDetailsPresenter.showGroupDetails(groupId);
-
+        groupChatPresenter.seenMessage(groupId);
     }
 
     @Override

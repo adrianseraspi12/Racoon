@@ -32,6 +32,7 @@ import butterknife.BindColor;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class NotificationAdapter extends FirebaseRecyclerAdapter<Notifications, NotificationAdapter.ViewHolder> {
 
@@ -39,7 +40,7 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notifications, 
     private DatabaseReference mNotifCount;
     private DatabaseReference mNotifRef;
 
-    public NotificationAdapter(@NonNull FirebaseRecyclerOptions<Notifications> options) {
+    NotificationAdapter(@NonNull FirebaseRecyclerOptions<Notifications> options) {
         super(options);
         String currentUserId = FirebaseAuth.getInstance().getUid();
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
@@ -93,6 +94,17 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notifications, 
             setImageAndClickListener(notifId, notif);
             setBackground(notif.isSeen());
             timestampView.setText(time);
+
+            Timber.i("id = %s",  notif.getUid());
+            Timber.i("uid_type= %s", notif.getUid_type());
+        }
+
+        private void setBackground(boolean isSeen) {
+            if (isSeen) {
+                rootView.setBackgroundColor(Color.parseColor("#D3D3D3"));
+            } else {
+                rootView.setBackgroundColor(whiteColor);
+            }
         }
 
         private void setDetails(String type, String role) {
@@ -121,15 +133,26 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notifications, 
         }
 
         private void setImageAndClickListener(String notifId, Notifications notif) {
-            if (notif.getUid_type().equals("single")) {
+            String notifUidType = notif.getUid_type();
+            if (notifUidType.equals("single")) {
                 mUsersRef.child(notif.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
 
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Users users = dataSnapshot.getValue(Users.class);
                         users.setUid(notif.getUid());
-                        Picasso.get().load(users.getImage()).fit().into(imageView);
-                        setClickListener(notifId, notif, users);
+                        Picasso.get().load(users.getImage()).fit().centerCrop().into(imageView);
+
+                        itemView.setOnClickListener(v -> {
+
+                            if (!notif.isSeen()) {
+                                decrementCount(notifId);
+                            }
+                            Intent profileIntent = new Intent(context, FriendActivity.class);
+                            profileIntent.putExtra(FriendActivity.EXTRA_PROFILE_DETAILS, users);
+                            context.startActivity(profileIntent);
+
+                        });
                     }
 
                     @Override
@@ -141,40 +164,19 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notifications, 
 
         }
 
-        private void setBackground(boolean isSeen) {
-
-            if (isSeen) {
-                rootView.setBackgroundColor(Color.parseColor("#D3D3D3"));
-            } else {
-                rootView.setBackgroundColor(whiteColor);
-            }
-
-        }
-
-        private void setClickListener(String notifId, Notifications notif, Users users) {
-            itemView.setOnClickListener(v -> {
-                if (!notif.isSeen()) {
-                    decrementCount(notifId);
-                }
-                showProfile(users);
-            });
-        }
-
-        private void showProfile(Users users) {
-            Intent profileIntent = new Intent(context, FriendActivity.class);
-            profileIntent.putExtra(FriendActivity.EXTRA_PROFILE_DETAILS, users);
-            context.startActivity(profileIntent);
-        }
-
         private void decrementCount(String notifId) {
             mNotifCount.child("alerts").addListenerForSingleValueEvent(new ValueEventListener() {
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    int count = dataSnapshot.child("count").getValue(Integer.class);
-                    int updatedCount = count - 1;
-                    mNotifCount.child("alerts").child("count").setValue(updatedCount);
-                    mNotifRef.child(notifId).child("seen").setValue(true);
+
+                    if (dataSnapshot.hasChildren()) {
+                        int count = dataSnapshot.child("count").getValue(Integer.class);
+                        int updatedCount = count - 1;
+                        mNotifCount.child("alerts").child("count").setValue(updatedCount);
+                        mNotifRef.child(notifId).child("seen").setValue(true);
+                    }
+
                 }
 
                 @Override
