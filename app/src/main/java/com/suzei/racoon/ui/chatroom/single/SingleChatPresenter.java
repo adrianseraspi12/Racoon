@@ -7,9 +7,13 @@ public class SingleChatPresenter implements ChatContract.ChatListener {
     private ChatContract.ChatView chatView;
     private SingleChatInteractor singleChatInteractor;
 
-    public SingleChatPresenter(ChatContract.ChatView chatView) {
+    SingleChatPresenter(ChatContract.ChatView chatView) {
         this.chatView = chatView;
         singleChatInteractor = new SingleChatInteractor(this);
+    }
+
+    public void seenChat(String id) {
+        singleChatInteractor.updateCurrentUserChat(id);
     }
 
     public void sendMessage(String chatId,

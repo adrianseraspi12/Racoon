@@ -23,9 +23,9 @@ public class SingleChatInteractor {
         currentUserId = FirebaseAuth.getInstance().getUid();
     }
 
-    public void updateCurrentUserChat(String groupId) {
-        mUsersChatRef.child(currentUserId).child(groupId).child("seen").setValue(true);
-        mUsersChatRef.child(currentUserId).child(groupId).child("type").setValue("group");
+    public void updateCurrentUserChat(String chatId) {
+        mUsersChatRef.child(currentUserId).child(chatId).child("seen").setValue(true);
+        mUsersChatRef.child(currentUserId).child(chatId).child("type").setValue("single");
     }
 
     public void performFirebaseDatabaseSendSingleMesage(String chatId,
