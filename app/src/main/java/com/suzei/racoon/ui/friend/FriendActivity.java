@@ -13,10 +13,8 @@ import com.google.firebase.database.DatabaseError;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
-import com.suzei.racoon.activity.ChatRoomActivity;
 import com.suzei.racoon.ui.base.Contract;
-import com.suzei.racoon.ui.chat.single.SingleChatActivity;
-import com.suzei.racoon.ui.friend.data.FriendPresenter;
+import com.suzei.racoon.ui.chatroom.single.SingleChatActivity;
 import com.suzei.racoon.model.Users;
 
 import butterknife.BindDrawable;

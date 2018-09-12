@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/group_chat_room_root_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.ChatRoomActivity">
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/chat_room_toolbar"
@@ -65,7 +64,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chat_room_toolbar">
 
-        <com.suzei.racoon.util.EmptyRecyclerView
+        <com.suzei.racoon.util.view.EmptyRecyclerView
             android:id="@+id/chat_room_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

@@ -19,8 +19,6 @@ import com.suzei.racoon.ui.add.AddActivity.Add;
 import com.suzei.racoon.ui.base.Callback;
 import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.ui.base.MainActivity;
-import com.suzei.racoon.ui.worldlist.adapter.WorldAdapter;
-import com.suzei.racoon.ui.worldlist.data.WorldPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

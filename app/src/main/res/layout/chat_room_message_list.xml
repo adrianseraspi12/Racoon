@@ -10,7 +10,7 @@
         android:layout_marginTop="8dp"
         android:layout_height="match_parent">
 
-        <com.suzei.racoon.util.EmptyRecyclerView
+        <com.suzei.racoon.util.view.EmptyRecyclerView
             android:id="@+id/chat_room_messages_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

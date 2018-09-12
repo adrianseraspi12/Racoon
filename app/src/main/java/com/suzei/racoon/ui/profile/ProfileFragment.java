@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,9 +27,9 @@ import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
 import com.suzei.racoon.model.Users;
 import com.suzei.racoon.ui.base.Contract;
-import com.suzei.racoon.ui.profile.data.ProfilePresenter;
-import com.suzei.racoon.util.NumberPickerUtil;
-import com.suzei.racoon.util.TakePick;
+import com.suzei.racoon.util.lib.DialogEditor;
+import com.suzei.racoon.util.lib.NumberPick;
+import com.suzei.racoon.util.lib.TakePicture;
 
 import butterknife.BindColor;
 import butterknife.BindDrawable;
@@ -43,20 +42,15 @@ import timber.log.Timber;
 
 public class ProfileFragment extends Fragment implements Contract.DetailsView<Users> {
 
-    private static final int CHANGE_INPUT_BIO = 2;
-    private static final int CHANGE_INPUT_NAME = 4;
-
     private ProfilePresenter profilePresenter;
     private DatabaseReference mUserRef;
     private StorageReference mUserStorage;
     private Unbinder unbinder;
-    private TakePick takePick;
+    private TakePicture takePicture;
 
     private String currentUserId;
 
     @BindString(R.string.add_bio) String stringAddBio;
-    @BindColor(R.color.colorPrimary) int colorPrimary;
-    @BindColor(android.R.color.black) int colorBlack;
     @BindDrawable(R.drawable.gender_male) Drawable drawableMale;
     @BindDrawable(R.drawable.gender_female) Drawable drawableFemale;
     @BindDrawable(R.drawable.gender_unknown) Drawable drawableUnknown;
@@ -103,7 +97,7 @@ public class ProfileFragment extends Fragment implements Contract.DetailsView<Us
     }
 
     private void setUpTakePick() {
-        takePick = new TakePick(getActivity(), this, new TakePick.ImageListener() {
+        takePicture = new TakePicture(getActivity(), this, new TakePicture.ImageListener() {
 
             @Override
             public void onEmojiPick(String image) {
@@ -113,7 +107,7 @@ public class ProfileFragment extends Fragment implements Contract.DetailsView<Us
             @Override
             public void onCameraGalleryPick(byte[] imageByte) {
                 UploadTask uploadTask = mUserStorage.putBytes(imageByte);
-                takePick.uploadThumbnailToStorage(mUserStorage, uploadTask, image_url ->
+                takePicture.uploadThumbnailToStorage(mUserStorage, uploadTask, image_url ->
                         mUserRef.child("image").setValue(image_url));
             }
         });
@@ -141,13 +135,13 @@ public class ProfileFragment extends Fragment implements Contract.DetailsView<Us
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Timber.i("onActivityResult");
-        takePick.onActivityResult(requestCode, resultCode, data);
+        takePicture.onActivityResult(requestCode, resultCode, data);
     }
 
     @OnClick(R.id.profile_image)
     public void onImageClick() {
         Timber.i("Take Pick");
-        takePick.showPicker();
+        takePicture.showPicker();
     }
 
     @Override
@@ -189,17 +183,35 @@ public class ProfileFragment extends Fragment implements Contract.DetailsView<Us
 
     }
 
+    @OnClick(R.id.profile_age)
+    public void onAgeClick() {
+        int age = Integer.parseInt(ageView.getText().toString());
+        DialogEditor.agePick(getContext(), age, data -> mUserRef.child("age").setValue(data));
+    }
+
     @OnClick({R.id.profile_name, R.id.profile_description})
     public void onTextFieldClick(View view) {
         int id = view.getId();
         switch (id) {
             case R.id.profile_name:
                 String name = nameView.getText().toString();
-                showInputDialog("Change name", name, CHANGE_INPUT_NAME);
+
+                DialogEditor.inputDialog(
+                        getContext(),
+                        "Change name",
+                        name,
+                        data -> mUserRef.child("name").setValue(data)
+                );
                 break;
+
             case R.id.profile_description:
                 String bio = descView.getText().toString();
-                showInputDialog("Change bio", bio, CHANGE_INPUT_BIO);
+                DialogEditor.inputDialog(
+                        getContext(),
+                        "Change bio",
+                        bio,
+                        data -> mUserRef.child("bio").setValue(data)
+                );
                 break;
         }
     }
@@ -211,92 +223,22 @@ public class ProfileFragment extends Fragment implements Contract.DetailsView<Us
 
         switch (gender) {
             case "Male":
-                genderNum = 0;
+                genderNum = DialogEditor.GENDER_MALE;
                 break;
             case "Female":
-                genderNum = 1;
+                genderNum = DialogEditor.GENDER_FEMALE;
                 break;
             case "Unknown":
-                genderNum = 2;
+                genderNum = DialogEditor.GENDER_UNKNOWN;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid gender=" + gender);
         }
 
-        CharSequence[] genderSeq = {"Male", "Female", "Unknown"};
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Choose gender:");
-        builder.setSingleChoiceItems(genderSeq, genderNum, null);
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-
-        builder.setPositiveButton("Ok", (dialog, which) -> {
-            ListView listView = ((AlertDialog) dialog).getListView();
-            Object checkedItem = listView.getAdapter().getItem(listView.getCheckedItemPosition());
-            mUserRef.child("gender").setValue(checkedItem);
-            dialog.dismiss();
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-    }
-
-    @OnClick(R.id.profile_age)
-    public void onAgeClick() {
-        int age = Integer.parseInt(ageView.getText().toString());
-        NumberPicker numberPicker = new NumberPicker(getContext());
-        NumberPickerUtil.setNumberPickerTextColor(numberPicker, colorBlack);
-        numberPicker.setMaxValue(115);
-        numberPicker.setMinValue(13);
-        numberPicker.setValue(age);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Choose an age:");
-        builder.setView(numberPicker);
-        builder.setPositiveButton("Ok", (dialog, which) -> {
-            int selectedAge = numberPicker.getValue();
-            mUserRef.child("age").setValue(selectedAge);
-            dialog.dismiss();
-        });
-
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-
-        AlertDialog dialog = builder.create();
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-    }
-
-    private void showInputDialog(String title, String defaultText, int type) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-        builder.setTitle(title);
-
-        EditText editText = new EditText(getContext());
-        editText.setText(defaultText);
-        editText.setTextColor(colorBlack);
-        builder.setView(editText);
-
-        builder.setPositiveButton("Change", (dialog, which) -> {
-            String inputtedText = editText.getText().toString().trim();
-
-            switch (type) {
-                case CHANGE_INPUT_BIO:
-                    mUserRef.child("bio").setValue(inputtedText);
-                    break;
-
-                case CHANGE_INPUT_NAME:
-                    mUserRef.child("name").setValue(inputtedText);
-                    break;
-
-                default:
-                    throw new IllegalArgumentException("Invalid dialog type= " + type);
-            }
-
-            dialog.dismiss();
-
-        });
-
-        builder.show();
+        DialogEditor.genderPick(
+                getContext(),
+                genderNum,
+                data -> mUserRef.child("gender").setValue(data)
+        );
     }
 }

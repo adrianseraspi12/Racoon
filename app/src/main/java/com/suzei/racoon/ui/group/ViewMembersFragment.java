@@ -12,24 +12,19 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.suzei.racoon.R;
-import com.suzei.racoon.activity.ChatRoomActivity;
 import com.suzei.racoon.ui.base.Contract;
-import com.suzei.racoon.ui.group.MembersActivity;
+import com.suzei.racoon.ui.chatroom.single.SingleChatActivity;
 import com.suzei.racoon.ui.friend.FriendActivity;
 import com.suzei.racoon.ui.base.UsersAdapter;
 import com.suzei.racoon.model.Groups;
 import com.suzei.racoon.model.Users;
-import com.suzei.racoon.util.FirebaseExceptionUtil;
 
 import java.util.ArrayList;
 
@@ -206,10 +201,8 @@ public class ViewMembersFragment extends Fragment implements Contract.DetailsVie
             switch (id) {
 
                 case R.id.popup_send_message:
-                    Intent chatIntent = new Intent(getContext(), ChatRoomActivity.class);
-                    chatIntent.putExtra(ChatRoomActivity.EXTRA_CHAT_TYPE,
-                            ChatRoomActivity.ChatType.SINGLE_CHAT);
-                    chatIntent.putExtra(ChatRoomActivity.EXTRA_DETAILS, users);
+                    Intent chatIntent = new Intent(getContext(), SingleChatActivity.class);
+                    chatIntent.putExtra(SingleChatActivity.EXTRA_ID, mId);
                     startActivity(chatIntent);
                     return true;
 

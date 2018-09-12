@@ -1,13 +1,10 @@
 package com.suzei.racoon.ui.group;
 
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -22,7 +19,8 @@ import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
 import com.suzei.racoon.model.Groups;
 import com.suzei.racoon.ui.base.Contract;
-import com.suzei.racoon.util.TakePick;
+import com.suzei.racoon.util.lib.DialogEditor;
+import com.suzei.racoon.util.lib.TakePicture;
 
 import java.util.ArrayList;
 
@@ -35,15 +33,12 @@ import timber.log.Timber;
 public class GroupActivity extends AppCompatActivity implements Contract.DetailsView<Groups> {
 
     public static final String EXTRA_ID = "group_id";
-    private static final int CHANGE_INPUT_NAME = 0;
-    private static final int CHANGE_INPUT_DESC = 1;
 
     private DatabaseReference mGroupsRef;
     private StorageReference mGroupStorage;
 
-    private TakePick takePick;
+    private TakePicture takePicture;
     private GroupDetailsPresenter groupDetailsPresenter;
-    private ContextThemeWrapper themeWrapper;
 
     private Bundle args;
 
@@ -80,16 +75,15 @@ public class GroupActivity extends AppCompatActivity implements Contract.Details
         ButterKnife.bind(this);
         args = new Bundle();
         groupDetailsPresenter = new GroupDetailsPresenter(this);
-        themeWrapper = new ContextThemeWrapper(this, R.style.AlertDialogTheme);
         mGroupsRef = FirebaseDatabase.getInstance().getReference().child("groups").child(mId);
         mGroupStorage = FirebaseStorage.getInstance().getReference().child("groups").child(mId);
     }
 
     private void setUpTakePick() {
-        takePick = new TakePick(
+        takePicture = new TakePicture(
                 GroupActivity.this,
                 this,
-                new TakePick.ImageListener() {
+                new TakePicture.ImageListener() {
 
                     @Override
                     public void onEmojiPick(String image) {
@@ -99,7 +93,7 @@ public class GroupActivity extends AppCompatActivity implements Contract.Details
                     @Override
                     public void onCameraGalleryPick(byte[] imageByte) {
                         UploadTask uploadTask = mGroupStorage.putBytes(imageByte);
-                        takePick.uploadThumbnailToStorage(
+                        takePicture.uploadThumbnailToStorage(
                                 mGroupStorage,
                                 uploadTask,
                                 image_url -> mGroupsRef.child("image").setValue(image_url)
@@ -121,12 +115,22 @@ public class GroupActivity extends AppCompatActivity implements Contract.Details
 
             case R.id.group_name:
                 String name = nameView.getText().toString().trim();
-                showInputDialog("Change name", name, CHANGE_INPUT_NAME);
+                DialogEditor.inputDialog(
+                        GroupActivity.this,
+                        "Change name",
+                        name,
+                        data -> mGroupsRef.child("name").setValue(data)
+                );
                 break;
 
             case R.id.group_description:
                 String desc = descView.getText().toString().trim();
-                showInputDialog("Change Description", desc, CHANGE_INPUT_DESC);
+                DialogEditor.inputDialog(
+                        GroupActivity.this,
+                        "Change description",
+                        desc,
+                        data -> mGroupsRef.child("description").setValue(data)
+                );
                 break;
 
             default:
@@ -138,12 +142,12 @@ public class GroupActivity extends AppCompatActivity implements Contract.Details
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        takePick.onActivityResult(requestCode, resultCode, data);
+        takePicture.onActivityResult(requestCode, resultCode, data);
     }
 
     @OnClick(R.id.group_image)
     public void onImageClick() {
-        takePick.showPicker();
+        takePicture.showPicker();
     }
 
     @OnClick(R.id.group_add_members)
@@ -173,39 +177,6 @@ public class GroupActivity extends AppCompatActivity implements Contract.Details
     protected void onDestroy() {
         super.onDestroy();
         groupDetailsPresenter.destroy(mId);
-    }
-
-    private void showInputDialog(String title, String defaultText, int type) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(themeWrapper);
-
-        builder.setTitle(title);
-
-        EditText editText = new EditText(this);
-        editText.setText(defaultText);
-        editText.setTextColor(colorBlack);
-        builder.setView(editText);
-
-        builder.setPositiveButton("Change", (dialog, which) -> {
-            String inputtedText = editText.getText().toString().trim();
-
-            switch (type) {
-                case CHANGE_INPUT_DESC:
-                    mGroupsRef.child("description").setValue(inputtedText);
-                    break;
-
-                case CHANGE_INPUT_NAME:
-                    mGroupsRef.child("name").setValue(inputtedText);
-                    break;
-
-                default:
-                    throw new IllegalArgumentException("Invalid dialog type= " + type);
-            }
-
-            dialog.dismiss();
-
-        });
-
-        builder.show();
     }
 
     @Override

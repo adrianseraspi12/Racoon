@@ -17,12 +17,11 @@ import android.widget.TextView;
 
 import com.suzei.racoon.R;
 import com.suzei.racoon.model.Users;
-import com.suzei.racoon.ui.chat.single.SingleChatActivity;
 import com.suzei.racoon.ui.friend.FriendActivity;
 import com.suzei.racoon.ui.search.SearchAdapter;
 import com.suzei.racoon.ui.search.SearchContract;
 import com.suzei.racoon.ui.search.SearchPresenter;
-import com.suzei.racoon.util.EmptyRecyclerView;
+import com.suzei.racoon.util.view.EmptyRecyclerView;
 
 import java.util.ArrayList;
 

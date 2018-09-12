@@ -21,12 +21,12 @@ import com.suzei.racoon.R;
 import com.suzei.racoon.ui.search.SearchAdapter;
 import com.suzei.racoon.ui.search.SelectedAdapter;
 import com.suzei.racoon.model.Users;
-import com.suzei.racoon.ui.chat.group.GroupChatActivity;
+import com.suzei.racoon.ui.chatroom.group.GroupChatActivity;
 import com.suzei.racoon.ui.search.SearchContract;
 import com.suzei.racoon.ui.search.SearchPresenter;
 import com.suzei.racoon.ui.search.SelectPresenter;
 import com.suzei.racoon.ui.search.SelectUserContract;
-import com.suzei.racoon.util.EmptyRecyclerView;
+import com.suzei.racoon.util.view.EmptyRecyclerView;
 
 import java.util.ArrayList;
 

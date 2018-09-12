@@ -20,7 +20,6 @@ import com.suzei.racoon.ui.base.Callback;
 import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.ui.base.MainActivity;
 import com.suzei.racoon.ui.base.UsersAdapter;
-import com.suzei.racoon.ui.friendlist.data.FriendsListPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

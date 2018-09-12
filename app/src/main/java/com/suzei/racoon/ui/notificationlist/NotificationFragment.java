@@ -16,7 +16,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.suzei.racoon.R;
-import com.suzei.racoon.adapter.NotificationAdapter;
 import com.suzei.racoon.model.Notifications;
 
 import butterknife.BindView;
