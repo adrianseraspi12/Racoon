@@ -19,6 +19,7 @@ import com.suzei.racoon.ui.add.AddActivity.Add;
 import com.suzei.racoon.ui.base.Callback;
 import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.ui.base.MainActivity;
+import com.suzei.racoon.util.view.SpacingDecoration;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +37,7 @@ public class WorldFragment extends Fragment implements
         Contract.AdapterView<WorldAdapter>{
 
     private Unbinder unbinder;
+    private WorldPresenter worldPresenter;
 
     @BindView(R.id.world_chat_list) RecyclerView listWorldChat;
 
@@ -51,12 +53,12 @@ public class WorldFragment extends Fragment implements
         initObjects(view);
         setListeners();
         setUpRecyclerView();
-        setUpWorldPresenter();
         return view;
     }
 
     private void initObjects(View view) {
         unbinder = ButterKnife.bind(this, view);
+        worldPresenter = new WorldPresenter(this);
     }
 
     private void setListeners() {
@@ -72,8 +74,9 @@ public class WorldFragment extends Fragment implements
         listWorldChat.setNestedScrollingEnabled(false);
     }
 
-    private void setUpWorldPresenter() {
-        WorldPresenter worldPresenter = new WorldPresenter(this);
+    @Override
+    public void onStart() {
+        super.onStart();
         worldPresenter.start();
     }
 
@@ -103,7 +106,12 @@ public class WorldFragment extends Fragment implements
 
     @Override
     public void setAdapter(WorldAdapter adapter) {
-        listWorldChat.setAdapter(adapter);
+        if (adapter != null) {
+            listWorldChat.setAdapter(adapter);
+        } else {
+            Timber.i("Adapter is null");
+        }
+
     }
 
     @Override

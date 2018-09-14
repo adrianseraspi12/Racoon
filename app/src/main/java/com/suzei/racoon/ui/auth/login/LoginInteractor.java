@@ -1,24 +1,38 @@
 package com.suzei.racoon.ui.auth.login;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.suzei.racoon.ui.auth.AuthContract;
 
+import timber.log.Timber;
+
 public class LoginInteractor {
 
-    private AuthContract.onLoginListener mOnLoginListener;
+    private Activity activity;
+    private AuthContract.onAuthListener mOnLoginListener;
+    private FirebaseAuth mAuth;
 
-    LoginInteractor(AuthContract.onLoginListener mOnLoginListener) {
+    LoginInteractor(Activity activity, AuthContract.onAuthListener mOnLoginListener) {
         this.mOnLoginListener = mOnLoginListener;
+        this.activity = activity;
+        mAuth = FirebaseAuth.getInstance();
     }
 
-    public void login (Activity activity, String email, String password) {
+    public void login (String email, String password) {
         new Handler().postDelayed(() -> {
 
             if (TextUtils.isEmpty(email)) {
@@ -36,24 +50,31 @@ public class LoginInteractor {
                 return;
             }
 
-            performFirebaseLogin(activity, email, password);
+            performFirebaseLogin(email, password);
 
         }, 2000);
     }
 
-    private void performFirebaseLogin(Activity activity, String email, String password) {
-        FirebaseAuth.getInstance()
-                .signInWithEmailAndPassword(email, password)
+    private void performFirebaseLogin(String email, String password) {
+        mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(activity, task -> {
-
                     if (task.isSuccessful()) {
                         String uid = task.getResult().getUser().getUid();
+                        saveEmailToSharedPref(email);
                         updateDeviceToken(uid);
                     } else {
+                        Timber.i(task.getException());
                         mOnLoginListener.onFailure(task.getException());
                     }
-
                 });
+    }
+
+    private void saveEmailToSharedPref(String email) {
+        SharedPreferences sharedPreferences =
+                activity.getSharedPreferences("auth", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("email", email);
+        editor.apply();
     }
 
     private void updateDeviceToken(String uid) {

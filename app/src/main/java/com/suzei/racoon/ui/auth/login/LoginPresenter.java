@@ -1,21 +1,23 @@
 package com.suzei.racoon.ui.auth.login;
 
 import android.app.Activity;
+import android.content.Context;
+
 import com.suzei.racoon.ui.auth.AuthContract;
 
-public class LoginPresenter implements AuthContract.onLoginListener {
+public class LoginPresenter implements AuthContract.onAuthListener {
 
     private AuthContract.LoginView mLoginView;
     private LoginInteractor mLoginInteractor;
 
-    public LoginPresenter(AuthContract.LoginView mLoginView) {
+    LoginPresenter(Activity activity, AuthContract.LoginView mLoginView) {
         this.mLoginView = mLoginView;
-        this.mLoginInteractor = new LoginInteractor(this);
+        this.mLoginInteractor = new LoginInteractor(activity, this);
     }
 
-    public void validateLoginCredentials(Activity activity, String email, String password) {
+    public void validateLoginCredentials(String email, String password) {
         mLoginView.showProgress();
-        mLoginInteractor.login(activity, email, password);
+        mLoginInteractor.login(email, password);
     }
 
     @Override

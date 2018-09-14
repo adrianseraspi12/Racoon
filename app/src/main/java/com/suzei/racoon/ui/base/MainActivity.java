@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,9 +28,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.suzei.racoon.R;
 import com.suzei.racoon.ui.add.AddActivity;
+import com.suzei.racoon.ui.auth.StartActivity;
 import com.suzei.racoon.ui.chatlist.ChatFragment;
 import com.suzei.racoon.ui.friendlist.FriendsFragment;
 import com.suzei.racoon.ui.notificationlist.NotificationFragment;
+import com.suzei.racoon.ui.preference.SettingsActivity;
 import com.suzei.racoon.ui.profile.ProfileFragment;
 import com.suzei.racoon.ui.worldlist.WorldFragment;
 import com.suzei.racoon.ui.add.AddActivity.Add;
@@ -46,16 +49,13 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
     //TODO Add onBoarding user
     //TODO (WARNING!) could cause of slowing of app because of ValueEventListener
 
-    static { AppCompatDelegate.setCompatVectorFromResourcesEnabled(true); }
-
     private DatabaseReference mNotifCountRef;
-
     private AHNotification.Builder notification;
+    private FirebaseAuth mAuth;
 
     private Callback.ButtonView mListener;
 
     @BindView(R.id.main_toolbar_layout) RelativeLayout toolbarLayout;
-    @BindView(R.id.main_toolbar_shadow) View shadowView;
     @BindView(R.id.main_fragment_container) FrameLayout fragmentContainerView;
     @BindView(R.id.main_bottom_navigation) AHBottomNavigation bottomNavigationView;
     @BindView(R.id.main_primary_fab) FloatingActionButton fabPrimaryView;
@@ -64,6 +64,10 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
     @BindDrawable(R.drawable.add_single_chat) Drawable drawableAddSingleChat;
     @BindDrawable(R.drawable.add_group_chat) Drawable drawableAddGroupChat;
     @BindDrawable(R.drawable.add_friend) Drawable drawableAddFriend;
+
+    @Nullable
+    @BindView(R.id.main_toolbar_shadow)
+    View shadowView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +82,8 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
 
     private void initObjects() {
         ButterKnife.bind(this);
-        String currentUserId = FirebaseAuth.getInstance().getUid();
-        mNotifCountRef = FirebaseDatabase.getInstance().getReference().child("notification_count")
-                .child(currentUserId);
+        mAuth = FirebaseAuth.getInstance();
+        mNotifCountRef = FirebaseDatabase.getInstance().getReference().child("notification_count");
     }
 
     private void initBottomNavNotification() {
@@ -141,16 +144,20 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
         bottomNavigationView.setNotification(notification.build(), pos);
     }
 
+    @OnClick(R.id.main_settings)
+    public void onSettingsClick() {
+        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+    }
+
     @OnClick(R.id.main_primary_fab)
-    public void onPrimaryFabClick(View view) {
+    public void onPrimaryFabClick() {
         if (mListener != null) {
             mListener.onButtonClick();
         }
-        //Timber listener is null
     }
 
     @OnClick(R.id.main_secondary_fab)
-    public void onSecondaryFabClick(View view) {
+    public void onSecondaryFabClick() {
         Intent addActIntent = new Intent(MainActivity.this, AddActivity.class);
         addActIntent.putExtra(EXTRA_FRAGMENT_TYPE, Add.GROUP_CHAT);
         startActivity(addActIntent);
@@ -245,14 +252,38 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
     @Override
     protected void onStart() {
         super.onStart();
-        mNotifCountRef.child("alerts").addValueEventListener(initEventListeners(3));
-        mNotifCountRef.child("chats").addValueEventListener(initEventListeners(1));
+
+        if (mAuth.getCurrentUser() != null) {
+            mNotifCountRef.child(mAuth.getUid()).child("alerts")
+                    .addValueEventListener(initEventListeners(3));
+            mNotifCountRef.child(mAuth.getUid()).child("chats")
+                    .addValueEventListener(initEventListeners(1));
+        } else {
+            startActivity(new Intent(MainActivity.this, StartActivity.class));
+            finish();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mNotifCountRef.child("alerts").removeEventListener(initEventListeners(3));
-        mNotifCountRef.child("chats").removeEventListener(initEventListeners(1));
+
+        if (mAuth.getCurrentUser() != null) {
+            mNotifCountRef.child(mAuth.getUid()).child("alerts")
+                    .removeEventListener(initEventListeners(3));
+            mNotifCountRef.child(mAuth.getUid()).child("chats")
+                    .removeEventListener(initEventListeners(1));
+        }
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
     }
 }

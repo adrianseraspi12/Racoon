@@ -1,6 +1,7 @@
 package com.suzei.racoon.ui.auth.register;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -42,7 +43,7 @@ public class RegisterInteractor {
                 return;
             }
 
-            if (password.length() <= 5) {
+            if (password.length() < 5) {
                 mRegisterListener.onPasswordError("Password is weak, Minimum of 6 characters");
                 return;
             }
@@ -65,12 +66,21 @@ public class RegisterInteractor {
 
                     if (task.isSuccessful()) {
                         String uid = task.getResult().getUser().getUid();
+                        saveEmailToSharedPref(email);
                         createDefaultUserDetails(uid, name);
                     } else {
                         mRegisterListener.onFailure(task.getException());
                     }
 
                 });
+    }
+
+    private void saveEmailToSharedPref(String email) {
+        SharedPreferences sharedPreferences =
+                context.getSharedPreferences("auth", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("email", email);
+        editor.apply();
     }
 
     private void createDefaultUserDetails(String uid, String name) {

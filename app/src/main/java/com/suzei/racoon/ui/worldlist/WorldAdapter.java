@@ -2,15 +2,20 @@ package com.suzei.racoon.ui.worldlist;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.common.internal.ResourceUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -62,8 +67,6 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder>{
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.item_world_chat_root_view) FrameLayout rootView;
-        @BindView(R.id.item_world_menu) ImageButton menuView;
         @BindView(R.id.item_world_image) RoundedImageView imageView;
         @BindView(R.id.item_world_name) TextView nameView;
         @BindView(R.id.item_world_desc) TextView descView;
@@ -83,6 +86,7 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder>{
                     nameView.setText(groups.getName());
                     descView.setText(groups.getDescription());
                     Picasso.get().load(groups.getImage()).fit().centerCrop().into(imageView);
+
                     setClickListener(key);
                 }
 

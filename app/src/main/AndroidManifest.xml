@@ -14,20 +14,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.auth.StartActivity" />
-        <activity android:name=".ui.base.MainActivity">
+        <activity android:name=".ui.auth.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.base.MainActivity"
+            android:launchMode="singleTop"/>
         <activity android:name=".ui.add.AddActivity" />
         <activity android:name=".ui.friend.FriendActivity" />
         <activity android:name=".ui.group.GroupActivity" />
         <activity android:name=".ui.group.MembersActivity" />
         <activity android:name=".ui.chatroom.group.GroupChatActivity" />
-        <activity android:name=".ui.chatroom.single.SingleChatActivity"></activity>
+        <activity android:name=".ui.chatroom.single.SingleChatActivity" />
+        <activity android:name=".ui.preference.AppCompatPreferenceActivity" />
+        <activity
+            android:name=".ui.preference.SettingsActivity"
+            android:label="Settings"
+            android:parentActivityName=".ui.base.MainActivity"
+            android:theme="@style/SettingsTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.base.MainActivity" />
+        </activity>
+        <activity android:name=".ui.preference.AccountActivity"/>
     </application>
 
 </manifest>

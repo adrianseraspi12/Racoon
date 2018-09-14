@@ -1,0 +1,144 @@
+package com.suzei.racoon.ui.preference;
+
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.suzei.racoon.R;
+import com.suzei.racoon.ui.auth.AuthContract;
+import com.suzei.racoon.util.view.DelayedProgressDialog;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class AccountActivity extends AppCompatActivity implements AccountContract.AccountView {
+
+    public static final String CHANGE = "change";
+    public static final int CHANGE_EMAIL = 0;
+    public static final int RESET_PASSWORD = 1;
+
+    private AccountPresenter accountPresenter;
+    private DelayedProgressDialog delayedProgressDialog;
+
+    private int change;
+
+    @BindView(R.id.account_toolbar) Toolbar toolbar;
+    @BindView(R.id.account_password_layout) TextInputLayout passwordLayout;
+    @BindView(R.id.account_text_input_reset_layout) TextInputLayout resetLayout;
+    @BindView(R.id.account_email) EditText emailView;
+    @BindView(R.id.account_password) EditText passwordView;
+    @BindView(R.id.account_text_input_reset) EditText resetView;
+    @BindView(R.id.account_button) Button buttonView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_account);
+        initObjects();
+        setUpToolbar();
+        setUpUi();
+    }
+
+    private void initObjects() {
+        ButterKnife.bind(this);
+        accountPresenter = new AccountPresenter(AccountActivity.this, this);
+        delayedProgressDialog = new DelayedProgressDialog();
+    }
+
+    private void setUpToolbar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void setUpUi() {
+        change = getIntent().getIntExtra(CHANGE, -1);
+        switch (change) {
+
+            case CHANGE_EMAIL:
+                getSupportActionBar().setTitle("Change Email");
+                resetLayout.setHint("New Email");
+                passwordLayout.setHint("Password");
+                buttonView.setText(R.string.change);
+                break;
+
+            case RESET_PASSWORD:
+                getSupportActionBar().setTitle("Reset Password");
+                passwordLayout.setHint("Old Password");
+                resetLayout.setHint("New Password");
+                buttonView.setText(R.string.reset);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Invalid type=" + change);
+        }
+    }
+
+    @OnClick(R.id.account_button)
+    public void onButtonClick() {
+        buttonView.setEnabled(false);
+        String email = emailView.getText().toString().trim();
+        String password = passwordView.getText().toString().trim();
+        String strValue = resetView.getText().toString().trim();
+
+        switch (change) {
+
+            case CHANGE_EMAIL:
+                accountPresenter.changeEmail(email, password, strValue);
+                break;
+
+            case RESET_PASSWORD:
+                accountPresenter.resetPassword(email, password, strValue);
+                break;
+        }
+    }
+
+    @Override
+    public void setUsernameError(String message) {
+        buttonView.setEnabled(true);
+        emailView.setError(message);
+        emailView.requestFocus();
+    }
+
+    @Override
+    public void setPasswordError(String message) {
+        buttonView.setEnabled(true);
+        passwordView.setError(message);
+        passwordView.requestFocus();
+    }
+
+    @Override
+    public void onLoginSuccess() {
+        buttonView.setEnabled(true);
+        Toast.makeText(AccountActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onLoginFailure(Exception e) {
+        buttonView.setEnabled(true);
+    }
+
+    @Override
+    public void setAccountChangeError(String message) {
+        buttonView.setEnabled(true);
+        resetView.setError(message);
+        resetView.requestFocus();
+    }
+
+    @Override
+    public void showProgress() {
+        delayedProgressDialog.show(getSupportFragmentManager(), "");
+    }
+
+    @Override
+    public void hideProgress() {
+        delayedProgressDialog.cancel();
+    }
+
+}

@@ -22,7 +22,7 @@ public interface AuthContract {
 
     }
 
-    interface onLoginListener {
+    interface onAuthListener {
 
         void onUsernameError(String message);
 
@@ -34,17 +34,10 @@ public interface AuthContract {
 
     }
 
-    interface onRegisterListener {
-
-        void onUsernameError(String message);
-
-        void onPasswordError(String message);
+    interface onRegisterListener extends onAuthListener {
 
         void onDisplayNameError(String message);
 
-        void onSuccess();
-
-        void onFailure(Exception e);
     }
 
 }

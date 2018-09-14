@@ -1,6 +1,7 @@
 package com.suzei.racoon.ui;
 
 import android.app.Application;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.OkHttp3Downloader;
@@ -20,10 +21,12 @@ public class Racoon extends Application {
         super.onCreate();
         initEmojiManager();
         initJodaTime();
+        setUpCompatVector();
         initFirebaseDatabase();
         initTimber();
         initPicasso();
     }
+
 
     private void initEmojiManager() {
         EmojiManager.install(new EmojiOneProvider());
@@ -31,6 +34,10 @@ public class Racoon extends Application {
 
     private void initJodaTime() {
         JodaTimeAndroid.init(this);
+    }
+
+    private void setUpCompatVector() {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
     private void initFirebaseDatabase() {

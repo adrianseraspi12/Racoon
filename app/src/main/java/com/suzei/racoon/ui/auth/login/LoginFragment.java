@@ -62,7 +62,7 @@ public class LoginFragment extends Fragment implements
     private void initObjects(View view) {
         unbinder = ButterKnife.bind(this, view);
         progressDialog = new DelayedProgressDialog();
-        presenter = new LoginPresenter(this);
+        presenter = new LoginPresenter(getActivity(),this);
     }
 
     private void setListeners() {
@@ -81,8 +81,8 @@ public class LoginFragment extends Fragment implements
     @Override
     public void onButtonClick() {
         String username = emailView.getText().toString().trim();
-        String password = emailView.getText().toString().trim();
-        presenter.validateLoginCredentials(getActivity(), username, password);
+        String password = passwordView.getText().toString().trim();
+        presenter.validateLoginCredentials(username, password);
     }
 
     @OnClick(R.id.start_login_show_hide_pass)

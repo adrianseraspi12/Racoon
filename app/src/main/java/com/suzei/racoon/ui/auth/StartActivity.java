@@ -1,5 +1,6 @@
 package com.suzei.racoon.ui.auth;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,10 +12,13 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.suzei.racoon.R;
 import com.suzei.racoon.ui.auth.login.LoginFragment;
 import com.suzei.racoon.ui.auth.register.RegisterFragment;
 import com.suzei.racoon.ui.base.Callback;
+import com.suzei.racoon.ui.base.MainActivity;
 
 import butterknife.BindAnim;
 import butterknife.BindString;
@@ -29,6 +33,7 @@ public class StartActivity extends AppCompatActivity {
 
     private Callback.ButtonView mCallback;
 
+    private FirebaseUser currentUser;
     private Unbinder unbinder;
 
     private boolean isRegisterShow = true;
@@ -51,6 +56,7 @@ public class StartActivity extends AppCompatActivity {
 
     private void initObjects() {
         unbinder = ButterKnife.bind(this);
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     private void showFragment(Fragment fragment) {
@@ -118,6 +124,15 @@ public class StartActivity extends AppCompatActivity {
 
     public void removeOnBackPressedListener() {
         this.mCallback = null;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (currentUser != null) {
+            startActivity(new Intent(StartActivity.this, MainActivity.class));
+            finish();
+        }
     }
 
     @Override
