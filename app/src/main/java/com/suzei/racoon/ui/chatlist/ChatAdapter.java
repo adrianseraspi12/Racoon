@@ -14,20 +14,17 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
+import com.suzei.racoon.ui.base.FirebaseManager;
 import com.suzei.racoon.ui.chatroom.group.GroupChatActivity;
 import com.suzei.racoon.ui.chatroom.single.SingleChatActivity;
 import com.suzei.racoon.model.Chats;
 import com.suzei.racoon.model.Groups;
 import com.suzei.racoon.model.Users;
-import com.suzei.racoon.util.ErrorHandler;
 import com.suzei.racoon.util.lib.TimeRefractor;
 import com.vanniktech.emoji.EmojiTextView;
 
@@ -41,7 +38,7 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chats, ChatAdapter.View
     private DatabaseReference mUserRef;
     private DatabaseReference mGroupRef;
 
-    public ChatAdapter(@NonNull FirebaseRecyclerOptions<Chats> options) {
+    ChatAdapter(@NonNull FirebaseRecyclerOptions<Chats> options) {
         super(options);
         mUserRef = FirebaseDatabase.getInstance().getReference().child("users");
         mGroupRef = FirebaseDatabase.getInstance().getReference().child("groups");
@@ -64,6 +61,7 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chats, ChatAdapter.View
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private Context context;
+        private FirebaseManager firebaseManager;
 
         @BindDrawable(R.drawable.online) Drawable drawableOnline;
         @BindDrawable(R.drawable.offline) Drawable drawableOffline;
@@ -117,59 +115,46 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chats, ChatAdapter.View
 
         }
 
-        private void showUserData(Chats chats, String uid) {
-            mUserRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Users users = dataSnapshot.getValue(Users.class);
-                    nameView.setText(users.getName());
-                    Picasso.get().load(users.getImage()).fit().centerCrop().into(imageView);
+        private void showGroupData(Chats chats, String uid) {
+            firebaseManager = new FirebaseManager(dataSnapshot -> {
 
-                    if (chats.getLast_message() == null) {
-                        descView.setText(stringNewConv);
-                    } else {
-                        descView.setText(chats.getLast_message());
-                    }
+                Groups groups = dataSnapshot.getValue(Groups.class);
+                nameView.setText(groups.getName());
+                Picasso.get().load(groups.getImage()).fit().centerCrop().into(imageView);
 
-                    if (users.isOnline()) {
-                        statusView.setImageDrawable(drawableOnline);
-                    } else {
-                        statusView.setImageDrawable(drawableOffline);
-                    }
+                if (chats.getLast_message() == null) {
+                    descView.setText(stringNewConv);
+                } else {
+                    descView.setText(chats.getLast_message());
                 }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    ErrorHandler.databaseError(itemView.getContext(), error.toException());
-                }
             });
+
+            firebaseManager.startSingleEventListener(mGroupRef.child(uid));
         }
 
-        private void showGroupData(Chats chats, String uid) {
-            mGroupRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        private void showUserData(Chats chats, String uid) {
+            firebaseManager = new FirebaseManager(dataSnapshot -> {
 
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Users users = dataSnapshot.getValue(Users.class);
+                nameView.setText(users.getName());
+                Picasso.get().load(users.getImage()).fit().centerCrop().into(imageView);
 
-                    if (dataSnapshot.hasChildren()) {
-                        Groups groups = dataSnapshot.getValue(Groups.class);
-                        nameView.setText(groups.getName());
-                        Picasso.get().load(groups.getImage()).fit().centerCrop().into(imageView);
-
-                        if (chats.getLast_message() == null) {
-                            descView.setText(stringNewConv);
-                        } else {
-                            descView.setText(chats.getLast_message());
-                        }
-                    }
-
+                if (chats.getLast_message() == null) {
+                    descView.setText(stringNewConv);
+                } else {
+                    descView.setText(chats.getLast_message());
                 }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    ErrorHandler.databaseError(itemView.getContext(), error.toException());
+                if (users.isOnline()) {
+                    statusView.setImageDrawable(drawableOnline);
+                } else {
+                    statusView.setImageDrawable(drawableOffline);
                 }
+
             });
+
+            firebaseManager.startSingleEventListener(mUserRef.child(uid));
         }
 
         private void setGroupClickListener(String id) {

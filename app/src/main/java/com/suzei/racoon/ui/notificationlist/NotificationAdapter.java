@@ -36,7 +36,6 @@ import timber.log.Timber;
 
 public class NotificationAdapter extends FirebaseRecyclerAdapter<Notifications, NotificationAdapter.ViewHolder> {
 
-    private DatabaseReference mUsersRef;
     private DatabaseReference mNotifCount;
     private DatabaseReference mNotifRef;
 
@@ -44,7 +43,6 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notifications, 
         super(options);
         String currentUserId = FirebaseAuth.getInstance().getUid();
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        mUsersRef = rootRef.child("users");
         mNotifCount = rootRef.child("notification_count").child(currentUserId);
         mNotifRef = rootRef.child("notifications").child(currentUserId);
     }
@@ -66,6 +64,7 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notifications, 
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private Context context;
+        private DatabaseReference mUsersRef;
 
         @BindColor(android.R.color.white) int whiteColor;
 
@@ -86,6 +85,7 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notifications, 
             super(itemView);
             ButterKnife.bind(this, itemView);
             context = itemView.getContext();
+            mUsersRef = FirebaseDatabase.getInstance().getReference().child("users");
         }
 
         void bind(Notifications notif, String notifId) {

@@ -15,7 +15,7 @@ public class NotificationInteractor {
     private NotificationAdapter adapter;
     private DatabaseReference notifRef;
 
-    public NotificationInteractor(Contract.AdapterListener<NotificationAdapter> notificationListener) {
+    NotificationInteractor(Contract.AdapterListener<NotificationAdapter> notificationListener) {
         this.notificationListener = notificationListener;
         String currentUserId = FirebaseAuth.getInstance().getUid();
         notifRef = FirebaseDatabase.getInstance().getReference()

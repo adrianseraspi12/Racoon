@@ -9,6 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.suzei.racoon.ui.base.Contract;
+import com.suzei.racoon.ui.base.FirebaseManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -114,8 +115,8 @@ public class FriendInteractor {
                 getNotif(currentUserId, "friend_request","receiver"));
 
         mRootRef.updateChildren(requestMap, (error, databaseReference) -> {
-            updateNotifCount(friendId);
-            updateNotifCount(currentUserId);
+            incrementNotifCount(friendId);
+            incrementNotifCount(currentUserId);
             if (error == null) {
                 friendListener.onLoadSuccess("request_sent");
             } else {
@@ -142,8 +143,8 @@ public class FriendInteractor {
 
         mRootRef.updateChildren(friendMap, (error, databaseReference) -> {
 
-            updateNotifCount(friendId);
-            updateNotifCount(currentUserId);
+            incrementNotifCount(friendId);
+            incrementNotifCount(currentUserId);
 
             if (error == null) {
                 friendListener.onLoadSuccess("friend");
@@ -164,7 +165,7 @@ public class FriendInteractor {
         notifSendReq.put("seen", false);
         return notifSendReq;
     }
-    private void updateNotifCount(String uid) {
+    private void incrementNotifCount(String uid) {
         mNotifCountRef.child(uid).child("alerts")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -201,7 +202,8 @@ public class FriendInteractor {
                     }
                 } else {
                     //Check if the user is friend
-                    mFriendsRef.child(currentUserId)
+                    mFriendsRef
+                            .child(currentUserId)
                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -230,4 +232,5 @@ public class FriendInteractor {
         };
 
     }
+
 }

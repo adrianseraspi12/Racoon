@@ -47,7 +47,6 @@ import static com.suzei.racoon.ui.add.AddActivity.EXTRA_FRAGMENT_TYPE;
 public class MainActivity extends AppCompatActivity implements AHBottomNavigation.OnTabSelectedListener {
 
     //TODO Add onBoarding user
-    //TODO (WARNING!) could cause of slowing of app because of ValueEventListener
 
     private DatabaseReference mNotifCountRef;
     private AHNotification.Builder notification;
@@ -142,6 +141,13 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
         }
         notification.setText(String.valueOf(count));
         bottomNavigationView.setNotification(notification.build(), pos);
+    }
+
+    @OnClick(R.id.main_logout)
+    public void onSignOutClick() {
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(MainActivity.this, StartActivity.class));
+        finish();
     }
 
     @OnClick(R.id.main_settings)

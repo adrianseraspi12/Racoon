@@ -53,8 +53,6 @@ public class GroupChatActivity extends AppCompatActivity implements
         ChatContract.ChatView,
         Contract.AdapterView<MessagesAdapter> {
 
-    //TODO change behavior of add group
-
     public static final String EXTRA_GROUP_ID = "group_id";
 
     private GroupDetailsPresenter groupDetailsPresenter;

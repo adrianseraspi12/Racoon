@@ -16,10 +16,10 @@ public class CreateGroupInteractor {
 
     private Context context;
 
-    private CreateGroupContract.CreateGroupListener crudListener;
+    private CreateGroupContract.CreateGroupListener createGroupListener;
 
-    CreateGroupInteractor(Context context, CreateGroupContract.CreateGroupListener crudListener) {
-        this.crudListener = crudListener;
+    CreateGroupInteractor(Context context, CreateGroupContract.CreateGroupListener createGroupListener) {
+        this.createGroupListener = createGroupListener;
         this.context = context;
     }
 
@@ -39,7 +39,7 @@ public class CreateGroupInteractor {
         groupRef.child(groupId).updateChildren(groupDetailsMap).addOnCompleteListener(task -> {
 
             if (task.isSuccessful()) {
-                crudListener.onCreateSuccess(groupId);
+                createGroupListener.onCreateSuccess(groupId);
             } else {
                 //TODO Handle errors
             }

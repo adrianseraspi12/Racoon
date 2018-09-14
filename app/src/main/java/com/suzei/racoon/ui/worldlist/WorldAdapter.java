@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
+import com.suzei.racoon.ui.base.FirebaseManager;
 import com.suzei.racoon.ui.chatroom.group.GroupChatActivity;
 import com.suzei.racoon.model.Groups;
 import com.suzei.racoon.util.ErrorHandler;
@@ -37,13 +38,9 @@ import butterknife.ButterKnife;
 public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder>{
 
     private ArrayList<String> mWorldGroupKeys;
-    private DatabaseReference mGroupRef;
-    private String currentUserId;
 
-    public WorldAdapter(ArrayList<String> groupKeys) {
+    WorldAdapter(ArrayList<String> groupKeys) {
         this.mWorldGroupKeys = groupKeys;
-        currentUserId = FirebaseAuth.getInstance().getUid();
-        mGroupRef = FirebaseDatabase.getInstance().getReference().child("groups");
     }
 
     @NonNull
@@ -65,7 +62,11 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder>{
         return mWorldGroupKeys.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements FirebaseManager.FirebaseCallback {
+
+        private FirebaseManager firebaseManager;
+        private DatabaseReference mGroupRef;
+        private String currentUserId;
 
         @BindView(R.id.item_world_image) RoundedImageView imageView;
         @BindView(R.id.item_world_name) TextView nameView;
@@ -74,28 +75,14 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder>{
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            mGroupRef = FirebaseDatabase.getInstance().getReference().child("groups");
+            firebaseManager = new FirebaseManager(this);
+            currentUserId = FirebaseAuth.getInstance().getUid();
         }
 
         void bind(String key) {
-            mGroupRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
-
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Groups groups = dataSnapshot.getValue(Groups.class);
-
-                    nameView.setText(groups.getName());
-                    descView.setText(groups.getDescription());
-                    Picasso.get().load(groups.getImage()).fit().centerCrop().into(imageView);
-
-                    setClickListener(key);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
+            firebaseManager.startSingleEventListener(mGroupRef.child(key));
+            setClickListener(key);
         }
 
         private void setClickListener(String id) {
@@ -115,6 +102,15 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder>{
 
                     }));
 
+        }
+
+        @Override
+        public void onSuccess(DataSnapshot dataSnapshot) {
+            Groups groups = dataSnapshot.getValue(Groups.class);
+
+            nameView.setText(groups.getName());
+            descView.setText(groups.getDescription());
+            Picasso.get().load(groups.getImage()).fit().centerCrop().into(imageView);
         }
     }
 

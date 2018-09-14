@@ -27,14 +27,12 @@ import butterknife.ButterKnife;
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
 
     private Callback.RecyclerviewListener<Users> mListener;
-    private DatabaseReference mUserRef;
     private ArrayList<String> userKeys;
 
     public UsersAdapter(ArrayList<String> friendKeys,
                         Callback.RecyclerviewListener<Users> listener) {
         this.userKeys = friendKeys;
         this.mListener = listener;
-        mUserRef = FirebaseDatabase.getInstance().getReference().child("users");
     }
 
     @NonNull
@@ -56,7 +54,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         return userKeys.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements FirebaseManager.FirebaseCallback {
+
+        private DatabaseReference mUserRef;
+        private FirebaseManager firebaseManager;
 
         @BindString(R.string.person_is_private) String personIsPrivate;
         @BindView(R.id.item_user_image) RoundedImageView imageView;
@@ -66,37 +67,32 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            firebaseManager = new FirebaseManager(this);
+            mUserRef = FirebaseDatabase.getInstance().getReference().child("users");
         }
 
         void bind(String key) {
-            mUserRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
-
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Users users = dataSnapshot.getValue(Users.class);
-                    nameView.setText(users.getName());
-                    Picasso.get().load(users.getImage()).fit().centerCrop().into(imageView);
-                    users.setUid(key);
-
-                    if (users.getBio().equals("")) {
-                        descView.setText(personIsPrivate);
-                    } else {
-                        descView.setText(users.getBio());
-                    }
-
-                    if (mListener != null) {
-                        itemView.setOnClickListener(v -> mListener.onItemClick(users,
-                                itemView));
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
+            firebaseManager.startSingleEventListener(mUserRef.child(key));
         }
 
+        @Override
+        public void onSuccess(DataSnapshot dataSnapshot) {
+            Users users = dataSnapshot.getValue(Users.class);
+            nameView.setText(users.getName());
+            Picasso.get().load(users.getImage()).fit().centerCrop().into(imageView);
+            users.setUid(dataSnapshot.getKey());
+
+            if (users.getBio().equals("")) {
+                descView.setText(personIsPrivate);
+            } else {
+                descView.setText(users.getBio());
+            }
+
+            if (mListener != null) {
+                itemView.setOnClickListener(v -> mListener.onItemClick(users,
+                        itemView));
+            }
+        }
     }
 
 }

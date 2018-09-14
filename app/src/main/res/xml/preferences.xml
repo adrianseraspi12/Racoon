@@ -11,10 +11,6 @@
             android:key="password"
             android:title="Reset Password" />
 
-        <Preference
-            android:key="logout"
-            android:title="Logout" />
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="About">

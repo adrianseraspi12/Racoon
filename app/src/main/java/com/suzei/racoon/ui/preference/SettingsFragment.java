@@ -76,11 +76,6 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
         switch (key) {
 
-            case "logout":
-                FirebaseAuth.getInstance().signOut();
-                getActivity().finish();
-                break;
-
             case "sendFeedback":
                 Intent feedbackIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                         "mailto", "adrianseraspi12@gmail.com", null));
