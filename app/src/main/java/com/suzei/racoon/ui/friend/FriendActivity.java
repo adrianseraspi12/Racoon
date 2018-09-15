@@ -16,6 +16,7 @@ import com.suzei.racoon.R;
 import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.ui.chatroom.single.SingleChatActivity;
 import com.suzei.racoon.model.Users;
+import com.suzei.racoon.util.lib.OnlineStatus;
 
 import butterknife.BindDrawable;
 import butterknife.BindString;
@@ -102,6 +103,18 @@ public class FriendActivity extends AppCompatActivity implements Contract.Detail
     protected void onStart() {
         super.onStart();
         friendPresenter.readCurrentState(currentUserId, mId);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        OnlineStatus.set(false);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        OnlineStatus.set(true);
     }
 
     @Override

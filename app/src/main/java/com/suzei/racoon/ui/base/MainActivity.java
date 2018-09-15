@@ -36,6 +36,7 @@ import com.suzei.racoon.ui.preference.SettingsActivity;
 import com.suzei.racoon.ui.profile.ProfileFragment;
 import com.suzei.racoon.ui.worldlist.WorldFragment;
 import com.suzei.racoon.ui.add.AddActivity.Add;
+import com.suzei.racoon.util.lib.OnlineStatus;
 
 import butterknife.BindDrawable;
 import butterknife.BindView;
@@ -256,6 +257,18 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        OnlineStatus.set(false);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        OnlineStatus.set(true);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
 
@@ -283,13 +296,4 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
 
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-    }
 }

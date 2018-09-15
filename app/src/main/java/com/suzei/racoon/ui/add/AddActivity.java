@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.suzei.racoon.R;
+import com.suzei.racoon.util.lib.OnlineStatus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,5 +63,17 @@ public class AddActivity extends AppCompatActivity {
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(container.getId(), fragment);
         ft.commit();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        OnlineStatus.set(false);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        OnlineStatus.set(true);
     }
 }

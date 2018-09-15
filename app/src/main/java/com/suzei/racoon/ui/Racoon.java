@@ -1,9 +1,15 @@
 package com.suzei.racoon.ui;
 
 import android.app.Application;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatDelegate;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.BuildConfig;
@@ -25,6 +31,7 @@ public class Racoon extends Application {
         initFirebaseDatabase();
         initTimber();
         initPicasso();
+        setUpDatabaseDisconnection();
     }
 
 
@@ -59,4 +66,36 @@ public class Racoon extends Application {
         built.setLoggingEnabled(true);
         Picasso.setSingletonInstance(built);
     }
+
+    private void setUpDatabaseDisconnection() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() != null) {
+            DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+            connectedRef.addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    boolean connected = dataSnapshot.getValue(Boolean.class);
+
+                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference();
+                    userRef.child("users").child(mAuth.getCurrentUser().getUid()).child("online")
+                            .onDisconnect().setValue(false);
+
+                    if (connected) {
+                        Timber.i("connected");
+                        // Show snackbar says connected
+                    } else {
+                        Timber.i("disconnected");
+                        // Show snackbar says disconnected
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
 }

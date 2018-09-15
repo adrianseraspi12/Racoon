@@ -35,6 +35,7 @@ import com.suzei.racoon.ui.chatroom.ChatContract;
 import com.suzei.racoon.ui.friend.FriendActivity;
 import com.suzei.racoon.model.Users;
 import com.suzei.racoon.ui.profile.ProfilePresenter;
+import com.suzei.racoon.util.lib.OnlineStatus;
 import com.suzei.racoon.util.view.EmptyRecyclerView;
 import com.suzei.racoon.util.lib.TakePicture;
 import com.vanniktech.emoji.EmojiEditText;
@@ -186,6 +187,18 @@ public class SingleChatActivity extends AppCompatActivity implements
     protected void onStop() {
         super.onStop();
         profilePresenter.destroy(chatId);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        OnlineStatus.set(false);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        OnlineStatus.set(true);
     }
 
     @Override

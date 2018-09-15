@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.suzei.racoon.R;
+import com.suzei.racoon.util.lib.OnlineStatus;
 
 import java.util.ArrayList;
 
@@ -82,5 +83,17 @@ public class MembersActivity extends AppCompatActivity {
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.members_fragment_container, fragment);
         ft.commit();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        OnlineStatus.set(false);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        OnlineStatus.set(true);
     }
 }

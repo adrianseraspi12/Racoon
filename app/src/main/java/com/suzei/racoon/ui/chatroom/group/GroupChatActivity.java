@@ -35,6 +35,7 @@ import com.suzei.racoon.ui.chatroom.messagelist.MessagePresenter;
 import com.suzei.racoon.ui.chatroom.ChatContract;
 import com.suzei.racoon.ui.group.GroupDetailsPresenter;
 import com.suzei.racoon.model.Groups;
+import com.suzei.racoon.util.lib.OnlineStatus;
 import com.suzei.racoon.util.view.EmptyRecyclerView;
 import com.suzei.racoon.util.lib.TakePicture;
 import com.vanniktech.emoji.EmojiEditText;
@@ -222,6 +223,18 @@ public class GroupChatActivity extends AppCompatActivity implements
     protected void onStop() {
         super.onStop();
         groupDetailsPresenter.destroy(groupId);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        OnlineStatus.set(false);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        OnlineStatus.set(true);
     }
 
     @Override

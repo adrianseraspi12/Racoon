@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.suzei.racoon.R;
+import com.suzei.racoon.util.lib.OnlineStatus;
 import com.suzei.racoon.util.view.DelayedProgressDialog;
 
 import butterknife.BindView;
@@ -46,6 +47,18 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        OnlineStatus.set(false);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        OnlineStatus.set(true);
     }
 
     @OnClick(R.id.forgot_password_confirm)

@@ -20,6 +20,7 @@ import com.suzei.racoon.R;
 import com.suzei.racoon.model.Groups;
 import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.util.lib.DialogEditor;
+import com.suzei.racoon.util.lib.OnlineStatus;
 import com.suzei.racoon.util.lib.TakePicture;
 
 import java.util.ArrayList;
@@ -165,6 +166,18 @@ public class GroupActivity extends AppCompatActivity implements Contract.Details
         Intent membersIntent = new Intent(GroupActivity.this, MembersActivity.class);
         membersIntent.putExtras(args);
         startActivity(membersIntent);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        OnlineStatus.set(false);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        OnlineStatus.set(true);
     }
 
     @Override

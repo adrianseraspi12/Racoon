@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.suzei.racoon.R;
 import com.suzei.racoon.ui.auth.StartActivity;
+import com.suzei.racoon.util.lib.OnlineStatus;
 import com.suzei.racoon.util.view.DelayedProgressDialog;
 
 import butterknife.BindView;
@@ -88,6 +89,18 @@ public class AccountActivity extends AppCompatActivity implements AccountContrac
             default:
                 throw new IllegalArgumentException("Invalid type=" + change);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        OnlineStatus.set(false);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        OnlineStatus.set(true);
     }
 
     @OnClick(R.id.account_button)

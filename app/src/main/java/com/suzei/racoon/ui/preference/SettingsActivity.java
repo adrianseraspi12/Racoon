@@ -5,6 +5,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.suzei.racoon.R;
+import com.suzei.racoon.util.lib.OnlineStatus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,5 +28,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        OnlineStatus.set(false);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        OnlineStatus.set(true);
     }
 }
