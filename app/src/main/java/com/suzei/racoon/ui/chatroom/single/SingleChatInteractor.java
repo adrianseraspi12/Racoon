@@ -1,14 +1,10 @@
 package com.suzei.racoon.ui.chatroom.single;
 
-import android.support.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.ValueEventListener;
 import com.suzei.racoon.ui.chatroom.ChatContract;
 
 import java.util.HashMap;
@@ -52,7 +48,6 @@ public class SingleChatInteractor {
 
             if (databaseError == null) {
                 updateChatDB(chatId, messageType, message);
-                incrementNotifCount(chatId);
                 chatListener.onSuccess();
             } else {
                 chatListener.onSendFailed();
@@ -109,35 +104,6 @@ public class SingleChatInteractor {
         messageDetailsMap.put("seen", seenMap);
 
         return messageDetailsMap;
-    }
-
-    private void incrementNotifCount(String uid) {
-        mNotifCountRef
-                .child(uid).child("chats")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        int updatedCount;
-
-                        if (dataSnapshot.hasChildren()) {
-                            int count = dataSnapshot.child("count").getValue(Integer.class);
-                            updatedCount = count + 1;
-                        } else {
-                            updatedCount = 1;
-                        }
-
-                        DatabaseReference ref = dataSnapshot.child("count").getRef();
-                        ref.setValue(updatedCount);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-
-                });
-
     }
 
 }

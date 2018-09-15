@@ -40,8 +40,6 @@ public class CreateGroupInteractor {
 
             if (task.isSuccessful()) {
                 createGroupListener.onCreateSuccess(groupId);
-            } else {
-                //TODO Handle errors
             }
 
         });

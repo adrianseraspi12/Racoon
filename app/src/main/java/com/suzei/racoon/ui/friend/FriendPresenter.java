@@ -1,5 +1,7 @@
 package com.suzei.racoon.ui.friend;
 
+import android.widget.Toast;
+
 import com.google.firebase.database.DatabaseError;
 import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.ui.friend.FriendInteractor;
@@ -32,7 +34,8 @@ public class FriendPresenter implements Contract.Listener<String> {
     }
 
     @Override
-    public void onLoadFailed(DatabaseError error) {
-
+    public void onLoadFailed(String message) {
+        friendView.hideProgress();
+        friendView.onLoadSuccess(message);
     }
 }

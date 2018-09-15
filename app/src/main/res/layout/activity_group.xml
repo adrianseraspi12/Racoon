@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_building" />
+            app:srcCompat="@drawable/ic_building" />
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/group_image"
@@ -117,7 +117,7 @@
                 android:layout_alignParentStart="true"
                 android:background="?android:selectableItemBackground"
                 android:padding="16dp"
-                android:src="@drawable/back" />
+                app:srcCompat="@drawable/back" />
 
         </RelativeLayout>
 

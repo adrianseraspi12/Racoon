@@ -7,11 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
 import com.suzei.racoon.model.Messages;
+import com.suzei.racoon.ui.base.FirebaseManager;
 import com.suzei.racoon.util.pagination.InfiniteFirebaseRecyclerAdapter;
 import com.vanniktech.emoji.EmojiTextView;
 
@@ -24,12 +28,6 @@ public class MessagesAdapter extends InfiniteFirebaseRecyclerAdapter<Messages, R
     private static final int VIEW_TYPE_SENDER = 0;
     private static final int VIEW_TYPE_RECEIVER = 1;
 
-    /**
-     * @param modelClass   Firebase will marshall the data at a location into an instance of a class that you provide
-     * @param ref          The Firebase location to watch for data changes. Can also be a slice of a location, using some
-     *                     combination of {@code limit()}, {@code startAt()}, and {@code endAt()}.
-     * @param itemsPerPage
-     */
     public MessagesAdapter(Class<Messages> modelClass, Query ref, int itemsPerPage) {
         super(modelClass, ref, itemsPerPage);
     }
@@ -128,7 +126,10 @@ public class MessagesAdapter extends InfiniteFirebaseRecyclerAdapter<Messages, R
 
     }
 
-    class ReceiverViewHolder extends RecyclerView.ViewHolder {
+    class ReceiverViewHolder extends RecyclerView.ViewHolder implements FirebaseManager.FirebaseCallback {
+
+        private FirebaseManager firebaseManager;
+        private DatabaseReference userRef;
 
         @BindView(R.id.item_receiver_image) RoundedImageView imageView;
         @BindView(R.id.item_receiver_picture_message) RoundedImageView messageImageView;
@@ -137,10 +138,14 @@ public class MessagesAdapter extends InfiniteFirebaseRecyclerAdapter<Messages, R
         ReceiverViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            firebaseManager = new FirebaseManager(this);
+            userRef = FirebaseDatabase.getInstance().getReference().child("users");
         }
 
         void bind(Messages message) {
             String type = message.getType();
+            firebaseManager.startSingleEventListener(userRef.child(message.getFrom()));
+
             switch (type) {
 
                 case "text":
@@ -161,6 +166,13 @@ public class MessagesAdapter extends InfiniteFirebaseRecyclerAdapter<Messages, R
 
         }
 
+        @Override
+        public void onSuccess(DataSnapshot dataSnapshot) {
+            if (dataSnapshot.hasChildren()) {
+                String image = dataSnapshot.child("image").getValue(String.class);
+                Picasso.get().load(image).fit().centerCrop().into(imageView);
+            }
+        }
     }
 
 }

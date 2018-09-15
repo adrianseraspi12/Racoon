@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
@@ -182,7 +183,7 @@ public class FriendActivity extends AppCompatActivity implements Contract.Detail
     }
 
     @Override
-    public void onLoadFailed(DatabaseError error) {
-
+    public void onLoadFailed(String message) {
+        Toast.makeText(FriendActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 }

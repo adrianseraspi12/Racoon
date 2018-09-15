@@ -1,9 +1,6 @@
 package com.suzei.racoon.ui.chatroom.messagelist;
 
-import com.google.firebase.database.DatabaseError;
 import com.suzei.racoon.ui.base.Contract;
-import com.suzei.racoon.ui.chatroom.messagelist.MessageInteractor;
-import com.suzei.racoon.ui.chatroom.messagelist.MessagesAdapter;
 
 public class MessagePresenter implements Contract.Listener<MessagesAdapter> {
 
@@ -33,7 +30,7 @@ public class MessagePresenter implements Contract.Listener<MessagesAdapter> {
     }
 
     @Override
-    public void onLoadFailed(DatabaseError error) {
+    public void onLoadFailed(String message) {
         messageView.loadFailed();
     }
 

@@ -18,7 +18,7 @@ public interface Contract {
 
         void onLoadSuccess(M data);
 
-        void onLoadFailed(DatabaseError error);
+        void onLoadFailed(String message);
 
     }
 
@@ -34,7 +34,7 @@ public interface Contract {
 
         void onLoadSuccess(M data);
 
-        void onLoadFailed(DatabaseError error);
+        void onLoadFailed(String message);
 
     }
 

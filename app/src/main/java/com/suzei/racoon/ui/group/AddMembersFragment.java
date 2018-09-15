@@ -18,12 +18,12 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.suzei.racoon.R;
-import com.suzei.racoon.ui.search.SearchAdapter;
-import com.suzei.racoon.ui.search.SearchContract;
-import com.suzei.racoon.ui.search.SearchPresenter;
-import com.suzei.racoon.ui.search.SelectPresenter;
-import com.suzei.racoon.ui.search.SelectUserContract;
-import com.suzei.racoon.ui.search.SelectedAdapter;
+import com.suzei.racoon.ui.add.search.SearchAdapter;
+import com.suzei.racoon.ui.add.search.SearchContract;
+import com.suzei.racoon.ui.add.search.SearchPresenter;
+import com.suzei.racoon.ui.add.search.SelectPresenter;
+import com.suzei.racoon.ui.add.search.SelectUserContract;
+import com.suzei.racoon.ui.add.search.SelectedAdapter;
 import com.suzei.racoon.model.Users;
 import com.suzei.racoon.util.view.EmptyRecyclerView;
 

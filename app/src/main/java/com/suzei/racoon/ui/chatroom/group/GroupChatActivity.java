@@ -1,6 +1,7 @@
 package com.suzei.racoon.ui.chatroom.group;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +19,6 @@ import android.widget.Toast;
 
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -43,6 +43,7 @@ import com.vanniktech.emoji.EmojiPopup;
 
 import java.util.ArrayList;
 
+import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,6 +74,7 @@ public class GroupChatActivity extends AppCompatActivity implements
     private ArrayList<String> members;
     private ArrayList<String> admins;
 
+    @BindColor(android.R.color.white) int whiteColor;
     @BindDrawable(R.drawable.back) Drawable drawableBack;
     @BindView(R.id.group_chat_room_root_view) View rootView;
     @BindView(R.id.chat_room_toolbar) Toolbar toolbar;
@@ -90,7 +92,7 @@ public class GroupChatActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_chat);
+        setContentView(R.layout.activity_chat_room);
         initBundle();
         initObjects();
         setUpToolbar();
@@ -264,7 +266,7 @@ public class GroupChatActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLoadFailed(DatabaseError error) {
+    public void onLoadFailed(String message) {
 
     }
 
@@ -298,6 +300,13 @@ public class GroupChatActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.group_chat_options, menu);
+        for(int i = 0; i < menu.size(); i++){
+            Drawable drawable = menu.getItem(i).getIcon();
+            if(drawable != null) {
+                drawable.mutate();
+                drawable.setColorFilter(whiteColor, PorterDuff.Mode.SRC_ATOP);
+            }
+        }
         return true;
     }
 

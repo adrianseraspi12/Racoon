@@ -31,8 +31,8 @@ public class ProfilePresenter implements Contract.Listener<Users> {
     }
 
     @Override
-    public void onLoadFailed(DatabaseError error) {
+    public void onLoadFailed(String message) {
         profileView.hideProgress();
-        profileView.onLoadFailed(error);
+        profileView.onLoadFailed(message);
     }
 }

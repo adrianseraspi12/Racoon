@@ -75,7 +75,7 @@ public class FriendsFragment extends Fragment implements
     }
 
     private void setUpFriendsListPresenter() {
-        FriendsListPresenter presenter = new FriendsListPresenter(this);
+        FriendsListPresenter presenter = new FriendsListPresenter(getContext(),this);
         presenter.start();
     }
 

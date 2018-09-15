@@ -9,7 +9,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.suzei.racoon.ui.base.Contract;
-import com.suzei.racoon.ui.base.FirebaseManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -80,7 +79,7 @@ public class FriendInteractor {
                 friendListener.onLoadSuccess("not_friend");
 
             } else {
-                //TODO Handle Error
+                friendListener.onLoadSuccess("Failed to cancel request");
             }
         });
 
@@ -96,7 +95,7 @@ public class FriendInteractor {
             if (error == null) {
                 friendListener.onLoadSuccess("not_friend");
             } else {
-                //TODO Handle Errors
+                friendListener.onLoadSuccess("Failed to unfriend the user");
             }
 
         });
@@ -120,7 +119,7 @@ public class FriendInteractor {
             if (error == null) {
                 friendListener.onLoadSuccess("request_sent");
             } else {
-                //TODO handle errors
+                friendListener.onLoadSuccess("Failed to send request");
             }
         });
     }
@@ -149,7 +148,7 @@ public class FriendInteractor {
             if (error == null) {
                 friendListener.onLoadSuccess("friend");
             } else {
-                //TODO Handle Errors
+                friendListener.onLoadSuccess("Failed to accept friend request");
             }
 
         });
@@ -170,8 +169,15 @@ public class FriendInteractor {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        int count = dataSnapshot.child("count").getValue(Integer.class);
-                        int updatedCount = count + 1;
+                        int updatedCount;
+
+                        if (dataSnapshot.hasChildren()) {
+                            int count = dataSnapshot.child("count").getValue(Integer.class);
+                            updatedCount = count + 1;
+                        } else {
+                            updatedCount = 1;
+                        }
+
                         dataSnapshot.getRef().child("count").setValue(updatedCount);
                     }
 

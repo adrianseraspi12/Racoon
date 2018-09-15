@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_building" />
+            app:srcCompat="@drawable/ic_building" />
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/profile_image"
@@ -39,7 +39,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/profile_image"
             android:orientation="vertical"
-            android:layout_marginBottom="8dp"
             android:layout_above="@id/profile_action_buttons_layout">
 
             <TextView
@@ -79,7 +78,8 @@
                 android:layout_marginTop="4dp"
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="4dp"
-                app:cardElevation="4dp">
+                app:cardElevation="4dp"
+                android:layout_marginBottom="8dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"

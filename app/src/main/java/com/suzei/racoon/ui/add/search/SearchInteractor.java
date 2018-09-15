@@ -1,4 +1,4 @@
-package com.suzei.racoon.ui.search;
+package com.suzei.racoon.ui.add.search;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;

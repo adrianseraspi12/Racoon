@@ -1,6 +1,7 @@
 package com.suzei.racoon.ui.chatroom.single;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +20,6 @@ import android.widget.Toast;
 
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -41,6 +41,7 @@ import com.suzei.racoon.util.lib.TakePicture;
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
 
+import butterknife.BindColor;
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,6 +70,7 @@ public class SingleChatActivity extends AppCompatActivity implements
     private String chatId;
     private String currentUserId;
 
+    @BindColor(android.R.color.white) int whiteColor;
     @BindDrawable(R.drawable.back) Drawable drawableBack;
     @BindDrawable(R.drawable.online) Drawable drawableOnline;
     @BindDrawable(R.drawable.offline) Drawable drawableOffline;
@@ -89,7 +91,7 @@ public class SingleChatActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_chat);
+        setContentView(R.layout.activity_chat_room);
         initBundle();
         initObjects();
         setUpToolbar();
@@ -266,7 +268,7 @@ public class SingleChatActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLoadFailed(DatabaseError error) {
+    public void onLoadFailed(String message) {
 
     }
 

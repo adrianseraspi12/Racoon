@@ -25,7 +25,7 @@ public class WorldPresenter implements Contract.Listener<WorldAdapter> {
     }
 
     @Override
-    public void onLoadFailed(DatabaseError error) {
+    public void onLoadFailed(String message) {
 
     }
 }

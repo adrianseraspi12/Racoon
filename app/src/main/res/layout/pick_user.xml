@@ -10,17 +10,13 @@
         android:id="@+id/pick_user_no_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="@string/no_search_results"
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/pick_user_search_list"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/pick_user_search_list" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/pick_user_loading"
@@ -50,7 +46,8 @@
             android:layout_alignParentStart="true"
             android:background="?android:attr/selectableItemBackground"
             android:padding="16dp"
-            android:src="@drawable/back" />
+            app:srcCompat="@drawable/back"
+            android:tint="@android:color/black"/>
 
         <EditText
             android:id="@+id/pick_user_search_text"
@@ -72,7 +69,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/search"
             android:padding="16dp"
-            android:src="@drawable/search" />
+            app:srcCompat="@drawable/search" />
 
         <View
             android:layout_width="match_parent"
@@ -86,7 +83,7 @@
         android:id="@+id/pick_user_selected_list_layout"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_height="56dp"
+        android:layout_height="72dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -97,6 +94,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@id/pick_user_add"/>
 

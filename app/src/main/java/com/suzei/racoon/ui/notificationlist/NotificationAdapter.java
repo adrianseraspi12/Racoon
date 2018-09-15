@@ -2,7 +2,7 @@ package com.suzei.racoon.ui.notificationlist;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -94,18 +94,18 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notifications, 
             String time = TimeRefractor.getTimeAgo(notif.getTimestamp());
             setDetails(notif.getType(), notif.getRole());
             setImageAndClickListener(notifId, notif);
-            setBackground(notif.isSeen());
+            setTextTypeface(notif.isSeen());
             timestampView.setText(time);
 
             Timber.i("id = %s",  notif.getUid());
             Timber.i("uid_type= %s", notif.getUid_type());
         }
 
-        private void setBackground(boolean isSeen) {
-            if (isSeen) {
-                rootView.setBackgroundColor(Color.parseColor("#D3D3D3"));
-            } else {
-                rootView.setBackgroundColor(whiteColor);
+        private void setTextTypeface(boolean isSeen) {
+            if (!isSeen) {
+                typeView.setTypeface(Typeface.DEFAULT_BOLD);
+                descView.setTypeface(Typeface.DEFAULT_BOLD);
+                timestampView.setTypeface(Typeface.DEFAULT_BOLD);
             }
         }
 
@@ -174,9 +174,9 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notifications, 
                         int count = dataSnapshot.child("count").getValue(Integer.class);
                         int updatedCount = count - 1;
                         mNotifCount.child("alerts").child("count").setValue(updatedCount);
-                        mNotifRef.child(notifId).child("seen").setValue(true);
                     }
 
+                    mNotifRef.child(notifId).child("seen").setValue(true);
                 }
 
                 @Override

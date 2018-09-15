@@ -1,4 +1,4 @@
-package com.suzei.racoon.ui.search;
+package com.suzei.racoon.ui.add.search;
 
 import com.suzei.racoon.model.Users;
 import com.suzei.racoon.ui.base.Contract;

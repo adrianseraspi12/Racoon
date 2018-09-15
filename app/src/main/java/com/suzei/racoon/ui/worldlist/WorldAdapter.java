@@ -29,6 +29,7 @@ import com.suzei.racoon.ui.base.FirebaseManager;
 import com.suzei.racoon.ui.chatroom.group.GroupChatActivity;
 import com.suzei.racoon.model.Groups;
 import com.suzei.racoon.util.ErrorHandler;
+import com.vanniktech.emoji.EmojiTextView;
 
 import java.util.ArrayList;
 
@@ -46,7 +47,7 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder>{
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item_world_chat,
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item_user,
                 parent, false);
         return new ViewHolder(view);
     }
@@ -68,9 +69,9 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder>{
         private DatabaseReference mGroupRef;
         private String currentUserId;
 
-        @BindView(R.id.item_world_image) RoundedImageView imageView;
-        @BindView(R.id.item_world_name) TextView nameView;
-        @BindView(R.id.item_world_desc) TextView descView;
+        @BindView(R.id.item_user_image) RoundedImageView imageView;
+        @BindView(R.id.item_user_name) TextView nameView;
+        @BindView(R.id.item_user_desc) EmojiTextView descView;
 
         ViewHolder(View itemView) {
             super(itemView);

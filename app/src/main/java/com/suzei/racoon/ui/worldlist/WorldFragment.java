@@ -6,7 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,6 @@ import com.suzei.racoon.ui.add.AddActivity.Add;
 import com.suzei.racoon.ui.base.Callback;
 import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.ui.base.MainActivity;
-import com.suzei.racoon.util.view.SpacingDecoration;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,7 +39,7 @@ public class WorldFragment extends Fragment implements
     private Unbinder unbinder;
     private WorldPresenter worldPresenter;
 
-    @BindView(R.id.world_chat_list) RecyclerView listWorldChat;
+    @BindView(R.id.recyclerview_list) RecyclerView listWorldChatView;
 
     public WorldFragment() {
         // Required empty public constructor
@@ -49,7 +49,7 @@ public class WorldFragment extends Fragment implements
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_world, container, false);
+        View view = inflater.inflate(R.layout.recyclerview_list, container, false);
         initObjects(view);
         setListeners();
         setUpRecyclerView();
@@ -69,9 +69,12 @@ public class WorldFragment extends Fragment implements
     }
 
     private void setUpRecyclerView() {
-        GridLayoutManager manager = new GridLayoutManager(getContext(), 2);
-        listWorldChat.setLayoutManager(manager);
-        listWorldChat.setNestedScrollingEnabled(false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(),
+                layoutManager.getOrientation());
+
+        listWorldChatView.setLayoutManager(layoutManager);
+        listWorldChatView.addItemDecoration(itemDecoration);
     }
 
     @Override
@@ -107,7 +110,7 @@ public class WorldFragment extends Fragment implements
     @Override
     public void setAdapter(WorldAdapter adapter) {
         if (adapter != null) {
-            listWorldChat.setAdapter(adapter);
+            listWorldChatView.setAdapter(adapter);
         } else {
             Timber.i("Adapter is null");
         }

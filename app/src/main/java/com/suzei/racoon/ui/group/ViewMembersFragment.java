@@ -189,7 +189,7 @@ public class ViewMembersFragment extends Fragment implements Contract.DetailsVie
     }
 
     @Override
-    public void onLoadFailed(DatabaseError error) {
+    public void onLoadFailed(String message) {
 
     }
 

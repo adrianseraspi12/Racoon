@@ -179,7 +179,7 @@ public class ProfileFragment extends Fragment implements Contract.DetailsView<Us
     }
 
     @Override
-    public void onLoadFailed(DatabaseError error) {
+    public void onLoadFailed(String message) {
 
     }
 

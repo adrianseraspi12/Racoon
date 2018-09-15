@@ -20,7 +20,6 @@ public class CreateGroupPresenter implements CreateGroupContract.CreateGroupList
     public void create(ArrayList<Users> members) {
         crudView.showProgress();
         crudInteractor.createGroup(members);
-
     }
 
     @Override

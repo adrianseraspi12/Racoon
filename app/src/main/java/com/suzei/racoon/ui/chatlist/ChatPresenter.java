@@ -29,7 +29,7 @@ public class ChatPresenter implements Contract.Listener<ChatAdapter> {
     }
 
     @Override
-    public void onLoadFailed(DatabaseError error) {
+    public void onLoadFailed(String message) {
 
     }
 }

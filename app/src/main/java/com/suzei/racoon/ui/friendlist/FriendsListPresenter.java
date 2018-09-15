@@ -1,5 +1,7 @@
 package com.suzei.racoon.ui.friendlist;
 
+import android.content.Context;
+
 import com.google.firebase.database.DatabaseError;
 import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.ui.base.UsersAdapter;
@@ -10,9 +12,9 @@ public class FriendsListPresenter implements Contract.Listener<UsersAdapter> {
     private Contract.AdapterView<UsersAdapter> adapterView;
     private FriendsListInteractor friendsListInteractor;
 
-    public FriendsListPresenter(Contract.AdapterView<UsersAdapter> adapterView) {
+    FriendsListPresenter(Context context, Contract.AdapterView<UsersAdapter> adapterView) {
         this.adapterView = adapterView;
-        friendsListInteractor = new FriendsListInteractor(this);
+        friendsListInteractor = new FriendsListInteractor(context, this);
     }
 
     public void start() {
@@ -27,7 +29,7 @@ public class FriendsListPresenter implements Contract.Listener<UsersAdapter> {
     }
 
     @Override
-    public void onLoadFailed(DatabaseError error) {
+    public void onLoadFailed(String message) {
         adapterView.hideProgress();
         adapterView.loadFailed();
     }

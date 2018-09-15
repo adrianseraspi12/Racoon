@@ -1,4 +1,4 @@
-package com.suzei.racoon.ui.search;
+package com.suzei.racoon.ui.add.search;
 
 import com.suzei.racoon.model.Users;
 
@@ -23,6 +23,7 @@ public class SearchPresenter implements SearchContract.SearchListener {
     public void startSearchExcludeOldList(String query,
                                           ArrayList<Users> selectedUsers,
                                           ArrayList<String> oldList) {
+        searchView.showProgress();
         searchInteractor.performFirebaseDatabaseSearch(query, selectedUsers, oldList);
     }
 
@@ -46,6 +47,7 @@ public class SearchPresenter implements SearchContract.SearchListener {
 
     @Override
     public void onSearchSuccess() {
+        searchView.hideProgress();
         searchView.searchSuccess();
     }
 

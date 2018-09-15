@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -214,7 +215,7 @@ public class GroupActivity extends AppCompatActivity implements Contract.Details
     }
 
     @Override
-    public void onLoadFailed(DatabaseError error) {
-
+    public void onLoadFailed(String message) {
+        Toast.makeText(GroupActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 }
