@@ -29,7 +29,7 @@ import butterknife.Unbinder;
 
 public class StartActivity extends AppCompatActivity {
 
-    //TODO: Add forgot password
+    //TODO: Add delete account
 
     private Callback.ButtonView mCallback;
 
@@ -67,6 +67,21 @@ public class StartActivity extends AppCompatActivity {
         ft.commit();
     }
 
+    @OnClick(R.id.start_forgot_password)
+    public void onForgotPasswordClick() {
+        startActivity(new Intent(StartActivity.this, ForgotPasswordActivity.class));
+    }
+
+    @OnClick(R.id.start_chat_now)
+    public void onChatNowClick() {
+
+        if (mCallback == null) {
+            return;
+        }
+
+        mCallback.onButtonClick();
+    }
+
     @OnClick(R.id.start_show_fragment)
     public void onTextClick(TextView textView) {
         textView.setEnabled(false);
@@ -81,16 +96,6 @@ public class StartActivity extends AppCompatActivity {
             isRegisterShow = true;
             textView.setEnabled(true);
         }
-    }
-
-    @OnClick(R.id.start_chat_now)
-    public void onChatNowClick(View view) {
-
-        if (mCallback == null) {
-            return;
-        }
-
-        mCallback.onButtonClick();
     }
 
     private void changeText(final String text) {

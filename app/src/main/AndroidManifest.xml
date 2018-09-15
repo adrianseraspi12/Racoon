@@ -23,7 +23,7 @@
         </activity>
         <activity
             android:name=".ui.base.MainActivity"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
         <activity android:name=".ui.add.AddActivity" />
         <activity android:name=".ui.friend.FriendActivity" />
         <activity android:name=".ui.group.GroupActivity" />
@@ -40,7 +40,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.base.MainActivity" />
         </activity>
-        <activity android:name=".ui.preference.AccountActivity"/>
+        <activity android:name=".ui.preference.AccountActivity" />
+        <activity android:name=".ui.auth.ForgotPasswordActivity"
+            android:parentActivityName=".ui.auth.StartActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.auth.StartActivity"/>
+        </activity>
     </application>
 
 </manifest>

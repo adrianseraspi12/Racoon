@@ -41,16 +41,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_fragment_container" />
 
+    <TextView
+        android:id="@+id/start_forgot_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:background="?android:selectableItemBackground"
+        android:padding="8dp"
+        android:text="@string/forgot_password"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/start_show_fragment" />
+
     <Button
         android:id="@+id/start_chat_now"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/border_rounded_brown"
         android:text="@string/chat_now"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_show_fragment" />
+        app:layout_constraintTop_toBottomOf="@+id/start_forgot_password" />
 
 </android.support.constraint.ConstraintLayout>
