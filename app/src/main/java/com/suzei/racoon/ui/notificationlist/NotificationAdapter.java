@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
+import com.suzei.racoon.ui.base.FirebaseManager;
 import com.suzei.racoon.ui.friend.FriendActivity;
 import com.suzei.racoon.model.Notifications;
 import com.suzei.racoon.model.Users;
@@ -65,6 +66,7 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notifications, 
 
         private Context context;
         private DatabaseReference mUsersRef;
+        private FirebaseManager firebaseManager;
 
         @BindColor(android.R.color.white) int whiteColor;
 
@@ -135,10 +137,10 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notifications, 
         private void setImageAndClickListener(String notifId, Notifications notif) {
             String notifUidType = notif.getUid_type();
             if (notifUidType.equals("single")) {
-                mUsersRef.child(notif.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                firebaseManager = new FirebaseManager(dataSnapshot -> {
 
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.hasChildren()) {
+
                         Users users = dataSnapshot.getValue(Users.class);
                         users.setUid(notif.getUid());
                         Picasso.get().load(users.getImage()).fit().centerCrop().into(imageView);
@@ -155,11 +157,9 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notifications, 
                         });
                     }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        ErrorHandler.databaseError(context, databaseError.toException());
-                    }
                 });
+
+                firebaseManager.startSingleEventListener(mUsersRef.child(notif.getUid()));
             }
 
         }
@@ -185,6 +185,7 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notifications, 
                 }
             });
         }
+
     }
 
 }

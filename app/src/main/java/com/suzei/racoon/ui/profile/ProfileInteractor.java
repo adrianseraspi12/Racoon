@@ -29,7 +29,9 @@ public class ProfileInteractor implements FirebaseManager.FirebaseCallback {
 
     @Override
     public void onSuccess(DataSnapshot dataSnapshot) {
-        Users users = dataSnapshot.getValue(Users.class);
-        profileListener.onLoadSuccess(users);
+        if (dataSnapshot.hasChildren()) {
+            Users users = dataSnapshot.getValue(Users.class);
+            profileListener.onLoadSuccess(users);
+        }
     }
 }

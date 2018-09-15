@@ -1,5 +1,6 @@
 package com.suzei.racoon.ui.preference;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Patterns;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,12 +33,12 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     }
 
     private void setClickListener() {
-        Preference logOutPref = findPreference("logout");
+        Preference deleteAccount = findPreference("delete_account");
         Preference sendFeedBackPref = findPreference("sendFeedback");
         Preference emailPref = findPreference("email");
         Preference passwordPref = findPreference("password");
 
-        logOutPref.setOnPreferenceClickListener(this);
+        deleteAccount.setOnPreferenceClickListener(this);
         sendFeedBackPref.setOnPreferenceClickListener(this);
         emailPref.setOnPreferenceClickListener(this);
         passwordPref.setOnPreferenceClickListener(this);
@@ -93,6 +95,12 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
                 Intent passwordIntent = new Intent(getActivity(), AccountActivity.class);
                 passwordIntent.putExtra(AccountActivity.CHANGE, AccountActivity.RESET_PASSWORD);
                 startActivity(passwordIntent);
+                break;
+
+            case "delete_account":
+                Intent deleteIntent = new Intent(getActivity(), AccountActivity.class);
+                deleteIntent.putExtra(AccountActivity.CHANGE, AccountActivity.DELETE_ACCOUNT);
+                startActivity(deleteIntent);
                 break;
         }
 

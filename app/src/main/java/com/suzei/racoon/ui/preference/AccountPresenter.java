@@ -24,6 +24,11 @@ public class AccountPresenter implements AccountContract.AccountListener {
         accountInteractor.resetPassword(email, oldPassword, newPassword);
     }
 
+    public void deleteAccount(String email, String password) {
+        accountView.showProgress();
+        accountInteractor.deleteAccount(email, password);
+    }
+
     @Override
     public void onUsernameError(String message) {
         accountView.hideProgress();

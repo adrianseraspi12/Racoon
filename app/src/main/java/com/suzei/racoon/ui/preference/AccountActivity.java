@@ -1,15 +1,18 @@
 package com.suzei.racoon.ui.preference;
 
+import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.suzei.racoon.R;
-import com.suzei.racoon.ui.auth.AuthContract;
+import com.suzei.racoon.ui.auth.StartActivity;
 import com.suzei.racoon.util.view.DelayedProgressDialog;
 
 import butterknife.BindView;
@@ -21,6 +24,7 @@ public class AccountActivity extends AppCompatActivity implements AccountContrac
     public static final String CHANGE = "change";
     public static final int CHANGE_EMAIL = 0;
     public static final int RESET_PASSWORD = 1;
+    public static final int DELETE_ACCOUNT = 2;
 
     private AccountPresenter accountPresenter;
     private DelayedProgressDialog delayedProgressDialog;
@@ -74,6 +78,13 @@ public class AccountActivity extends AppCompatActivity implements AccountContrac
                 buttonView.setText(R.string.reset);
                 break;
 
+            case DELETE_ACCOUNT:
+                getSupportActionBar().setTitle("Delete Account");
+                passwordLayout.setHint("Password");
+                resetLayout.setVisibility(View.GONE);
+                buttonView.setText("Delete");
+                break;
+
             default:
                 throw new IllegalArgumentException("Invalid type=" + change);
         }
@@ -95,6 +106,10 @@ public class AccountActivity extends AppCompatActivity implements AccountContrac
             case RESET_PASSWORD:
                 accountPresenter.resetPassword(email, password, strValue);
                 break;
+
+            case DELETE_ACCOUNT:
+                accountPresenter.deleteAccount(email, password);
+                break;
         }
     }
 
@@ -114,6 +129,11 @@ public class AccountActivity extends AppCompatActivity implements AccountContrac
 
     @Override
     public void onLoginSuccess() {
+        if (change == DELETE_ACCOUNT) {
+            showDialog();
+            return;
+        }
+
         buttonView.setEnabled(true);
         Toast.makeText(AccountActivity.this, "Updated", Toast.LENGTH_SHORT).show();
         finish();
@@ -121,6 +141,7 @@ public class AccountActivity extends AppCompatActivity implements AccountContrac
 
     @Override
     public void onLoginFailure(Exception e) {
+        Toast.makeText(AccountActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         buttonView.setEnabled(true);
     }
 
@@ -141,4 +162,20 @@ public class AccountActivity extends AppCompatActivity implements AccountContrac
         delayedProgressDialog.cancel();
     }
 
+    private void showDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(AccountActivity.this);
+        builder.setTitle("Account Deleted");
+        builder.setMessage("Your account has been deleted. Thank You for using Racoon Chat");
+        builder.setPositiveButton("Ok", (dialog, which) -> {
+            dialog.dismiss();
+            Intent intent = new Intent(AccountActivity.this, StartActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
 }

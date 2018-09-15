@@ -11,6 +11,10 @@
             android:key="password"
             android:title="Reset Password" />
 
+        <Preference
+            android:key="delete_account"
+            android:title="Delete Account" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="About">

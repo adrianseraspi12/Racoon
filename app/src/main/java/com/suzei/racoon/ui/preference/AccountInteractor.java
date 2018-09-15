@@ -3,19 +3,24 @@ package com.suzei.racoon.ui.preference;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Patterns;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.suzei.racoon.ui.auth.AuthContract;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class AccountInteractor {
 
     private static final int CHANGE_EMAIL = 0;
     private static final int RESET_PASSWORD = 1;
+    private static final int DELETE_ACCOUNT = 2;
 
     private AccountContract.AccountListener authListener;
     private Context context;
@@ -33,7 +38,7 @@ public class AccountInteractor {
                 return;
             }
 
-            update(email, password, newEmail, CHANGE_EMAIL);
+            reauthenticate(email, password, newEmail, CHANGE_EMAIL);
         }, 2000);
     }
 
@@ -43,7 +48,20 @@ public class AccountInteractor {
                 return;
             }
 
-            update(email, oldPassword, newPassword, RESET_PASSWORD);
+            reauthenticate(email, oldPassword, newPassword, RESET_PASSWORD);
+        }, 2000);
+    }
+
+    public void deleteAccount(String email, String password) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (hasError(email, password)) {
+                    return;
+                }
+
+                reauthenticate(email, password, "", DELETE_ACCOUNT);
+            }
         }, 2000);
     }
 
@@ -103,7 +121,7 @@ public class AccountInteractor {
         return false;
     }
 
-    private void update(String email, String password, String strValue, int type) {
+    private void reauthenticate(String email, String password, String strValue, int type) {
         AuthCredential authCredential = EmailAuthProvider.getCredential(email, password);
         currentUser.reauthenticate(authCredential).addOnCompleteListener(task -> {
 
@@ -113,8 +131,12 @@ public class AccountInteractor {
                     updateEmail(strValue);
                 } else if (type == RESET_PASSWORD) {
                     updatePassword(strValue);
+                } else if (type == DELETE_ACCOUNT) {
+                    performDeletion();
                 }
 
+            } else {
+                authListener.onFailure(task.getException());
             }
 
         });
@@ -134,5 +156,25 @@ public class AccountInteractor {
                 authListener.onSuccess();
             }
         });
+    }
+
+    private void performDeletion() {
+        currentUser.delete().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                authListener.onSuccess();
+                deleteAllData();
+            }
+        });
+    }
+
+    private void deleteAllData() {
+        String currentUserId = currentUser.getUid();
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        rootRef.child("messages").child(currentUserId).removeValue();
+        rootRef.child("notification_count").child(currentUserId).removeValue();
+        rootRef.child("notifications").child(currentUserId).removeValue();
+        rootRef.child("user_chats").child(currentUserId).removeValue();
+        rootRef.child("user_friends").child(currentUserId).removeValue();
+        rootRef.child("users").child(currentUserId).removeValue();
     }
 }

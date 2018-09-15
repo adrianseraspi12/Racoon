@@ -77,20 +77,23 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
         @Override
         public void onSuccess(DataSnapshot dataSnapshot) {
-            Users users = dataSnapshot.getValue(Users.class);
-            nameView.setText(users.getName());
-            Picasso.get().load(users.getImage()).fit().centerCrop().into(imageView);
-            users.setUid(dataSnapshot.getKey());
 
-            if (users.getBio().equals("")) {
-                descView.setText(personIsPrivate);
-            } else {
-                descView.setText(users.getBio());
-            }
+            if (dataSnapshot.hasChildren()) {
+                Users users = dataSnapshot.getValue(Users.class);
+                nameView.setText(users.getName());
+                Picasso.get().load(users.getImage()).fit().centerCrop().into(imageView);
+                users.setUid(dataSnapshot.getKey());
 
-            if (mListener != null) {
-                itemView.setOnClickListener(v -> mListener.onItemClick(users,
-                        itemView));
+                if (users.getBio().equals("")) {
+                    descView.setText(personIsPrivate);
+                } else {
+                    descView.setText(users.getBio());
+                }
+
+                if (mListener != null) {
+                    itemView.setOnClickListener(v -> mListener.onItemClick(users,
+                            itemView));
+                }
             }
         }
     }

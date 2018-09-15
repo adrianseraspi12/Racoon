@@ -118,14 +118,16 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chats, ChatAdapter.View
         private void showGroupData(Chats chats, String uid) {
             firebaseManager = new FirebaseManager(dataSnapshot -> {
 
-                Groups groups = dataSnapshot.getValue(Groups.class);
-                nameView.setText(groups.getName());
-                Picasso.get().load(groups.getImage()).fit().centerCrop().into(imageView);
+                if (dataSnapshot.hasChildren()) {
+                    Groups groups = dataSnapshot.getValue(Groups.class);
+                    nameView.setText(groups.getName());
+                    Picasso.get().load(groups.getImage()).fit().centerCrop().into(imageView);
 
-                if (chats.getLast_message() == null) {
-                    descView.setText(stringNewConv);
-                } else {
-                    descView.setText(chats.getLast_message());
+                    if (chats.getLast_message() == null) {
+                        descView.setText(stringNewConv);
+                    } else {
+                        descView.setText(chats.getLast_message());
+                    }
                 }
 
             });
@@ -136,20 +138,22 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chats, ChatAdapter.View
         private void showUserData(Chats chats, String uid) {
             firebaseManager = new FirebaseManager(dataSnapshot -> {
 
-                Users users = dataSnapshot.getValue(Users.class);
-                nameView.setText(users.getName());
-                Picasso.get().load(users.getImage()).fit().centerCrop().into(imageView);
+                if (dataSnapshot.hasChildren()) {
+                    Users users = dataSnapshot.getValue(Users.class);
+                    nameView.setText(users.getName());
+                    Picasso.get().load(users.getImage()).fit().centerCrop().into(imageView);
 
-                if (chats.getLast_message() == null) {
-                    descView.setText(stringNewConv);
-                } else {
-                    descView.setText(chats.getLast_message());
-                }
+                    if (chats.getLast_message() == null) {
+                        descView.setText(stringNewConv);
+                    } else {
+                        descView.setText(chats.getLast_message());
+                    }
 
-                if (users.isOnline()) {
-                    statusView.setImageDrawable(drawableOnline);
-                } else {
-                    statusView.setImageDrawable(drawableOffline);
+                    if (users.isOnline()) {
+                        statusView.setImageDrawable(drawableOnline);
+                    } else {
+                        statusView.setImageDrawable(drawableOffline);
+                    }
                 }
 
             });
