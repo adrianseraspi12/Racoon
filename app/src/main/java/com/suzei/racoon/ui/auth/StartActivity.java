@@ -29,8 +29,6 @@ import butterknife.Unbinder;
 
 public class StartActivity extends AppCompatActivity {
 
-    //TODO: Add delete account
-
     private Callback.ButtonView mCallback;
 
     private FirebaseUser currentUser;

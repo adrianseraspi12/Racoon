@@ -48,7 +48,7 @@ public class AccountPresenter implements AccountContract.AccountListener {
     }
 
     @Override
-    public void onFailure(Exception e) {
+    public void onFailure(String e) {
         accountView.hideProgress();
         accountView.onLoginFailure(e);
     }

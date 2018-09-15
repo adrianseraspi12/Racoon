@@ -12,7 +12,7 @@ public interface AuthContract {
 
         void onLoginSuccess();
 
-        void onLoginFailure(Exception e);
+        void onLoginFailure(String message);
 
     }
 
@@ -30,7 +30,7 @@ public interface AuthContract {
 
         void onSuccess();
 
-        void onFailure(Exception e);
+        void onFailure(String message);
 
     }
 

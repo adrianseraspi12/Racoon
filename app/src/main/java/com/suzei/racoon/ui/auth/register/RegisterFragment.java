@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.suzei.racoon.R;
 import com.suzei.racoon.ui.auth.AuthContract;
@@ -140,7 +141,7 @@ public class RegisterFragment extends Fragment implements
     }
 
     @Override
-    public void onLoginFailure(Exception e) {
-        ErrorHandler.authError(getContext(), e);
+    public void onLoginFailure(String e) {
+        Toast.makeText(getContext(), e, Toast.LENGTH_SHORT).show();
     }
 }

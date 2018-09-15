@@ -4,21 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.suzei.racoon.ui.auth.AuthContract;
-
-import timber.log.Timber;
+import com.suzei.racoon.util.ErrorHandler;
 
 public class LoginInteractor {
 
@@ -63,8 +57,9 @@ public class LoginInteractor {
                         saveEmailToSharedPref(email);
                         updateDeviceToken(uid);
                     } else {
-                        Timber.i(task.getException());
-                        mOnLoginListener.onFailure(task.getException());
+                        FirebaseAuthException errorCode = (FirebaseAuthException)task.getException();
+                        String message = ErrorHandler.authError(errorCode.getErrorCode());
+                        mOnLoginListener.onFailure(message);
                     }
                 });
     }
@@ -86,7 +81,7 @@ public class LoginInteractor {
                     if (task.isSuccessful()) {
                         mOnLoginListener.onSuccess();
                     } else {
-                        mOnLoginListener.onFailure(task.getException());
+                        mOnLoginListener.onFailure(task.getException().getMessage());
                     }
 
                 });

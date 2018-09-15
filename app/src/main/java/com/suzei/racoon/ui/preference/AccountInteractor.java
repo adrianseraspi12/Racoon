@@ -12,9 +12,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.suzei.racoon.util.ErrorHandler;
 
 public class AccountInteractor {
 
@@ -136,7 +138,9 @@ public class AccountInteractor {
                 }
 
             } else {
-                authListener.onFailure(task.getException());
+                FirebaseAuthException e = (FirebaseAuthException) task.getException();
+                String message = ErrorHandler.authError(e.getErrorCode());
+                authListener.onFailure(message);
             }
 
         });

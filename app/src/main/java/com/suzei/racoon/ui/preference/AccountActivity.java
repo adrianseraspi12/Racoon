@@ -140,8 +140,8 @@ public class AccountActivity extends AppCompatActivity implements AccountContrac
     }
 
     @Override
-    public void onLoginFailure(Exception e) {
-        Toast.makeText(AccountActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    public void onLoginFailure(String e) {
+        Toast.makeText(AccountActivity.this, e, Toast.LENGTH_SHORT).show();
         buttonView.setEnabled(true);
     }
 

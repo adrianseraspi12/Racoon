@@ -44,8 +44,8 @@ public class RegisterPresenter implements AuthContract.onRegisterListener {
     }
 
     @Override
-    public void onFailure(Exception e) {
+    public void onFailure(String message) {
         mRegisterView.hideProgress();
-        mRegisterView.onLoginFailure(e);
+        mRegisterView.onLoginFailure(message);
     }
 }

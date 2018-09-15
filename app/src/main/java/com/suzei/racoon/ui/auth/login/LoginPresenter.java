@@ -39,8 +39,8 @@ public class LoginPresenter implements AuthContract.onAuthListener {
     }
 
     @Override
-    public void onFailure(Exception e) {
+    public void onFailure(String message) {
         mLoginView.hideProgress();
-        mLoginView.onLoginFailure(e);
+        mLoginView.onLoginFailure(message);
     }
 }
