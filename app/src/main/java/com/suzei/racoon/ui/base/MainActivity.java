@@ -44,7 +44,7 @@ import com.suzei.racoon.ui.preference.SettingsActivity;
 import com.suzei.racoon.ui.profile.ProfileFragment;
 import com.suzei.racoon.ui.worldlist.WorldFragment;
 import com.suzei.racoon.ui.add.AddActivity.Add;
-import com.suzei.racoon.util.lib.OnlineStatus;
+import com.suzei.racoon.util.OnlineStatus;
 
 import butterknife.BindDrawable;
 import butterknife.BindView;

@@ -1,13 +1,16 @@
 package com.suzei.racoon.ui.group;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.suzei.racoon.R;
-import com.suzei.racoon.util.lib.OnlineStatus;
+import com.suzei.racoon.ui.auth.StartActivity;
+import com.suzei.racoon.util.OnlineStatus;
 
 import java.util.ArrayList;
 
@@ -95,5 +98,15 @@ public class MembersActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         OnlineStatus.set(true);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Intent intent = new Intent(MembersActivity.this, StartActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
     }
 }

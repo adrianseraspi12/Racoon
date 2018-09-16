@@ -25,7 +25,7 @@ import com.suzei.racoon.ui.add.search.SearchContract;
 import com.suzei.racoon.ui.add.search.SearchPresenter;
 import com.suzei.racoon.ui.add.search.SelectPresenter;
 import com.suzei.racoon.ui.add.search.SelectUserContract;
-import com.suzei.racoon.util.view.EmptyRecyclerView;
+import com.suzei.racoon.view.EmptyRecyclerView;
 
 import java.util.ArrayList;
 
@@ -97,7 +97,6 @@ public class AddWorldFragment extends Fragment implements
 
     @OnClick(R.id.pick_user_search)
     public void onSearchClick() {
-        searchView.setEnabled(false);
         String query = searchUserView.getText().toString();
         searchPresenter.startSearch(query, selectedUserList);
     }
@@ -135,8 +134,6 @@ public class AddWorldFragment extends Fragment implements
 
     @Override
     public void searchSuccess() {
-        searchView.setEnabled(true);
-        progressBarView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -146,12 +143,14 @@ public class AddWorldFragment extends Fragment implements
 
     @Override
     public void showProgress() {
-
+        searchView.setEnabled(false);
+        progressBarView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-
+        searchView.setEnabled(true);
+        progressBarView.setVisibility(View.GONE);
     }
 
     @Override

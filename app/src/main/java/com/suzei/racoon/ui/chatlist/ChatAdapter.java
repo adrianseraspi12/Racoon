@@ -25,7 +25,7 @@ import com.suzei.racoon.ui.chatroom.single.SingleChatActivity;
 import com.suzei.racoon.model.Chats;
 import com.suzei.racoon.model.Groups;
 import com.suzei.racoon.model.Users;
-import com.suzei.racoon.util.lib.TimeRefractor;
+import com.suzei.racoon.util.TimeRefractor;
 import com.vanniktech.emoji.EmojiTextView;
 
 import butterknife.BindDrawable;

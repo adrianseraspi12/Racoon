@@ -1,4 +1,4 @@
-package com.suzei.racoon.util.view;
+package com.suzei.racoon.view;
 
 import android.graphics.Rect;
 import android.support.v7.widget.GridLayoutManager;

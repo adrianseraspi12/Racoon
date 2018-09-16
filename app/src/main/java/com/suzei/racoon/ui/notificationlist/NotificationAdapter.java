@@ -27,7 +27,7 @@ import com.suzei.racoon.ui.friend.FriendActivity;
 import com.suzei.racoon.model.Notifications;
 import com.suzei.racoon.model.Users;
 import com.suzei.racoon.util.ErrorHandler;
-import com.suzei.racoon.util.lib.TimeRefractor;
+import com.suzei.racoon.util.TimeRefractor;
 
 import butterknife.BindColor;
 import butterknife.BindString;

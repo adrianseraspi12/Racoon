@@ -27,6 +27,7 @@ import com.google.firebase.storage.UploadTask;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
+import com.suzei.racoon.ui.auth.StartActivity;
 import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.ui.group.GroupActivity;
 import com.suzei.racoon.ui.group.MembersActivity;
@@ -35,9 +36,9 @@ import com.suzei.racoon.ui.chatroom.messagelist.MessagePresenter;
 import com.suzei.racoon.ui.chatroom.ChatContract;
 import com.suzei.racoon.ui.group.GroupDetailsPresenter;
 import com.suzei.racoon.model.Groups;
-import com.suzei.racoon.util.lib.OnlineStatus;
-import com.suzei.racoon.util.view.EmptyRecyclerView;
-import com.suzei.racoon.util.lib.TakePicture;
+import com.suzei.racoon.util.OnlineStatus;
+import com.suzei.racoon.view.EmptyRecyclerView;
+import com.suzei.racoon.util.TakePicture;
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
 
@@ -215,13 +216,6 @@ public class GroupChatActivity extends AppCompatActivity implements
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        groupDetailsPresenter.showGroupDetails(groupId);
-        groupChatPresenter.seenMessage(groupId);
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
         groupDetailsPresenter.destroy(groupId);
@@ -243,6 +237,20 @@ public class GroupChatActivity extends AppCompatActivity implements
     protected void onDestroy() {
         super.onDestroy();
         messagePresenter.destroy();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Intent intent = new Intent(GroupChatActivity.this, StartActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } else {
+            groupDetailsPresenter.showGroupDetails(groupId);
+            groupChatPresenter.seenMessage(groupId);
+        }
     }
 
     @Override

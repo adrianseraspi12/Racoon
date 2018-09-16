@@ -10,14 +10,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseError;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
+import com.suzei.racoon.ui.auth.StartActivity;
 import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.ui.chatroom.single.SingleChatActivity;
 import com.suzei.racoon.model.Users;
-import com.suzei.racoon.util.lib.OnlineStatus;
+import com.suzei.racoon.util.OnlineStatus;
 
 import butterknife.BindDrawable;
 import butterknife.BindString;
@@ -101,12 +101,6 @@ public class FriendActivity extends AppCompatActivity implements Contract.Detail
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        friendPresenter.readCurrentState(currentUserId, mId);
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         OnlineStatus.set(false);
@@ -122,6 +116,20 @@ public class FriendActivity extends AppCompatActivity implements Contract.Detail
     protected void onStop() {
         super.onStop();
         friendPresenter.destroy(currentUserId, mId);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Intent intent = new Intent(FriendActivity.this, StartActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } else {
+            friendPresenter.readCurrentState(currentUserId, mId);
+        }
+
     }
 
     @OnClick(R.id.profile_back)

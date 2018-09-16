@@ -1,4 +1,4 @@
-package com.suzei.racoon.util.view;
+package com.suzei.racoon.view;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;

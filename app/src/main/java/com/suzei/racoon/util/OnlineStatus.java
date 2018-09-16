@@ -1,4 +1,4 @@
-package com.suzei.racoon.util.lib;
+package com.suzei.racoon.util;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;

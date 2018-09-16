@@ -1,4 +1,4 @@
-package com.suzei.racoon.util.pagination;
+package com.suzei.racoon.pagination;
 
 import android.support.annotation.IntDef;
 

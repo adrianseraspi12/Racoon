@@ -1,14 +1,12 @@
 package com.suzei.racoon.ui.preference;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.suzei.racoon.R;
-import com.suzei.racoon.util.lib.OnlineStatus;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import com.google.firebase.auth.FirebaseAuth;
+import com.suzei.racoon.ui.auth.StartActivity;
+import com.suzei.racoon.util.OnlineStatus;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
@@ -40,5 +38,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onPostResume() {
         super.onPostResume();
         OnlineStatus.set(true);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Intent intent = new Intent(SettingsActivity.this, StartActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
     }
 }

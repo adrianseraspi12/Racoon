@@ -1,4 +1,4 @@
-package com.suzei.racoon.util.lib;
+package com.suzei.racoon.util;
 
 import android.app.Activity;
 import android.arch.lifecycle.LifecycleOwner;
@@ -23,6 +23,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.suzei.racoon.R;
 import com.suzei.racoon.model.Emoji;
+import com.suzei.racoon.util.DialogEmojiAdapter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

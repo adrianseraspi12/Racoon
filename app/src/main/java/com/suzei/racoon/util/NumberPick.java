@@ -1,4 +1,4 @@
-package com.suzei.racoon.util.lib;
+package com.suzei.racoon.util;
 
 import android.graphics.Paint;
 import android.util.Log;

@@ -21,8 +21,7 @@ import com.suzei.racoon.ui.auth.AuthContract;
 import com.suzei.racoon.ui.auth.StartActivity;
 import com.suzei.racoon.ui.base.Callback;
 import com.suzei.racoon.ui.base.MainActivity;
-import com.suzei.racoon.util.view.DelayedProgressDialog;
-import com.suzei.racoon.util.ErrorHandler;
+import com.suzei.racoon.view.DelayedProgressDialog;
 
 import butterknife.BindDrawable;
 import butterknife.BindView;

@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
 import com.suzei.racoon.model.Messages;
 import com.suzei.racoon.ui.base.FirebaseManager;
-import com.suzei.racoon.util.pagination.InfiniteFirebaseRecyclerAdapter;
+import com.suzei.racoon.pagination.InfiniteFirebaseRecyclerAdapter;
 import com.vanniktech.emoji.EmojiTextView;
 
 import butterknife.BindView;

@@ -1,4 +1,4 @@
-package com.suzei.racoon.util.lib;
+package com.suzei.racoon.util;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;

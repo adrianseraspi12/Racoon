@@ -1,7 +1,6 @@
 package com.suzei.racoon.ui.auth;
 
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,12 +9,10 @@ import android.util.Patterns;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.suzei.racoon.R;
-import com.suzei.racoon.util.lib.OnlineStatus;
-import com.suzei.racoon.util.view.DelayedProgressDialog;
+import com.suzei.racoon.util.OnlineStatus;
+import com.suzei.racoon.view.DelayedProgressDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

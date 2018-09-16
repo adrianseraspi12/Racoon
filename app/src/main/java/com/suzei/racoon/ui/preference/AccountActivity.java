@@ -11,10 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.suzei.racoon.R;
 import com.suzei.racoon.ui.auth.StartActivity;
-import com.suzei.racoon.util.lib.OnlineStatus;
-import com.suzei.racoon.util.view.DelayedProgressDialog;
+import com.suzei.racoon.util.OnlineStatus;
+import com.suzei.racoon.view.DelayedProgressDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -101,6 +102,16 @@ public class AccountActivity extends AppCompatActivity implements AccountContrac
     protected void onPostResume() {
         super.onPostResume();
         OnlineStatus.set(true);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Intent intent = new Intent(AccountActivity.this, StartActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
     }
 
     @OnClick(R.id.account_button)

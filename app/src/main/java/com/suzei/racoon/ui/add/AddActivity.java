@@ -1,5 +1,6 @@
 package com.suzei.racoon.ui.add;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -9,8 +10,10 @@ import android.widget.FrameLayout;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.suzei.racoon.R;
-import com.suzei.racoon.util.lib.OnlineStatus;
+import com.suzei.racoon.ui.auth.StartActivity;
+import com.suzei.racoon.util.OnlineStatus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,5 +87,17 @@ public class AddActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         OnlineStatus.set(true);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Intent intent = new Intent(AddActivity.this, StartActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
     }
 }

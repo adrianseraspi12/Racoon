@@ -22,7 +22,7 @@ import com.suzei.racoon.model.Users;
 import com.suzei.racoon.ui.chatroom.single.SingleChatActivity;
 import com.suzei.racoon.ui.add.search.SearchContract;
 import com.suzei.racoon.ui.add.search.SearchPresenter;
-import com.suzei.racoon.util.view.EmptyRecyclerView;
+import com.suzei.racoon.view.EmptyRecyclerView;
 
 import java.util.ArrayList;
 
@@ -76,8 +76,6 @@ public class AddSingleChatFragment extends Fragment implements SearchContract.Se
     @OnClick(R.id.pick_user_search)
     public void onSearchClick() {
         ArrayList<Users> users = new ArrayList<>();
-        searchView.setEnabled(false);
-        progressBarView.setVisibility(View.VISIBLE);
 
         String query = searchUserView.getText().toString().trim();
         searchPresenter.startSearch(query, users);
@@ -98,8 +96,6 @@ public class AddSingleChatFragment extends Fragment implements SearchContract.Se
 
     @Override
     public void searchSuccess() {
-        searchView.setEnabled(false);
-        progressBarView.setVisibility(View.GONE);
     }
 
     @Override
@@ -109,11 +105,13 @@ public class AddSingleChatFragment extends Fragment implements SearchContract.Se
 
     @Override
     public void showProgress() {
-
+        searchView.setEnabled(false);
+        progressBarView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-
+        searchView.setEnabled(true);
+        progressBarView.setVisibility(View.GONE);
     }
 }

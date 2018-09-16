@@ -1,4 +1,4 @@
-package com.suzei.racoon.util.view;
+package com.suzei.racoon.view;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;

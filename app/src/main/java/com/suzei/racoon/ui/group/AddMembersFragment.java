@@ -25,7 +25,7 @@ import com.suzei.racoon.ui.add.search.SelectPresenter;
 import com.suzei.racoon.ui.add.search.SelectUserContract;
 import com.suzei.racoon.ui.add.search.SelectedAdapter;
 import com.suzei.racoon.model.Users;
-import com.suzei.racoon.util.view.EmptyRecyclerView;
+import com.suzei.racoon.view.EmptyRecyclerView;
 
 import java.util.ArrayList;
 import java.util.HashMap;

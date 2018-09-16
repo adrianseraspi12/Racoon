@@ -9,7 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseError;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -19,10 +19,11 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
 import com.suzei.racoon.model.Groups;
+import com.suzei.racoon.ui.auth.StartActivity;
 import com.suzei.racoon.ui.base.Contract;
-import com.suzei.racoon.util.lib.DialogEditor;
-import com.suzei.racoon.util.lib.OnlineStatus;
-import com.suzei.racoon.util.lib.TakePicture;
+import com.suzei.racoon.util.DialogEditor;
+import com.suzei.racoon.util.OnlineStatus;
+import com.suzei.racoon.util.TakePicture;
 
 import java.util.ArrayList;
 
@@ -182,15 +183,22 @@ public class GroupActivity extends AppCompatActivity implements Contract.Details
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        groupDetailsPresenter.showGroupDetails(mId);
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         groupDetailsPresenter.destroy(mId);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Intent intent = new Intent(GroupActivity.this, StartActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } else {
+            groupDetailsPresenter.showGroupDetails(mId);
+        }
     }
 
     @Override

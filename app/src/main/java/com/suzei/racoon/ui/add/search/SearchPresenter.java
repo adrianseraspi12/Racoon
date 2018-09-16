@@ -53,6 +53,7 @@ public class SearchPresenter implements SearchContract.SearchListener {
 
     @Override
     public void onSearchFailed() {
+        searchView.hideProgress();
         searchView.searchFailed();
     }
 
