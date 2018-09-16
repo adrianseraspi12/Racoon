@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.suzei.racoon.R;
 import com.suzei.racoon.util.lib.OnlineStatus;
 
@@ -18,6 +20,7 @@ public class AddActivity extends AppCompatActivity {
     public static final String EXTRA_FRAGMENT_TYPE = "fragment_type";
 
     @BindView(R.id.creator_fragment_container) FrameLayout container;
+    @BindView(R.id.creator_banner_ad) AdView bannerAd;
 
     public static class Add {
         public static final int WORLD = 0;
@@ -32,6 +35,7 @@ public class AddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_creator);
         ButterKnife.bind(this);
         showFragment();
+        setUpBannerAd();
     }
 
     private void showFragment() {
@@ -63,6 +67,11 @@ public class AddActivity extends AppCompatActivity {
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(container.getId(), fragment);
         ft.commit();
+    }
+
+    private void setUpBannerAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        bannerAd.loadAd(adRequest);
     }
 
     @Override

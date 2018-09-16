@@ -14,17 +14,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatDelegate;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
 
     private DatabaseReference mNotifCountRef;
     private AHNotification.Builder notification;
+    private InterstitialAd interstitialAd;
     private FirebaseAuth mAuth;
 
     private Callback.ButtonView mListener;
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
     @BindView(R.id.main_bottom_navigation) AHBottomNavigation bottomNavigationView;
     @BindView(R.id.main_primary_fab) FloatingActionButton fabPrimaryView;
     @BindView(R.id.main_secondary_fab) FloatingActionButton fabSecondaryView;
+    @BindView(R.id.main_banner_ad) AdView bannerAd;
     @BindDrawable(R.drawable.world) Drawable drawableWorld;
     @BindDrawable(R.drawable.add_single_chat) Drawable drawableAddSingleChat;
     @BindDrawable(R.drawable.add_group_chat) Drawable drawableAddGroupChat;
@@ -82,10 +86,9 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
         setContentView(R.layout.activity_main);
         initObjects();
         initBottomNavNotification();
+        setUpAds();
         setUpSnackbarApp();
         setUpBottomNavigation();
-        fabSecondaryView.hide();
-        bottomNavigationView.setCurrentItem(0);
     }
 
     private void initObjects() {
@@ -98,6 +101,14 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
          notification = new AHNotification.Builder()
                 .setBackgroundColor(Color.RED)
                 .setTextColor(Color.WHITE);
+    }
+
+    private void setUpAds() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        bannerAd.loadAd(adRequest);
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        interstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
     private void setUpSnackbarApp() {
@@ -129,6 +140,8 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
         bottomNavigationView.setOnTabSelectedListener(this);
 
         fabPrimaryView.setImageDrawable(drawableWorld);
+        fabSecondaryView.hide();
+        bottomNavigationView.setCurrentItem(0);
     }
 
     private ValueEventListener initEventListeners(int pos) {
@@ -165,13 +178,6 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
         bottomNavigationView.setNotification(notification.build(), pos);
     }
 
-    @OnClick(R.id.main_logout)
-    public void onSignOutClick() {
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(MainActivity.this, StartActivity.class));
-        finish();
-    }
-
     @OnClick(R.id.main_settings)
     public void onSettingsClick() {
         startActivity(new Intent(MainActivity.this, SettingsActivity.class));
@@ -191,6 +197,26 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
         startActivity(addActIntent);
     }
 
+    @OnClick(R.id.main_logout)
+    public void onSignOutClick() {
+        if (interstitialAd.isLoaded()) {
+            interstitialAd.show();
+            interstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdClosed() {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(MainActivity.this, StartActivity.class));
+                    finish();
+                }
+            });
+        } else {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(MainActivity.this, StartActivity.class));
+            finish();
+        }
+
+    }
+
     @Override
     public boolean onTabSelected(int position, boolean wasSelected) {
         switch (position) {
@@ -200,6 +226,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
                 configFab(drawableWorld);
                 showFragment(new WorldFragment());
                 fabSecondaryView.hide();
+                bannerAd.setVisibility(View.VISIBLE);
                 break;
 
             case 1:
@@ -208,8 +235,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
                 showFragment(new ChatFragment());
                 fabSecondaryView.show();
                 fabSecondaryView.setImageDrawable(drawableAddGroupChat);
-
-
+                bannerAd.setVisibility(View.VISIBLE);
                 break;
 
             case 2:
@@ -217,8 +243,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
                 configFab(drawableAddFriend);
                 showFragment(new FriendsFragment());
                 fabSecondaryView.hide();
-
-
+                bannerAd.setVisibility(View.VISIBLE);
                 break;
 
             case 3:
@@ -226,6 +251,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
                 configFab(null);
                 showFragment(new NotificationFragment());
                 fabSecondaryView.hide();
+                bannerAd.setVisibility(View.VISIBLE);
                 break;
 
             case 4:
@@ -233,6 +259,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
                 configFab(null);
                 showFragment(new ProfileFragment());
                 fabSecondaryView.hide();
+                bannerAd.setVisibility(View.GONE);
                 break;
 
             default:

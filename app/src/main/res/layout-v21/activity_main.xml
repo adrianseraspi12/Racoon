@@ -40,6 +40,19 @@
 
     </RelativeLayout>
 
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main_banner_ad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/main_toolbar_layout" />
+
+
     <FrameLayout
         android:id="@+id/main_fragment_container"
         android:layout_width="0dp"
@@ -47,8 +60,7 @@
         app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_toolbar_layout" />
-
+        app:layout_constraintTop_toBottomOf="@+id/main_banner_ad" />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/main_secondary_fab"
         android:layout_width="wrap_content"
