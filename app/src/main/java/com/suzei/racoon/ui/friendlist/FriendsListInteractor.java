@@ -29,6 +29,7 @@ public class FriendsListInteractor implements FirebaseManager.FirebaseCallback {
         mFriendsRef = FirebaseDatabase.getInstance().getReference()
                 .child("user_friends").child(currentUserId);
         firebaseManager = new FirebaseManager(this);
+        mFriendsRef.keepSynced(true);
     }
 
     public void performFirebaseDatabaseLoad() {

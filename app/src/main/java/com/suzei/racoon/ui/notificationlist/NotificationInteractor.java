@@ -21,6 +21,7 @@ public class NotificationInteractor {
         notifRef = FirebaseDatabase.getInstance().getReference()
                 .child("notifications")
                 .child(currentUserId);
+        notifRef.keepSynced(true);
     }
 
     public void performFirebaseDatabaseLoad() {

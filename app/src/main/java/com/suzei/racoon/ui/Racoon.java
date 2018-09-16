@@ -22,6 +22,8 @@ import timber.log.Timber;
 
 public class Racoon extends Application {
 
+    private AppCallback appCallback;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -33,7 +35,6 @@ public class Racoon extends Application {
         initPicasso();
         setUpDatabaseDisconnection();
     }
-
 
     private void initEmojiManager() {
         EmojiManager.install(new EmojiOneProvider());
@@ -82,11 +83,19 @@ public class Racoon extends Application {
                             .onDisconnect().setValue(false);
 
                     if (connected) {
+
+                        if (appCallback != null) {
+                            appCallback.onConnected();
+                        }
+
                         Timber.i("connected");
-                        // Show snackbar says connected
                     } else {
+
+                        if (appCallback != null) {
+                            appCallback.onDisconnected();
+                        }
+
                         Timber.i("disconnected");
-                        // Show snackbar says disconnected
                     }
                 }
 
@@ -98,4 +107,15 @@ public class Racoon extends Application {
         }
     }
 
+    public void setAppCallback(AppCallback _appCallback) {
+        this.appCallback = _appCallback;
+    }
+
+    public interface AppCallback {
+
+        void onConnected();
+
+        void onDisconnected();
+
+    }
 }

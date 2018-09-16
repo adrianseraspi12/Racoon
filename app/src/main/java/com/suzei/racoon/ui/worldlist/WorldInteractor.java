@@ -23,6 +23,8 @@ public class WorldInteractor {
         DatabaseReference mWorldRef = FirebaseDatabase.getInstance().getReference()
                 .child("world_chats");
 
+        mWorldRef.keepSynced(true);
+
         mWorldRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override

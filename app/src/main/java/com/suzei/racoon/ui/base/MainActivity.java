@@ -6,16 +6,21 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
@@ -27,6 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.suzei.racoon.R;
+import com.suzei.racoon.ui.Racoon;
 import com.suzei.racoon.ui.add.AddActivity;
 import com.suzei.racoon.ui.auth.StartActivity;
 import com.suzei.racoon.ui.chatlist.ChatFragment;
@@ -55,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
 
     private Callback.ButtonView mListener;
 
+    @BindView(R.id.main_root) ConstraintLayout constraintLayout;
     @BindView(R.id.main_toolbar_layout) RelativeLayout toolbarLayout;
     @BindView(R.id.main_fragment_container) FrameLayout fragmentContainerView;
     @BindView(R.id.main_bottom_navigation) AHBottomNavigation bottomNavigationView;
@@ -75,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
         setContentView(R.layout.activity_main);
         initObjects();
         initBottomNavNotification();
+        setUpSnackbarApp();
         setUpBottomNavigation();
         fabSecondaryView.hide();
         bottomNavigationView.setCurrentItem(0);
@@ -90,6 +98,23 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
          notification = new AHNotification.Builder()
                 .setBackgroundColor(Color.RED)
                 .setTextColor(Color.WHITE);
+    }
+
+    private void setUpSnackbarApp() {
+        Racoon racoon = (Racoon) getApplication();
+        racoon.setAppCallback(new Racoon.AppCallback() {
+
+            @Override
+            public void onConnected() {
+                showSnackbar("Connected", Snackbar.LENGTH_SHORT);
+            }
+
+            @Override
+            public void onDisconnected() {
+                showSnackbar("Not connected", Snackbar.LENGTH_LONG);
+            }
+
+        });
     }
 
     private void setUpBottomNavigation() {
@@ -128,10 +153,6 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
 
     public void setOnButtonClickListener(Callback.ButtonView listener) {
         this.mListener = listener;
-    }
-
-    public void removeOnButtonClickListener() {
-        this.mListener = null;
     }
 
     private void addBadge(int count, int pos) {
@@ -294,6 +315,27 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
                     .removeEventListener(initEventListeners(1));
         }
 
+    }
+
+    private void showSnackbar(String text, int duration) {
+        Snackbar snackbar = Snackbar.make(constraintLayout, text, duration);
+
+        View view = snackbar.getView();
+        FrameLayout.LayoutParams params =(FrameLayout.LayoutParams)view.getLayoutParams();
+        params.gravity = Gravity.TOP;
+
+        // calculate actionbar height
+        TypedValue tv = new TypedValue();
+        int actionBarHeight= 0;
+
+        if (getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)) {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources()
+                    .getDisplayMetrics());
+        }
+
+        params.setMargins(16, actionBarHeight + 16, 16, 0);
+        view.setLayoutParams(params);
+        snackbar.show();
     }
 
 }

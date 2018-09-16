@@ -25,6 +25,8 @@ class ChatInteractor {
                 .child("user_chats")
                 .child(currentUserId);
 
+        mUserChatRef.keepSynced(true);
+
         FirebaseRecyclerOptions<Chats> options = new FirebaseRecyclerOptions.Builder<Chats>()
                 .setQuery(mUserChatRef, Chats.class)
                 .build();
