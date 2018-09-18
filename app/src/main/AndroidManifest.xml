@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.suzei.racoon">
 
+    <!-- TODO: Test phone, record || change key-ads -->
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -40,7 +42,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.base.MainActivity" />
         </activity>
-        <activity android:name=".ui.preference.AccountActivity" />
+        <activity android:name=".ui.preference.AccountActivity"
+            android:parentActivityName=".ui.base.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.base.MainActivity" />
+        </activity>
         <activity android:name=".ui.auth.ForgotPasswordActivity"
             android:parentActivityName=".ui.auth.StartActivity">
             <meta-data

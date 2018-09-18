@@ -1,11 +1,13 @@
 package com.suzei.racoon.ui.preference;
 
 import android.content.Intent;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,7 +40,7 @@ public class AccountActivity extends AppCompatActivity implements AccountContrac
     @BindView(R.id.account_text_input_reset_layout) TextInputLayout resetLayout;
     @BindView(R.id.account_email) EditText emailView;
     @BindView(R.id.account_password) EditText passwordView;
-    @BindView(R.id.account_text_input_reset) EditText resetView;
+    @BindView(R.id.account_text_input_reset) TextInputEditText resetView;
     @BindView(R.id.account_button) Button buttonView;
 
     @Override
@@ -77,6 +79,8 @@ public class AccountActivity extends AppCompatActivity implements AccountContrac
                 getSupportActionBar().setTitle("Reset Password");
                 passwordLayout.setHint("Old Password");
                 resetLayout.setHint("New Password");
+                resetView.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                resetLayout.setPasswordVisibilityToggleEnabled(true);
                 buttonView.setText(R.string.reset);
                 break;
 
