@@ -74,9 +74,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 descView.setText(desc);
             }
 
-            itemView.setOnClickListener(v -> {
-                mListener.onItemClick(users, itemView);
-            });
+            itemView.setOnClickListener(v -> mListener.onItemClick(users, itemView));
         }
 
     }

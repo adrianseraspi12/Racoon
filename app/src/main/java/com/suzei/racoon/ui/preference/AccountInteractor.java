@@ -3,12 +3,9 @@ package com.suzei.racoon.ui.preference;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Patterns;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -55,15 +52,12 @@ public class AccountInteractor {
     }
 
     public void deleteAccount(String email, String password) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (hasError(email, password)) {
-                    return;
-                }
-
-                reauthenticate(email, password, "", DELETE_ACCOUNT);
+        new Handler().postDelayed(() -> {
+            if (hasError(email, password)) {
+                return;
             }
+
+            reauthenticate(email, password, "", DELETE_ACCOUNT);
         }, 2000);
     }
 
@@ -129,12 +123,16 @@ public class AccountInteractor {
 
             if (task.isSuccessful()) {
 
-                if (type == CHANGE_EMAIL) {
-                    updateEmail(strValue);
-                } else if (type == RESET_PASSWORD) {
-                    updatePassword(strValue);
-                } else if (type == DELETE_ACCOUNT) {
-                    performDeletion();
+                switch (type) {
+                    case CHANGE_EMAIL:
+                        updateEmail(strValue);
+                        break;
+                    case RESET_PASSWORD:
+                        updatePassword(strValue);
+                        break;
+                    case DELETE_ACCOUNT:
+                        performDeletion();
+                        break;
                 }
 
             } else {

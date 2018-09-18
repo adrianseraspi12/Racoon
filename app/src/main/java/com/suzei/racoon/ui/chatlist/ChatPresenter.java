@@ -1,6 +1,5 @@
 package com.suzei.racoon.ui.chatlist;
 
-import com.google.firebase.database.DatabaseError;
 import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.ui.chatlist.ChatAdapter;
 import com.suzei.racoon.ui.chatlist.ChatInteractor;

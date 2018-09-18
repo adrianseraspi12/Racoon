@@ -1,6 +1,5 @@
 package com.suzei.racoon.ui.group;
 
-import com.google.firebase.database.DatabaseError;
 import com.suzei.racoon.model.Groups;
 import com.suzei.racoon.ui.base.Contract;
 

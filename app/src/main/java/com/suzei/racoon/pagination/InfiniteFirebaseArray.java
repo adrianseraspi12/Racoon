@@ -1,6 +1,7 @@
 package com.suzei.racoon.pagination;
 
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -85,7 +86,7 @@ public class InfiniteFirebaseArray implements ChildEventListener {
     }
 
     @Override
-    public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+    public void onChildAdded(@NonNull DataSnapshot snapshot, String previousChildKey) {
         if (snapshot == null) {
             return;
         }
@@ -192,7 +193,7 @@ public class InfiniteFirebaseArray implements ChildEventListener {
     }
 
     @Override
-    public void onChildChanged(DataSnapshot snapshot, String s) {
+    public void onChildChanged(@NonNull DataSnapshot snapshot, String s) {
         int index = getIndexForKey(snapshot.getKey());
         if (index != -1) {
             mSnapshots.set(index, snapshot);
@@ -201,7 +202,7 @@ public class InfiniteFirebaseArray implements ChildEventListener {
     }
 
     @Override
-    public void onChildRemoved(DataSnapshot snapshot) {
+    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
         int index = getIndexForKey(snapshot.getKey());
         if (index != -1) {
             mSnapshots.remove(index);
@@ -210,12 +211,12 @@ public class InfiniteFirebaseArray implements ChildEventListener {
     }
 
     @Override
-    public void onChildMoved(DataSnapshot snapshot, String previousChildKey) {
+    public void onChildMoved(@NonNull DataSnapshot snapshot, String previousChildKey) {
 
     }
 
     @Override
-    public void onCancelled(DatabaseError databaseError) {
+    public void onCancelled(@NonNull DatabaseError databaseError) {
         notifyCancelledListeners(databaseError);
     }
 }

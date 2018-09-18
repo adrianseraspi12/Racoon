@@ -9,12 +9,11 @@
     <application
         android:name=".ui.Racoon"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/racoon_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/racoon_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="firebase_crashlytics_collection_enabled" android:value="false" />
         <activity android:name=".ui.auth.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

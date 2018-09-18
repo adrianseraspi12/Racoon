@@ -2,8 +2,6 @@ package com.suzei.racoon.ui.base;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.google.firebase.database.DatabaseError;
-
 public interface Contract {
 
     interface ProgressView {

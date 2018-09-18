@@ -1,6 +1,5 @@
 package com.suzei.racoon.ui.worldlist;
 
-import com.google.firebase.database.DatabaseError;
 import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.ui.worldlist.WorldAdapter;
 import com.suzei.racoon.ui.worldlist.WorldInteractor;

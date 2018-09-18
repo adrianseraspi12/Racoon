@@ -21,7 +21,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@drawable/camera"/>
+            app:srcCompat="@drawable/camera"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@drawable/gallery"/>
+            app:srcCompat="@drawable/gallery"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -73,7 +73,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@drawable/emoji"/>
+            app:srcCompat="@drawable/emoji"/>
 
         <TextView
             android:layout_width="wrap_content"

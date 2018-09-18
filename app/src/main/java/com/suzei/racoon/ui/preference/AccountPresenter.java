@@ -2,8 +2,6 @@ package com.suzei.racoon.ui.preference;
 
 import android.content.Context;
 
-import com.suzei.racoon.ui.auth.AuthContract;
-
 public class AccountPresenter implements AccountContract.AccountListener {
 
     private AccountContract.AccountView accountView;

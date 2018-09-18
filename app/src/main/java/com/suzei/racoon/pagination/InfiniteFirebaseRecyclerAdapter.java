@@ -24,8 +24,8 @@ public abstract class InfiniteFirebaseRecyclerAdapter<T, VH extends RecyclerView
 
             @Override
             public void onChanged(@InfiniteFirebaseArray.EventType int type, int index, int oldIndex) {
-                Timber.d("EventType: " + type);
-                Timber.d("Index: " + index);
+                Timber.d("EventType: %s", type);
+                Timber.d("Index: %s", index);
                 switch (type) {
                     case InfiniteFirebaseArray.ADDED:
                         notifyItemInserted(index);
@@ -117,7 +117,7 @@ public abstract class InfiniteFirebaseRecyclerAdapter<T, VH extends RecyclerView
 //    }
 
     @Override
-    public void onBindViewHolder(VH viewHolder, int position) {
+    public void onBindViewHolder(@NonNull VH viewHolder, int position) {
         T model = getItem(position);
         onBindViewHolder(viewHolder, model, position);
     }

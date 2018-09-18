@@ -106,8 +106,6 @@ public class RegisterInteractor {
 
                     if (task.isSuccessful()) {
                         mRegisterListener.onSuccess();
-                    } else {
-
                     }
 
                 });
