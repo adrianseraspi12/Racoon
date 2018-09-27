@@ -55,8 +55,6 @@ import static com.suzei.racoon.ui.add.AddActivity.EXTRA_FRAGMENT_TYPE;
 
 public class MainActivity extends AppCompatActivity implements AHBottomNavigation.OnTabSelectedListener {
 
-    //TODO Add onBoarding user
-
     private DatabaseReference mNotifCountRef;
     private AHNotification.Builder notification;
     private InterstitialAd interstitialAd;

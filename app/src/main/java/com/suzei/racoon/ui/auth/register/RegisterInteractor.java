@@ -21,7 +21,7 @@ public class RegisterInteractor {
     private Context context;
     private AuthContract.onRegisterListener mRegisterListener;
 
-    public RegisterInteractor(Context context, AuthContract.onRegisterListener mRegisterListener) {
+    RegisterInteractor(Context context, AuthContract.onRegisterListener mRegisterListener) {
         this.mRegisterListener = mRegisterListener;
         this.context = context;
     }

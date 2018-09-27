@@ -1,81 +1,26 @@
 package com.suzei.racoon.ui.auth.login;
 
-import android.app.Activity;
-
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.text.InputType;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.suzei.racoon.R;
 import com.suzei.racoon.ui.auth.AuthContract;
-import com.suzei.racoon.ui.auth.StartActivity;
-import com.suzei.racoon.ui.base.Callback;
+import com.suzei.racoon.ui.auth.BaseAuthFragment;
 import com.suzei.racoon.ui.base.MainActivity;
-import com.suzei.racoon.view.DelayedProgressDialog;
 
-import butterknife.BindDrawable;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-
-public class LoginFragment extends Fragment implements
-        Callback.ButtonView,
+public class LoginFragment extends BaseAuthFragment implements
         AuthContract.LoginView {
 
-    private DelayedProgressDialog progressDialog;
-
     private LoginPresenter presenter;
-
-    private Unbinder unbinder;
-
-    private boolean isEyeEnabled = true;
-
-    @BindView(R.id.start_login_email) EditText emailView;
-    @BindView(R.id.start_login_password) EditText passwordView;
-    @BindView(R.id.start_login_show_hide_pass) ImageButton showHidePassView;
-    @BindDrawable(R.drawable.eye_show) Drawable drawableShowEye;
-    @BindDrawable(R.drawable.eye_hide) Drawable drawableHideEye;
 
     public LoginFragment() {
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
-        initObjects(view);
-        setListeners();
-        return view;
-    }
-
-    private void initObjects(View view) {
-        unbinder = ButterKnife.bind(this, view);
-        progressDialog = new DelayedProgressDialog();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         presenter = new LoginPresenter(getActivity(),this);
-    }
-
-    private void setListeners() {
-        Activity activity = getActivity();
-        if (activity instanceof StartActivity) {
-            ((StartActivity) activity).setOnChatClick(this);
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        unbinder.unbind();
-        super.onDestroyView();
     }
 
     @Override
@@ -83,25 +28,6 @@ public class LoginFragment extends Fragment implements
         String username = emailView.getText().toString().trim();
         String password = passwordView.getText().toString().trim();
         presenter.validateLoginCredentials(username, password);
-    }
-
-    @OnClick(R.id.start_login_show_hide_pass)
-    public void onEyeClick(ImageButton imageButton) {
-        int inputtedLength = passwordView.getText().length();
-
-        if (isEyeEnabled) {
-            passwordView.setInputType(InputType.TYPE_CLASS_TEXT |
-                    InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-            imageButton.setImageDrawable(drawableHideEye);
-            isEyeEnabled = false;
-        } else {
-            passwordView.setInputType(InputType.TYPE_CLASS_TEXT |
-                    InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            imageButton.setImageDrawable(drawableShowEye);
-            isEyeEnabled = true;
-        }
-
-        passwordView.setSelection(inputtedLength);
     }
 
     @Override
