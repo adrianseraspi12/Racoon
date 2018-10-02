@@ -52,8 +52,10 @@ MVP (Model, View, Presenter)
 <img src="https://github.com/adrianseraspi12/Racoon/blob/master/mvp.png" alt="profile" height="300px" />
 
 Model - consist of read/write functionalities
+
 View - Displaying the data from the Presenter
-Presenter - The bridge for the View to communicate to Model. Acts as a controller.
+
+Presenter - The bridge for the View to communicate to Model. Act as a controller.
 
 ## Dummy account for testing:
 Email - user123@gmail.com
