@@ -3,6 +3,7 @@ package com.suzei.racoon.ui.auth.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.Toast;
 
 import com.suzei.racoon.ui.auth.AuthContract;
@@ -20,6 +21,7 @@ public class LoginFragment extends BaseAuthFragment implements
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        nameView.setVisibility(View.GONE);
         presenter = new LoginPresenter(getActivity(),this);
     }
 

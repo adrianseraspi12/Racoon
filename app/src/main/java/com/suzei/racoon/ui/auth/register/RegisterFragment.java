@@ -8,7 +8,6 @@ import android.widget.Toast;
 
 import com.suzei.racoon.ui.auth.AuthContract;
 import com.suzei.racoon.ui.auth.BaseAuthFragment;
-import com.suzei.racoon.ui.base.Callback;
 import com.suzei.racoon.ui.base.MainActivity;
 
 public class RegisterFragment extends BaseAuthFragment implements
@@ -19,6 +18,7 @@ public class RegisterFragment extends BaseAuthFragment implements
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        nameView.setVisibility(View.VISIBLE);
         presenter = new RegisterPresenter(getContext(), this);
     }
 

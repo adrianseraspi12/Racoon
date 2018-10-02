@@ -1,8 +1,8 @@
 package com.suzei.racoon.ui.auth;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.button.MaterialButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -68,6 +68,14 @@ public class StartActivity extends AppCompatActivity {
     @OnClick(R.id.start_forgot_password)
     public void onForgotPasswordClick() {
         startActivity(new Intent(StartActivity.this, ForgotPasswordActivity.class));
+    }
+
+    @OnClick(R.id.start_privacy_policy)
+    public void onPrivacyPolicyClick() {
+        String url = "https://sites.google.com/view/racoonchat-privacy-policy/home";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
     }
 
     @OnClick(R.id.start_chat_now)

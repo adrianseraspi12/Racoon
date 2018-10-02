@@ -30,7 +30,7 @@
 
         <Preference
             android:title="Developer"
-            android:summary="Suzei, Adrian Jun Seraspi"/>
+            android:summary="Adrian Jun Seraspi"/>
 
     </PreferenceCategory>
 

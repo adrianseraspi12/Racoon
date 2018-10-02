@@ -27,7 +27,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_untitled"/>
+            app:srcCompat="@drawable/toolbar_logo"/>
 
         <ImageButton
             android:id="@+id/main_settings"
