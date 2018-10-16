@@ -3,6 +3,8 @@
 # Racoon
 A firebase demo chat app
 
+Link to google playstore https://play.google.com/store/apps/details?id=com.suzei.racoon
+
 ## Features
 1. Show list of public chats that you can join
 2. Create Private chat for one on one conversation
