@@ -73,10 +73,6 @@ Email - user098@gmail.com
 
 Pass - 123asd
 
-## References/Teachers
+## References
 1. https://antonioleiva.com/mvp-android/
 2. https://firebase.google.com/docs/
-
-### Note
-I am a beginner in the android and architectural pattern and I'm just curios about the MVP 
-so I tried it. Feedbacks and suggestions would be a big help for me to improve my career in android dev.
