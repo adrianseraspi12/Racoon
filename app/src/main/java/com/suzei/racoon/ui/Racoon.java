@@ -1,8 +1,8 @@
 package com.suzei.racoon.ui;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatDelegate;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;

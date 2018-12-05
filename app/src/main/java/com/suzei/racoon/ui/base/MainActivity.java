@@ -4,16 +4,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -36,14 +36,14 @@ import com.google.firebase.database.ValueEventListener;
 import com.suzei.racoon.R;
 import com.suzei.racoon.ui.Racoon;
 import com.suzei.racoon.ui.add.AddActivity;
-import com.suzei.racoon.ui.auth.StartActivity;
+import com.suzei.racoon.ui.add.AddActivity.Add;
+import com.suzei.racoon.ui.auth.login.LoginActivity;
 import com.suzei.racoon.ui.chatlist.ChatFragment;
 import com.suzei.racoon.ui.friendlist.FriendsFragment;
 import com.suzei.racoon.ui.notificationlist.NotificationFragment;
 import com.suzei.racoon.ui.preference.SettingsActivity;
 import com.suzei.racoon.ui.profile.ProfileFragment;
 import com.suzei.racoon.ui.worldlist.WorldFragment;
-import com.suzei.racoon.ui.add.AddActivity.Add;
 import com.suzei.racoon.util.OnlineStatus;
 
 import butterknife.BindDrawable;
@@ -203,13 +203,13 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
                 @Override
                 public void onAdClosed() {
                     FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(MainActivity.this, StartActivity.class));
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
                 }
             });
         } else {
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(MainActivity.this, StartActivity.class));
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
 
@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
             mNotifCountRef.child(mAuth.getUid()).child("chats")
                     .addValueEventListener(initEventListeners(1));
         } else {
-            startActivity(new Intent(MainActivity.this, StartActivity.class));
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
     }

@@ -2,8 +2,8 @@ package com.suzei.racoon.ui.friend;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -13,10 +13,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
-import com.suzei.racoon.ui.auth.StartActivity;
+import com.suzei.racoon.model.Users;
+import com.suzei.racoon.ui.auth.login.LoginActivity;
 import com.suzei.racoon.ui.base.Contract;
 import com.suzei.racoon.ui.chatroom.single.SingleChatActivity;
-import com.suzei.racoon.model.Users;
 import com.suzei.racoon.util.OnlineStatus;
 
 import butterknife.BindDrawable;
@@ -123,7 +123,7 @@ public class FriendActivity extends AppCompatActivity implements Contract.Detail
         super.onStart();
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            Intent intent = new Intent(FriendActivity.this, StartActivity.class);
+            Intent intent = new Intent(FriendActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         } else {

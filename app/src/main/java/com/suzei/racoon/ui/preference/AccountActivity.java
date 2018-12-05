@@ -1,12 +1,12 @@
 package com.suzei.racoon.ui.preference;
 
 import android.content.Intent;
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.suzei.racoon.R;
-import com.suzei.racoon.ui.auth.StartActivity;
+import com.suzei.racoon.ui.auth.login.LoginActivity;
 import com.suzei.racoon.util.OnlineStatus;
 import com.suzei.racoon.view.DelayedProgressDialog;
 
@@ -112,7 +112,7 @@ public class AccountActivity extends AppCompatActivity implements AccountContrac
     protected void onStart() {
         super.onStart();
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            Intent intent = new Intent(AccountActivity.this, StartActivity.class);
+            Intent intent = new Intent(AccountActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
@@ -196,7 +196,7 @@ public class AccountActivity extends AppCompatActivity implements AccountContrac
         builder.setMessage("Your account has been deleted. Thank You for using Racoon Chat");
         builder.setPositiveButton("Ok", (dialog, which) -> {
             dialog.dismiss();
-            Intent intent = new Intent(AccountActivity.this, StartActivity.class);
+            Intent intent = new Intent(AccountActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();

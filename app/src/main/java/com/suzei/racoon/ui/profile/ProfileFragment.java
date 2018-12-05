@@ -3,8 +3,8 @@ package com.suzei.racoon.ui.profile;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -150,24 +150,26 @@ public class ProfileFragment extends Fragment implements Contract.DetailsView<Us
 
     @Override
     public void onLoadSuccess(Users users) {
-        nameView.setText(users.getName());
-        ageView.setText(String.valueOf(users.getAge()));
-        Picasso.get().load(users.getImage()).fit().centerCrop().into(picView);
-        genderView.setText(users.getGender());
+        if (users != null) {
+            nameView.setText(users.getName());
+            ageView.setText(String.valueOf(users.getAge()));
+            Picasso.get().load(users.getImage()).fit().centerCrop().into(picView);
+            genderView.setText(users.getGender());
 
-        switch (users.getGender()) {
-            case "Male":
-                genderView.setCompoundDrawablesWithIntrinsicBounds(drawableMale, null,
-                        null, null);
-                break;
-            case "Female":
-                genderView.setCompoundDrawablesWithIntrinsicBounds(drawableFemale, null,
-                        null, null);
-                break;
-            case "Unknown":
-                genderView.setCompoundDrawablesWithIntrinsicBounds(drawableUnknown, null,
-                        null, null);
-                break;
+            switch (users.getGender()) {
+                case "Male":
+                    genderView.setCompoundDrawablesWithIntrinsicBounds(drawableMale, null,
+                            null, null);
+                    break;
+                case "Female":
+                    genderView.setCompoundDrawablesWithIntrinsicBounds(drawableFemale, null,
+                            null, null);
+                    break;
+                case "Unknown":
+                    genderView.setCompoundDrawablesWithIntrinsicBounds(drawableUnknown, null,
+                            null, null);
+                    break;
+            }
         }
 
     }

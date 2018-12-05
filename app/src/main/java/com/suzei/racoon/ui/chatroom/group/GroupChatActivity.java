@@ -3,11 +3,11 @@ package com.suzei.racoon.ui.chatroom.group;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,18 +27,18 @@ import com.google.firebase.storage.UploadTask;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.suzei.racoon.R;
-import com.suzei.racoon.ui.auth.StartActivity;
-import com.suzei.racoon.ui.base.Contract;
-import com.suzei.racoon.ui.group.GroupActivity;
-import com.suzei.racoon.ui.group.MembersActivity;
-import com.suzei.racoon.ui.chatroom.messagelist.MessagesAdapter;
-import com.suzei.racoon.ui.chatroom.messagelist.MessagePresenter;
-import com.suzei.racoon.ui.chatroom.ChatContract;
-import com.suzei.racoon.ui.group.GroupDetailsPresenter;
 import com.suzei.racoon.model.Groups;
+import com.suzei.racoon.ui.auth.login.LoginActivity;
+import com.suzei.racoon.ui.base.Contract;
+import com.suzei.racoon.ui.chatroom.ChatContract;
+import com.suzei.racoon.ui.chatroom.messagelist.MessagePresenter;
+import com.suzei.racoon.ui.chatroom.messagelist.MessagesAdapter;
+import com.suzei.racoon.ui.group.GroupActivity;
+import com.suzei.racoon.ui.group.GroupDetailsPresenter;
+import com.suzei.racoon.ui.group.MembersActivity;
 import com.suzei.racoon.util.OnlineStatus;
-import com.suzei.racoon.view.EmptyRecyclerView;
 import com.suzei.racoon.util.TakePicture;
+import com.suzei.racoon.view.EmptyRecyclerView;
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
 
@@ -244,7 +244,7 @@ public class GroupChatActivity extends AppCompatActivity implements
         super.onStart();
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            Intent intent = new Intent(GroupChatActivity.this, StartActivity.class);
+            Intent intent = new Intent(GroupChatActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         } else {

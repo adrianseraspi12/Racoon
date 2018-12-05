@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.suzei.racoon">
-
+    
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-
+    
     <application
         android:name=".ui.Racoon"
         android:allowBackup="true"
@@ -14,10 +14,10 @@
         android:roundIcon="@mipmap/racoon_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.auth.StartActivity">
+        <activity android:name=".ui.auth.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+    
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -40,17 +40,31 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.base.MainActivity" />
         </activity>
-        <activity android:name=".ui.preference.AccountActivity"
+        <activity
+            android:name=".ui.preference.AccountActivity"
             android:parentActivityName=".ui.base.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.base.MainActivity" />
         </activity>
-        <activity android:name=".ui.auth.ForgotPasswordActivity"
-            android:parentActivityName=".ui.auth.StartActivity">
+        <activity
+            android:name=".ui.auth.ForgotPasswordActivity"
+            android:parentActivityName=".ui.auth.login.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.auth.StartActivity"/>
+                android:value=".ui.auth.login.LoginActivity" />
+        </activity>
+        <activity android:name=".ui.auth.signup.SignUpActivity"
+            android:parentActivityName=".ui.auth.login.LoginActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.auth.login.LoginActivity" />
+        </activity>
+        <activity android:name=".ui.auth.forgotpassword.ForgotPasswordActivity"
+            android:parentActivityName=".ui.auth.login.LoginActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.auth.login.LoginActivity" />
         </activity>
     </application>
 

@@ -1,18 +1,18 @@
 package com.suzei.racoon.ui.add;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.suzei.racoon.R;
-import com.suzei.racoon.ui.auth.StartActivity;
+import com.suzei.racoon.ui.auth.login.LoginActivity;
 import com.suzei.racoon.util.OnlineStatus;
 
 import butterknife.BindView;
@@ -94,7 +94,7 @@ public class AddActivity extends AppCompatActivity {
         super.onStart();
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            Intent intent = new Intent(AddActivity.this, StartActivity.class);
+            Intent intent = new Intent(AddActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();

@@ -8,25 +8,25 @@
     <string name="chat_now">Chat Now</string>
     <string name="already_have_an_account">Already have an account</string>
     <string name="create_an_account">Create an account</string>
-
+    
     <string name="world_chats">World</string>
     <string name="friends">Friends</string>
     <string name="chats">Chats</string>
     <string name="my_profile">Profile</string>
-
+    
     <string name="message">Message</string>
     <string name="search_user">Search User</string>
     <string name="add">ADD</string>
     <string name="disconnected">No connection, Please try again</string>
     <string name="network_error">A network error occurred, Please try again</string>
-
+    
     <string name="add_bio">Tap to add bio</string>
-
+    
     <string name="default_user_image">https://firebasestorage.googleapis.com/v0/b/racoon-89ee8.appspot.com/o/emoji%2Fhappy_512px.png?alt=media&amp;token=11c342c5-1896-4e04-a822-c76536cf5d1c</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="emoji">Emoji</string>
-
+    
     <string name="back">back</string>
     <string name="search">search</string>
     <string name="person_is_private">This person is private</string>
@@ -56,10 +56,13 @@
     <string name="friend_request_accepted">Your friend request has been accepted</string>
     <string name="friend_request">Friend Request</string>
     <string name="friend_accepted">Friend Accepted</string>
-
+    
     <string name="reset">Reset</string>
     <string name="change">Change</string>
     <string name="confirm">Confirm</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="private_policy">Privacy Policy</string>
+    
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

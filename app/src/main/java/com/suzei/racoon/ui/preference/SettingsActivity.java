@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.suzei.racoon.ui.auth.StartActivity;
+import com.suzei.racoon.ui.auth.login.LoginActivity;
 import com.suzei.racoon.util.OnlineStatus;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
@@ -44,7 +44,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onStart() {
         super.onStart();
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            Intent intent = new Intent(SettingsActivity.this, StartActivity.class);
+            Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }

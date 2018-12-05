@@ -1,9 +1,9 @@
 package com.suzei.racoon.ui.auth;
 
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.widget.EditText;
@@ -58,7 +58,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         OnlineStatus.set(true);
     }
 
-    @OnClick(R.id.forgot_password_confirm)
+    @OnClick(R.id.forgot_password_reset)
     public void onConfirmClick() {
         dialog.show(getSupportFragmentManager(), "");
         String email = emailView.getText().toString().trim();

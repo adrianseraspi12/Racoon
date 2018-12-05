@@ -22,6 +22,12 @@ public interface AuthContract {
 
     }
 
+    interface LoginPresenter {
+
+        void loginUser(String email, String password);
+
+    }
+
     interface onAuthListener {
 
         void onUsernameError(String message);
