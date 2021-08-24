@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         initObjects();
         initBottomNavNotification();
         setUpAds();
@@ -90,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
     }
 
     private void initObjects() {
-        ButterKnife.bind(this);
         mAuth = FirebaseAuth.getInstance();
         mNotifCountRef = FirebaseDatabase.getInstance().getReference().child("notification_count");
     }
