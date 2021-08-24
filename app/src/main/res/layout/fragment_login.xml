@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
-    <ImageView
+
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/start_logo"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -12,11 +12,11 @@
         android:contentDescription="@string/racoon_logo"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayout2"
         app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/racoon_login"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/racoon_200" />
-    
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout2"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -31,7 +31,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_logo">
-        
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/login_email_input"
             android:layout_width="match_parent"
@@ -39,9 +39,9 @@
             android:inputType="textWebEmailAddress"
             android:maxLines="1"
             android:textSize="@dimen/text_size_medium" />
-    
+
     </com.google.android.material.textfield.TextInputLayout>
-    
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout3"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -51,22 +51,22 @@
         android:layout_marginTop="@dimen/margin_xlarge"
         android:layout_marginEnd="@dimen/margin_xlarge"
         android:hint="@string/password"
-        app:passwordToggleEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/forgot_password_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
-        
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+        app:passwordToggleEnabled="true">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/login_password_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:textSize="@dimen/text_size_medium" />
-    
+
     </com.google.android.material.textfield.TextInputLayout>
-    
+
     <TextView
         android:id="@+id/forgot_password_button"
         style="@style/Text.Button"
@@ -76,7 +76,7 @@
         app:layout_constraintBottom_toTopOf="@+id/login_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
-    
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/login_button"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -85,16 +85,16 @@
         android:layout_marginStart="@dimen/margin_xlarge"
         android:layout_marginTop="@dimen/margin_xlarge"
         android:layout_marginEnd="@dimen/margin_xlarge"
-        android:text="Login"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
+        android:text="Login"
         app:cornerRadius="56dp"
         app:layout_constraintBottom_toTopOf="@+id/sign_up_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forgot_password_button" />
-    
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/sign_up_button"
         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
