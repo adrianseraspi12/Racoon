@@ -1,22 +1,28 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 30
+    buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.suzei.racoon"
-        minSdkVersion 19
-        targetSdkVersion 28
+        minSdkVersion 21
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
+        resConfigs "en"
     }
 
     applicationVariants.all { variant ->
         variant.resValue "string", "versionName", variant.versionName
+    }
+
+    buildFeatures {
+        viewBinding true
     }
 
     buildTypes {
@@ -30,22 +36,18 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    defaultConfig {
-        resConfigs "en"
-    }
 }
 
 dependencies {
-    def butterknife_version = "9.0.0-rc2"
+    def butterknife_version = "10.0.0"
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+    implementation 'androidx.appcompat:appcompat:1.4.0-alpha03'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha01'
+    implementation 'com.google.android.material:material:1.5.0-alpha02'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.vectordrawable:vectordrawable:1.1.0-alpha01'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    implementation 'androidx.vectordrawable:vectordrawable:1.2.0-alpha02'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     implementation 'com.dinuscxj:recyclerrefreshlayout:2.0.5'
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'com.aurelhubert:ahbottomnavigation:2.1.0'
@@ -70,6 +72,11 @@ dependencies {
     implementation 'id.zelory:compressor:2.1.0'
     implementation 'com.vanniktech:emoji-one:0.5.1'
     implementation 'net.danlew:android.joda:2.9.9.3'
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}
