@@ -8,8 +8,7 @@
 
     <ImageView
         android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:srcCompat="@drawable/racoon_200"/>
+        android:layout_height="100dp"/>
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"

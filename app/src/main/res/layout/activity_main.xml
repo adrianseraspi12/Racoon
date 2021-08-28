@@ -39,15 +39,6 @@
 
     </RelativeLayout>
 
-    <View
-        android:id="@+id/main_toolbar_shadow"
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@drawable/shadow_below_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/main_banner_ad" />
-
     <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/main_banner_ad"
         android:layout_width="wrap_content"
