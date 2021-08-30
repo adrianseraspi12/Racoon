@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.FirebaseDatabase
 import com.suzei.racoon.databinding.PickUserBinding
 import com.suzei.racoon.model.Users
-import com.suzei.racoon.ui.add.CreateGroupContract.CreateGroupView
+import com.suzei.racoon.ui.add.create.CreateGroupContract.CreateGroupView
+import com.suzei.racoon.ui.add.create.CreateGroupPresenter
 import com.suzei.racoon.ui.add.search.*
 import com.suzei.racoon.ui.add.search.SelectUserContract.SelectUserView
 import com.suzei.racoon.ui.chatroom.group.GroupChatActivity
@@ -71,7 +72,8 @@ class AddWorldFragment : Fragment(), SearchContract.SearchView, SelectUserView, 
     private fun setUpPresenters() {
         searchPresenter = SearchPresenter(this)
         selectPresenter = SelectPresenter(this)
-        createGroupPresenter = CreateGroupPresenter(context, this)
+        createGroupPresenter =
+            CreateGroupPresenter(context, this)
     }
 
     private fun setupClickListener() {
