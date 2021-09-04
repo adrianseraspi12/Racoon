@@ -27,6 +27,10 @@ class SignUpFragment : Fragment(), SignUpContract.View {
         }
     }
 
+    var onGoLoginClick = View.OnClickListener {
+        requireActivity().finish()
+    }
+
     var onChatNowClick = View.OnClickListener {
         val email = binding.signupEmail.text.toString()
         val password = binding.signupPassword.text.toString()
@@ -45,7 +49,8 @@ class SignUpFragment : Fragment(), SignUpContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.signupChatNow.setOnClickListener(onChatNowClick)
+        binding.registerButton.setOnClickListener(onChatNowClick)
+        binding.goLoginButton.setOnClickListener(onGoLoginClick)
     }
 
     override fun onDestroyView() {

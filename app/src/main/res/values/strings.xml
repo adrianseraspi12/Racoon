@@ -70,4 +70,9 @@
     <string name="login">Login</string>
     <string name="dont_have_an_account">Don\'t have an account?</string>
     <string name="register">Register</string>
+    <string name="create_new_account">Create new account</string>
+    <string name="please_fill_in_the_form_to_continue">Please fill in the form to continue</string>
+    <string name="have_an_account">Have an account?</string>
+    <string name="loginWithMark">Login!</string>
+    <string name="registerWithMark">Register!</string>
 </resources>

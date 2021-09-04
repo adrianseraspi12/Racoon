@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.auth.signup.SignUpActivity">
-    
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/signup_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Create Account"
-        app:titleTextColor="@android:color/white" />
-    
+        android:background="@color/colorBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <FrameLayout
         android:id="@+id/sign_up_container"
         android:layout_width="0dp"
@@ -23,5 +23,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signup_toolbar" />
-    
+
 </androidx.constraintlayout.widget.ConstraintLayout>

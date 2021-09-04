@@ -17,6 +17,7 @@ class SignUpActivity : AppCompatActivity() {
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
 
         val signUpFragment = SignUpFragment.newInstance()
         supportFragmentManager.beginTransaction()
