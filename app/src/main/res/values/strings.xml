@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Racoon</string>
     <string name="racoon_logo">racoon_logo</string>
-    <string name="e_mail">E-mail</string>
+    <string name="e_mail">Email</string>
     <string name="password">Password</string>
     <string name="display_name">Display Name</string>
     <string name="showhidepass">ShowHidePass</string>
@@ -65,4 +65,9 @@
     
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_to_racoon">Welcome to Racoon!</string>
+    <string name="meet_new_people">Meet new people</string>
+    <string name="login">Login</string>
+    <string name="dont_have_an_account">Don\'t have an account?</string>
+    <string name="register">Register</string>
 </resources>

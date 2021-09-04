@@ -68,7 +68,7 @@ class LoginFragment : Fragment(), LoginContract.View {
 
     private fun setupButtonClick() {
         binding.loginButton.setOnClickListener(onLoginButtonClick)
-        binding.signUpButton.setOnClickListener(onSignUpButtonClick)
+        binding.registerButton.setOnClickListener(onSignUpButtonClick)
         binding.forgotPasswordButton.setOnClickListener(onForgotPasswordClick)
     }
 
