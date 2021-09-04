@@ -12,6 +12,7 @@
         <item name="android:editTextStyle">@style/EditTextStyle</item>
         <item name="android:textColorHint">@android:color/darker_gray</item>
         <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:homeAsUpIndicator">@drawable/back</item>
     </style>
 
     <style name="SettingsTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
