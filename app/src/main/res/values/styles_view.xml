@@ -6,12 +6,44 @@
     </style>
 
     <style name="Text.Button">
-
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">@dimen/margin_medium</item>
         <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
 
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextButtonStyle" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@null</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+    </style>
+
+    <style name="EditTextStyle">
+        <item name="android:background">@drawable/edittext_border</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="PrimaryTextStyle">
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>
+
+    <style name="SecondaryTextStyle">
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textColor">@color/colorSecondaryText</item>
     </style>
 
 </resources>
