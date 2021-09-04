@@ -31,7 +31,7 @@
             app:riv_corner_radius="30dp"
             app:riv_mutate_background="true"
             app:riv_oval="true"
-            tools:src="@drawable/racoon_200" />
+            tools:src="@drawable/racoon_logo" />
 
         <LinearLayout
             android:id="@+id/group_details_layout"
