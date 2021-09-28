@@ -15,6 +15,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
 
         val forgotPasswordFragment = ForgotPasswordFragment.newInstance()
         supportFragmentManager.beginTransaction()

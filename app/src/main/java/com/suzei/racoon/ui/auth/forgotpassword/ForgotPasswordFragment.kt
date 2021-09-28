@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.suzei.racoon.databinding.FragmentForgotPasswordBinding
+import com.suzei.racoon.ui.auth.forgotpassword.dialog.ResetEmailDialog
 import com.suzei.racoon.view.DelayedProgressDialog
 
 /**
@@ -19,7 +20,7 @@ class ForgotPasswordFragment : Fragment(), ForgotPasswordContract.View {
     private var _binding: FragmentForgotPasswordBinding? = null
     private val binding get() = _binding!!
 
-    var onResetClick = View.OnClickListener {
+    private val onResetClick = View.OnClickListener {
         val email = binding.forgotPasswordEmail.text.toString()
         presenter!!.resetPassword(email)
     }
@@ -55,12 +56,7 @@ class ForgotPasswordFragment : Fragment(), ForgotPasswordContract.View {
     }
 
     override fun onResetPasswordSuccess() {
-        Toast.makeText(
-            context,
-            "We have sent you an email to reset your password, " +
-                    "Please follow the instruction",
-            Toast.LENGTH_LONG
-        ).show()
+        ResetEmailDialog.newInstance().show(childFragmentManager, ResetEmailDialog.TAG)
     }
 
     override fun onResetPasswordFailure(message: String) {
