@@ -81,4 +81,6 @@
     <string name="reset_email_sent">Reset Email Sent</string>
     <string name="dialog_resent_email_sent_subtitle">We have sent you an email to reset your password, Please check and follow the instruction.</string>
     <string name="got_it">Got it</string>
+    <string name="groups">Groups</string>
+    <string name="about">About</string>
 </resources>
