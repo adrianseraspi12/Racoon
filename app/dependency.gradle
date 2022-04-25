@@ -1,0 +1,82 @@
+
+//  App Compat
+def app_compat_version = "1.2.0"
+
+//  Material Design
+def material_version = "1.4.0"
+def constraint_layout_version = "2.0.4"
+
+//  Components
+def legacy_support_version = "1.0.0"
+def vector_drawable_version = "1.2.0-alpha02"
+def butterknife_version = "9.0.0-rc2"
+def rounded_imageview_version = "2.3.0"
+def recycler_refresh_layout_version = "2.0.5"
+def ah_bottom_navigation_version = "2.1.0"
+
+//  Firebase
+def firebase_crashlytics_version = "18.2.4"
+def firebase_analytics_version = "20.0.0"
+def firebase_database_version = "20.0.2"
+def firebase_auth_version = "21.0.1"
+def firebase_storage_version = "20.0.0"
+def firebase_core_version = "20.0.0"
+def firebase_ads_version = "20.5.0"
+def firebase_ui_database_version = "8.0.0"
+
+//  Utils
+def timber_version = "4.7.1"
+def picasso_version = "2.71828"
+def compressor_version = "2.1.0"
+def emoji_one_version = "0.5.1"
+def joda_version = "2.9.9.3"
+def multidex_version = "2.0.1"
+
+//  Unit Test
+def junit_version = "4.13.2"
+def runner_version = "1.4.0"
+def espresso_version = "3.4.0"
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // App Compat
+    implementation "androidx.appcompat:appcompat:$app_compat_version"
+
+    // Material Design
+    implementation "com.google.android.material:material:$material_version"
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
+
+    // Components
+    implementation "androidx.legacy:legacy-support-v4:$legacy_support_version"
+    implementation "androidx.vectordrawable:vectordrawable:$vector_drawable_version"
+    implementation "com.dinuscxj:recyclerrefreshlayout:$recycler_refresh_layout_version"
+    implementation "com.makeramen:roundedimageview:$rounded_imageview_version"
+    implementation "com.aurelhubert:ahbottomnavigation:$ah_bottom_navigation_version"
+    implementation "com.jakewharton:butterknife:$butterknife_version"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_version"
+
+    // Firebase
+    implementation "com.google.firebase:firebase-crashlytics:$firebase_crashlytics_version"
+    implementation "com.google.firebase:firebase-analytics:$firebase_analytics_version"
+    implementation "com.google.firebase:firebase-database:$firebase_database_version"
+    implementation "com.google.firebase:firebase-auth:$firebase_auth_version"
+    implementation "com.google.firebase:firebase-storage:$firebase_storage_version"
+    implementation "com.google.firebase:firebase-core:$firebase_core_version"
+    implementation "com.google.firebase:firebase-ads:$firebase_ads_version"
+    implementation "com.firebaseui:firebase-ui-database:$firebase_ui_database_version"
+
+    // Utils
+    implementation "com.jakewharton.timber:timber:$timber_version"
+    implementation "com.squareup.picasso:picasso:$picasso_version"
+    implementation "id.zelory:compressor:$compressor_version"
+    implementation "com.vanniktech:emoji-one:$emoji_one_version"
+    implementation "net.danlew:android.joda:$joda_version"
+    implementation "androidx.multidex:multidex:$multidex_version"
+
+    // Unit test
+    testImplementation "junit:junit:$junit_version"
+    androidTestImplementation "androidx.test:runner:$runner_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+}

@@ -3,7 +3,7 @@ package com.suzei.racoon.ui.auth.login
 import android.text.TextUtils
 import android.util.Patterns
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import com.suzei.racoon.data.auth.AuthRepository
 import com.suzei.racoon.data.user.UserRepository
 import com.suzei.racoon.data.user.UserRepository.OnSaveListener
@@ -38,7 +38,7 @@ class LoginPresenter internal constructor(
     }
 
     override fun onAuthSuccess(uid: String) {
-        val deviceToken = FirebaseInstanceId.getInstance().token
+        val deviceToken = FirebaseMessaging.getInstance().token
         val userMap: MutableMap<String, Any?> = HashMap()
         userMap["device_token"] = deviceToken
         userRepository.saveUserDetails(uid, userMap, object : OnSaveListener {

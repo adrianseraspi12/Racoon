@@ -85,4 +85,8 @@
     <string name="got_it">Got it</string>
     <string name="groups">Groups</string>
     <string name="about">About</string>
+    <string name="birthdate">Birthdate</string>
+    <string name="bio">Bio</string>
+    <string name="gender">Gender</string>
+    <string name="save">Save</string>
 </resources>
